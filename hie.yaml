@@ -1,0 +1,6 @@
+cradle:
+  cabal:
+    - path: "./src"
+      component: "lib:pixiv"
+    - path: "./test"
+      component: "test:pixiv-test"
