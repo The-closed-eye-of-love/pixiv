@@ -45,7 +45,7 @@ data ImageUrls = ImageUrls
   deriving (FromJSON, ToJSON) via PixivJSON' ImageUrls
 
 newtype OriginalImageUrl = OriginalImageUrl
-  { originalImageUrl :: Maybe ImageUrl
+  { _originalImageUrl :: Maybe ImageUrl
   }
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON' OriginalImageUrl
