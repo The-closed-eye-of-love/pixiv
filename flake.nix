@@ -10,7 +10,7 @@
         in
           with pkgs;
           {
-            devShell = pixiv-dev.envFunc {};
+            devShell = pixiv-dev.envFunc { withHoogle = true; };
             defaultPackage = pixiv;
           }
     ) // {
