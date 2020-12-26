@@ -60,13 +60,22 @@ library
     , http-client
     , http-client-tls
     , lens
+    , monad-control
+    , mtl
+    , servant
+    , servant-client
+    , servant-client-core
     , text
+    , exceptions
     , time
+    , transformers
+    , transformers-base
 
   exposed-modules:
     Web.Pixiv.Auth
     Web.Pixiv.Types
     Web.Pixiv.Types.API
+    Web.Pixiv.Types.PixivM
 
   other-modules:
   hs-source-dirs:  src
@@ -74,7 +83,12 @@ library
 test-suite pixiv-test
   import:         common-attrs
   type:           exitcode-stdio-1.0
-  build-depends:  pixiv, aeson, bytestring, text
+  build-depends:
+    , aeson
+    , bytestring
+    , pixiv
+    , text
+
   hs-source-dirs: test
   main-is:        Spec.hs
 
