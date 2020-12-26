@@ -3,9 +3,9 @@ module Web.Pixiv.Types.Illust where
 import Deriving.Aeson.Stock
 import Servant.API
 import Web.Pixiv.Types
-import Web.Pixiv.Types.Pixiv
+import Web.Pixiv.Types.PixivEntry
 
-type IllustId = QueryParam' '[Required, Strict] "illust_id" Int
+type IllustIdParam = QueryParam' '[Required, Strict] "illust_id" Int
 
 newtype IllustDetail = IllustDetail
   { illust :: Illust
@@ -13,8 +13,8 @@ newtype IllustDetail = IllustDetail
   deriving stock (Show, Eq, Generic)
   deriving (FromJSON, ToJSON) via Snake IllustDetail
 
-type GetIllustDetail = Pixiv :> "v1" :> "illust" :> "detail" :> IllustId :> Get '[JSON] IllustDetail
+type GetIllustDetail = PixivEntry :> "v1" :> "illust" :> "detail" :> IllustIdParam :> Get '[JSON] IllustDetail
 
-type GetIllustComments = Pixiv :> "v1" :> "illust" :> "comments" :> IllustId :> Get '[JSON] Comments
+type GetIllustComments = PixivEntry :> "v1" :> "illust" :> "comments" :> IllustIdParam :> OffsetParam :> Get '[JSON] Comments
 
-type GetIllustRelated = Pixiv :> "v2" :> "illust" :> "related" :> IllustId :> Get '[JSON] Illusts
+type GetIllustRelated = PixivEntry :> "v2" :> "illust" :> "related" :> IllustIdParam :> OffsetParam :> Get '[JSON] Illusts

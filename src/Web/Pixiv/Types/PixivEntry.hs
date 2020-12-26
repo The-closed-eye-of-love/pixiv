@@ -1,4 +1,4 @@
-module Web.Pixiv.Types.Pixiv where
+module Web.Pixiv.Types.PixivEntry where
 
 import Data.Function ((&))
 import Data.Proxy (Proxy (Proxy))
@@ -7,10 +7,10 @@ import Servant.API hiding (addHeader)
 import Servant.Client.Core
 import Web.Pixiv.Auth (Token (..))
 
-data Pixiv
+data PixivEntry
 
-instance HasClient m api => HasClient m (Pixiv :> api) where
-  type Client m (Pixiv :> api) = Token -> Client m api
+instance HasClient m api => HasClient m (PixivEntry :> api) where
+  type Client m (PixivEntry :> api) = Token -> Client m api
   clientWithRoute pm Proxy req = \(unToken -> token) ->
     clientWithRoute pm (Proxy @api) $
       req
@@ -21,3 +21,10 @@ instance HasClient m api => HasClient m (Pixiv :> api) where
         & addHeader @Text "Authorization" ("Bearer " <> token)
   hoistClientMonad pm Proxy f m token =
     hoistClientMonad pm (Proxy @api) f (m token)
+
+type OffsetParam = QueryParam "offset" Int
+
+pageToOffset :: Int -> Maybe Int
+pageToOffset x
+  | x > 0 = Just $ (x - 1) * 30
+  | otherwise = Nothing

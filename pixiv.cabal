@@ -94,7 +94,7 @@ library
     Web.Pixiv.Types
     Web.Pixiv.Types.Illust
     Web.Pixiv.Types.Lens
-    Web.Pixiv.Types.Pixiv
+    Web.Pixiv.Types.PixivEntry
     Web.Pixiv.Types.PixivM
     Web.Pixiv.Types.Search
     Web.Pixiv.Types.Trending

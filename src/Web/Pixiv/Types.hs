@@ -6,6 +6,7 @@ import qualified Data.Aeson as A
 import Data.Text (Text)
 import Data.Time (UTCTime)
 import Deriving.Aeson
+import Servant.API (ToHttpApiData (..))
 import Web.Pixiv.Utils
 
 -----------------------------------------------------------------------------
@@ -48,6 +49,10 @@ data Series = Series
 data IllustType = TypeIllust | TypeManga
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via EnumJSON "Type" IllustType
+
+instance ToHttpApiData IllustType where
+  toQueryParam TypeIllust = "illust"
+  toQueryParam TypeManga = "manga"
 
 newtype MetaPage = MetaPage
   { _imageUrls :: ImageUrls

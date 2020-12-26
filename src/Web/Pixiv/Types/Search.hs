@@ -3,7 +3,7 @@ module Web.Pixiv.Types.Search where
 import Data.Text (Text)
 import Servant.API
 import Web.Pixiv.Types
-import Web.Pixiv.Types.Pixiv
+import Web.Pixiv.Types.PixivEntry
 
 data SortingMethod
   = DateDescending
@@ -26,10 +26,10 @@ instance ToHttpApiData Duration where
   toQueryParam WithinLastYear = "within_last_year"
 
 type SearchIllust =
-  Pixiv :> "v1" :> "search" :> "illust"
+  PixivEntry :> "v1" :> "search" :> "illust"
     :> QueryParam' '[Required, Strict] "word" Text
-    :> QueryParam' '[Required, Strict] "page" Int
     :> QueryParam "include_translated_tag_results" Bool
     :> QueryParam "sort" SortingMethod
     :> QueryParam "duration" Duration
+    :> OffsetParam
     :> Get '[JSON] Illusts
