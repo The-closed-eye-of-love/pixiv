@@ -57,6 +57,7 @@ library
     , bytestring
     , cryptohash-md5
     , deriving-aeson
+    , exceptions
     , http-client
     , http-client-tls
     , lens
@@ -66,16 +67,23 @@ library
     , servant-client
     , servant-client-core
     , text
-    , exceptions
     , time
     , transformers
     , transformers-base
 
   exposed-modules:
+    Web.Pixiv.API
+    Web.Pixiv.API.Servant
     Web.Pixiv.Auth
     Web.Pixiv.Types
-    Web.Pixiv.Types.API
+    Web.Pixiv.Types.Illust
+    Web.Pixiv.Types.Lens
+    Web.Pixiv.Types.Pixiv
     Web.Pixiv.Types.PixivM
+    Web.Pixiv.Types.Search
+    Web.Pixiv.Types.Trending
+    Web.Pixiv.Types.User
+    Web.Pixiv.Utils
 
   other-modules:
   hs-source-dirs:  src
