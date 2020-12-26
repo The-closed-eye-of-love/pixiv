@@ -46,10 +46,12 @@ liftC = PixivM . lift
 getAccessToken :: PixivM Text
 getAccessToken = do
   ref <- ask
-  TokenState {..} <- liftIO $ takeMVar ref
+  s@TokenState {..} <- liftIO $ takeMVar ref
   t <- liftIO getCurrentTime
   if t < expirationTime
-    then pure accessToken
+    then do
+      liftIO $ putMVar ref s
+      pure accessToken
     else do
       let credential = RefreshToken refreshToken
       authRes <- liftIO $ auth credential
@@ -59,6 +61,6 @@ getAccessToken = do
           let offset = expiresIn `div` 5 * 4
               diff = secondsToNominalDiffTime $ toEnum offset
               expirationTime = addUTCTime diff t
-              s = TokenState {..}
-          liftIO $ putMVar ref s
+              s' = TokenState {..}
+          liftIO $ putMVar ref s'
           pure accessToken
