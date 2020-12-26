@@ -18,6 +18,8 @@ import GHC.TypeLits (KnownSymbol, Symbol, symbolVal)
 
 type PixivJSON (k :: Symbol) = CustomJSON '[FieldLabelModifier (PixivLabelModifier k, CamelToSnake)]
 
+type EnumJSON (k :: Symbol) = CustomJSON '[ConstructorTagModifier (StripPrefix k, CamelToSnake)]
+
 type PixivJSON' = PixivJSON ""
 
 -- | Strip prefix @'_'@ and @k@, making sure the result is non-empty
@@ -70,16 +72,7 @@ data Series = Series
 
 data IllustType = TypeIllust | TypeManga
   deriving stock (Eq, Show, Generic)
-
-instance ToJSON IllustType where
-  toJSON TypeIllust = A.String "illust"
-  toJSON TypeManga = A.String "manga"
-
-instance FromJSON IllustType where
-  parseJSON = A.withText "IllustType" $ \case
-    "illust" -> pure TypeIllust
-    "manga" -> pure TypeManga
-    _ -> mempty
+  deriving (FromJSON, ToJSON) via EnumJSON "Type" IllustType
 
 newtype MetaPage = MetaPage
   { _imageUrls :: ImageUrls
@@ -164,16 +157,7 @@ data UserProfile = UserProfile
 
 data Publicity = Public | Private
   deriving stock (Eq, Show, Generic)
-
-instance ToJSON Publicity where
-  toJSON Public = A.String "public"
-  toJSON Private = A.String "private"
-
-instance FromJSON Publicity where
-  parseJSON = A.withText "Publicity" $ \case
-    "public" -> pure Public
-    "private" -> pure Private
-    _ -> mempty
+  deriving (FromJSON, ToJSON) via EnumJSON "" Publicity
 
 data ProfilePublicity = ProfilePublicity
   { _gender :: Publicity,
