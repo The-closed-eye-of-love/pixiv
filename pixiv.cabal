@@ -59,8 +59,10 @@ library
     , deriving-aeson
     , http-client
     , http-client-tls
+    , lens
     , text
     , time
+    , unordered-containers
 
   exposed-modules:
     Web.Pixiv.Auth

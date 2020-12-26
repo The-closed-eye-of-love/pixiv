@@ -2,154 +2,271 @@
 
 module Web.Pixiv.Types where
 
-import Data.Aeson (Value)
+import qualified Data.Aeson as A
+import qualified Data.Aeson.Types as A
+import qualified Data.HashMap.Strict as HashMap
+import Data.List (stripPrefix)
+import Data.Maybe (fromMaybe)
+import Data.Proxy (Proxy (Proxy))
 import Data.Text (Text)
 import qualified Data.Text as T
+import Data.Time (UTCTime)
 import Deriving.Aeson
 import Deriving.Aeson.Stock
+import GHC.TypeLits (KnownSymbol, Symbol, symbolVal)
+
+-----------------------------------------------------------------------------
+
+type PixivJSON (k :: Symbol) = CustomJSON '[FieldLabelModifier (PixivLabelModifier k, CamelToSnake)]
+
+type PixivJSON' = PixivJSON ""
+
+-- | Strip prefix @'_'@ and @k@, making sure the result is non-empty
+data PixivLabelModifier (k :: Symbol)
+
+instance KnownSymbol k => StringModifier (PixivLabelModifier k) where
+  getStringModifier s = case stripPrefix (symbolVal (Proxy @k)) s' of
+    Nothing -> s'
+    Just "" -> s'
+    Just x -> x
+    where
+      s' = fromMaybe s (stripPrefix "_" s)
+
+-----------------------------------------------------------------------------
 
 type ImageUrl = Text
 
 data ImageUrls = ImageUrls
-  { squareMedium :: ImageUrl,
-    medium :: ImageUrl,
-    large :: ImageUrl,
-    original :: ImageUrl
+  { _squareMedium :: ImageUrl,
+    _medium :: ImageUrl,
+    _large :: ImageUrl,
+    _original :: ImageUrl
   }
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via Snake ImageUrls
+  deriving (FromJSON, ToJSON) via PixivJSON' ImageUrls
 
 newtype OriginalImageUrl = OriginalImageUrl
   { originalImageUrl :: ImageUrl
   }
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via Snake OriginalImageUrl
+  deriving (FromJSON, ToJSON) via PixivJSON' OriginalImageUrl
 
 -----------------------------------------------------------------------------
-type TagName = Text
 
 data Tag = Tag
-  { name :: TagName,
-    translatedName :: Maybe TagName
+  { _name :: Text,
+    _translatedName :: Maybe Text
   }
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via Snake Tag
-
-type Tags = [Tag]
+  deriving (FromJSON, ToJSON) via PixivJSON' Tag
 
 -----------------------------------------------------------------------------
 
-type Date = Text
-
 data Series = Series
-  { seriesId :: Int,
-    title :: Text
+  { _seriesId :: Int,
+    _title :: Text
   }
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via CustomJSON '[ConstructorTagModifier (StripPrefix "series", CamelToSnake)] Series
+  deriving (FromJSON, ToJSON) via PixivJSON "series" Series
 
 data IllustType = TypeIllust | TypeManga
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via CustomJSON '[ConstructorTagModifier (StripPrefix "Type", CamelToSnake)] IllustType
+
+instance ToJSON IllustType where
+  toJSON TypeIllust = A.String "illust"
+  toJSON TypeManga = A.String "manga"
+
+instance FromJSON IllustType where
+  parseJSON = A.withText "IllustType" $ \case
+    "illust" -> pure TypeIllust
+    "manga" -> pure TypeManga
+    _ -> mempty
 
 data Illust = Illust
-  { illustId :: Int,
-    title :: Text,
-    illustType :: IllustType,
-    imageUrls :: ImageUrls,
-    caption :: Text,
-    restrict :: Int,
-    user :: User,
-    tags :: Tags,
-    tools :: [Text],
-    createDate :: Date,
-    pageCount :: Int,
-    width :: Int,
-    height :: Int,
-    sanityLevel :: Int,
-    xRestrict :: Int,
-    series :: Maybe Series,
+  { _illustId :: Int,
+    _title :: Text,
+    _illustType :: IllustType,
+    _imageUrls :: ImageUrls,
+    _caption :: Text,
+    _restrict :: Int,
+    _user :: User,
+    _tags :: [Tag],
+    _tools :: [Text],
+    _createDate :: UTCTime,
+    _pageCount :: Int,
+    _width :: Int,
+    _height :: Int,
+    _sanityLevel :: Int,
+    _xRestrict :: Int,
+    _series :: Maybe Series,
     -- TODO
-    metaSinglePage :: Value,
-    metaPages :: [ImageUrls],
-    totalView :: Int,
-    totalBookmarks :: Int,
-    isBookmarked :: Bool,
-    visible :: Bool,
-    isMuted :: Bool,
-    totalComments :: Maybe Int
+    _metaSinglePage :: A.Value,
+    _metaPages :: [ImageUrls],
+    _totalView :: Int,
+    _totalBookmarks :: Int,
+    _isBookmarked :: Bool,
+    _visible :: Bool,
+    _isMuted :: Bool,
+    _totalComments :: Maybe Int
   }
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via CustomJSON '[ConstructorTagModifier (StripPrefix "illust", CamelToSnake)] Illust
+  deriving (FromJSON, ToJSON) via PixivJSON "illust" Illust
+
+newtype Illusts = Illusts
+  { _illusts :: [Illust]
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' Illusts
 
 -----------------------------------------------------------------------------
 data User = User
-  { userId :: Int,
-    name :: Text,
-    account :: Text,
-    profileImageUrls :: ImageUrls,
-    comment :: Maybe Text,
-    isFollowed :: Bool
+  { _userId :: Int,
+    _name :: Text,
+    _account :: Text,
+    _profileImageUrls :: ImageUrls,
+    _comment :: Maybe Text,
+    _isFollowed :: Maybe Bool
   }
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via CustomJSON '[ConstructorTagModifier (StripPrefix "user", CamelToSnake)] User
+  deriving (FromJSON, ToJSON) via PixivJSON "user" User
 
 data UserProfile = UserProfile
-  { webpage :: Text,
-    gender :: Text,
-    birth :: Text,
-    birthDay :: Text,
-    birthYear :: Int,
-    region :: Text,
-    addressId :: Int,
-    countryCode :: Text,
-    job :: Text,
-    jobId :: Int,
-    totalFollowUsers :: Int,
-    totalMypixivUsers :: Int,
-    totalManga :: Int,
-    totalIllustBookmarksPublic :: Int,
-    totalIllustSeries :: Int,
-    totalNovelSeries :: Int,
-    backgroundImageUrl :: ImageUrl,
-    twitterAccount :: Text,
-    twitterUrl :: Text,
-    pawooUrl :: Maybe Text,
-    isPreminum :: Bool,
-    isUsingCustomProfileImage :: Bool
+  { _webpage :: Text,
+    _gender :: Text,
+    _birth :: Text,
+    _birthDay :: Text,
+    _birthYear :: Int,
+    _region :: Text,
+    _addressId :: Int,
+    _countryCode :: Text,
+    _job :: Text,
+    _jobId :: Int,
+    _totalFollowUsers :: Int,
+    _totalMypixivUsers :: Int,
+    _totalManga :: Int,
+    _totalIllustBookmarksPublic :: Int,
+    _totalIllustSeries :: Int,
+    _totalNovelSeries :: Int,
+    _backgroundImageUrl :: ImageUrl,
+    _twitterAccount :: Text,
+    _twitterUrl :: Text,
+    _pawooUrl :: Maybe Text,
+    _isPreminum :: Bool,
+    _isUsingCustomProfileImage :: Bool
   }
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via Snake UserProfile
+  deriving (FromJSON, ToJSON) via PixivJSON' UserProfile
 
 data Publicity = Public | Private
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via Snake Publicity
+
+instance ToJSON Publicity where
+  toJSON Public = A.String "public"
+  toJSON Private = A.String "private"
+
+instance FromJSON Publicity where
+  parseJSON = A.withText "Publicity" $ \case
+    "public" -> pure Public
+    "private" -> pure Private
+    _ -> mempty
 
 data ProfilePublicity = ProfilePublicity
-  { gender :: Publicity,
-    region :: Publicity,
-    birthDay :: Publicity,
-    birthYear :: Publicity,
-    job :: Publicity,
-    pawoo :: Publicity
+  { _gender :: Publicity,
+    _region :: Publicity,
+    _birthDay :: Publicity,
+    _birthYear :: Publicity,
+    _job :: Publicity,
+    _pawoo :: Publicity
   }
   deriving stock (Eq, Show, Generic)
-  deriving anyclass (FromJSON, ToJSON)
+  deriving (FromJSON, ToJSON) via PixivJSON' ProfilePublicity
 
 data Workspace = Workspace
-  { pc :: Text,
-    monitor :: Text,
-    tool :: Text,
-    scanner :: Text,
-    tablet :: Text,
-    mouse :: Text,
-    printer :: Text,
-    desktop :: Text,
-    music :: Text,
-    desk :: Text,
-    chair :: Text,
-    comment :: Text,
-    workspaceImageUrl :: Maybe Text
+  { _pc :: Text,
+    _monitor :: Text,
+    _tool :: Text,
+    _scanner :: Text,
+    _tablet :: Text,
+    _mouse :: Text,
+    _printer :: Text,
+    _desktop :: Text,
+    _music :: Text,
+    _desk :: Text,
+    _chair :: Text,
+    _comment :: Text,
+    _workspaceImageUrl :: Maybe Text
   }
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via Snake Workspace
+  deriving (FromJSON, ToJSON) via PixivJSON' Workspace
+
+data UserDetail = UserDetail
+  { _user :: User,
+    _profile :: UserProfile,
+    _profilePublicity :: ProfilePublicity,
+    _workspace :: Workspace
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' UserDetail
+
+-----------------------------------------------------------------------------
+
+data TrendingTag = TrendingTag
+  { _tag :: Tag,
+    _illust :: Illust
+  }
+  deriving stock (Eq, Show, Generic)
+
+instance FromJSON TrendingTag where
+  parseJSON v =
+    TrendingTag <$> A.parseJSON v <*> parse' v
+    where
+      parse' = A.withObject "TrendingTag" $ \o -> o A..: "_illust"
+
+instance ToJSON TrendingTag where
+  toJSON TrendingTag {..} = case A.toJSON _tag of
+    (A.Object m) -> A.Object $ HashMap.insert "_illust" (A.toJSON _illust) m
+    _ -> error "impossible"
+
+newtype TrendingTags = TrendingTags
+  { _trend_tags :: [TrendingTag]
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' TrendingTags
+
+-----------------------------------------------------------------------------
+
+data Comment = Comment
+  { _commentId :: Int,
+    _comment :: Text,
+    _date :: UTCTime,
+    _user :: User,
+    -- TODO
+    _parentComment :: Maybe A.Value
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON "comment" Comment
+
+data Comments = Comments
+  { _totalComments :: Int,
+    _comments :: [Comment]
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' Comments
+
+-----------------------------------------------------------------------------
+
+data UserPreview = UserPreview
+  { _user :: User,
+    _illusts :: [Illust],
+    -- TODO
+    _novels :: A.Value,
+    _isMuted :: Bool
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' UserPreview
+
+newtype UserPreviews = UserPreviews
+  { _userPreviews :: [UserPreview]
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' UserPreviews
