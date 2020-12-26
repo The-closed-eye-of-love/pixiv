@@ -8,7 +8,7 @@ import Web.Pixiv.Types.Pixiv
 data SortingMethod
   = DateDescending
   | DateAscending
-  deriving (Show, Eq)
+  deriving stock (Show, Eq)
 
 instance ToHttpApiData SortingMethod where
   toQueryParam DateDescending = "date_desc"
@@ -18,7 +18,7 @@ data Duration
   = WithinLastDay
   | WithinLastMonth
   | WithinLastYear
-  deriving (Show, Eq)
+  deriving stock (Show, Eq)
 
 instance ToHttpApiData Duration where
   toQueryParam WithinLastDay = "within_last_day"

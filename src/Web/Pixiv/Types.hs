@@ -3,35 +3,10 @@
 module Web.Pixiv.Types where
 
 import qualified Data.Aeson as A
-import qualified Data.Aeson.Types as A
-import Data.List (stripPrefix)
-import Data.Maybe (fromMaybe)
-import Data.Proxy (Proxy (Proxy))
 import Data.Text (Text)
-import qualified Data.Text as T
 import Data.Time (UTCTime)
 import Deriving.Aeson
-import Deriving.Aeson.Stock
-import GHC.TypeLits (KnownSymbol, Symbol, symbolVal)
-
------------------------------------------------------------------------------
-
-type PixivJSON (k :: Symbol) = CustomJSON '[FieldLabelModifier (PixivLabelModifier k, CamelToSnake)]
-
-type EnumJSON (k :: Symbol) = CustomJSON '[ConstructorTagModifier (StripPrefix k, CamelToSnake)]
-
-type PixivJSON' = PixivJSON ""
-
--- | Strip prefix @'_'@ and @k@, making sure the result is non-empty
-data PixivLabelModifier (k :: Symbol)
-
-instance KnownSymbol k => StringModifier (PixivLabelModifier k) where
-  getStringModifier s = case stripPrefix (symbolVal (Proxy @k)) s' of
-    Nothing -> s'
-    Just "" -> s'
-    Just x -> x
-    where
-      s' = fromMaybe s (stripPrefix "_" s)
+import Web.Pixiv.Utils
 
 -----------------------------------------------------------------------------
 
@@ -97,7 +72,6 @@ data Illust = Illust
     _sanityLevel :: Int,
     _xRestrict :: Int,
     _series :: Maybe Series,
-    -- TODO
     _metaSinglePage :: Maybe OriginalImageUrl,
     _metaPages :: [MetaPage],
     _totalView :: Int,
@@ -157,7 +131,7 @@ data UserProfile = UserProfile
 
 data Publicity = Public | Private
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via EnumJSON "" Publicity
+  deriving (FromJSON, ToJSON) via EnumJSON' Publicity
 
 data ProfilePublicity = ProfilePublicity
   { _gender :: Publicity,

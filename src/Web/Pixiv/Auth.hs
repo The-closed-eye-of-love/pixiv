@@ -1,25 +1,22 @@
-{-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE DerivingVia #-}
-{-# LANGUAGE DuplicateRecordFields #-}
-
 module Web.Pixiv.Auth where
 
-import Control.Applicative
-import Control.Exception
-import Crypto.Hash.MD5
+import Control.Applicative ((<|>))
+import Control.Exception (Exception)
+import Crypto.Hash.MD5 (hash)
 import Data.Aeson
 import qualified Data.Aeson as A
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Base16 as B16
 import qualified Data.ByteString.Char8 as C
 import Data.Text (Text)
-import Data.Text.Encoding
-import Data.Time
-import Deriving.Aeson (CamelToSnake, ConstructorTagModifier)
+import Data.Text.Encoding (encodeUtf8)
+import Data.Time (defaultTimeLocale, formatTime, getCurrentTime)
+import Deriving.Aeson (UnwrapUnaryRecords)
 import Deriving.Aeson.Stock
 import Network.HTTP.Client
-import Network.HTTP.Client.MultipartFormData
-import Network.HTTP.Client.TLS
+import Network.HTTP.Client.MultipartFormData (PartM, formDataBody, partBS)
+import Network.HTTP.Client.TLS (newTlsManager)
+import Web.Pixiv.Utils
 
 clientId :: ByteString
 clientId = "MOBrBDS8blbauoSck0ZfDbtuzpyT"
@@ -30,15 +27,19 @@ clientSecret = "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"
 hashSecret :: ByteString
 hashSecret = "28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0bae2c"
 
+newtype Token = Token {unToken :: Text}
+  deriving stock (Show, Eq, Generic)
+  deriving (FromJSON, ToJSON) via CustomJSON '[UnwrapUnaryRecords] Token
+
 data Credential
   = Password
       { username :: ByteString,
         password :: ByteString
       }
   | RefreshToken
-      { refreshToken :: Text
+      { refreshToken :: Token
       }
-  deriving (Show, Eq, Generic)
+  deriving stock (Show, Eq)
 
 mkAuthParts :: Applicative m => Credential -> [PartM m]
 mkAuthParts Password {..} =
@@ -48,16 +49,16 @@ mkAuthParts Password {..} =
   ]
 mkAuthParts RefreshToken {..} =
   [ partBS "grant_type" "refresh_token",
-    partBS "refresh_token" (encodeUtf8 refreshToken)
+    partBS "refresh_token" (encodeUtf8 . unToken $ refreshToken)
   ]
 
 data OAuth2Token = OAuth2Token
-  { accessToken :: Text,
-    expiresIn :: Int,
-    refreshToken :: Text
+  { oa_accessToken :: Token,
+    oa_expiresIn :: Int,
+    oa_refreshToken :: Token
   }
-  deriving (Show, Eq, Generic)
-  deriving (FromJSON, ToJSON) via Snake OAuth2Token
+  deriving stock (Show, Eq, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON "oa_" OAuth2Token
 
 data Errors
   = InvalidRequest
@@ -66,21 +67,21 @@ data Errors
   | UnauthorizedClient
   | UnsupportedGrantType
   | InvalidScope
-  deriving (Show, Eq, Generic)
-  deriving (FromJSON, ToJSON) via CustomJSON '[ConstructorTagModifier CamelToSnake] Errors
+  deriving stock (Show, Eq, Generic)
+  deriving (FromJSON, ToJSON) via EnumJSON' Errors
 
 data OAuth2Error = OAuth2Error
-  { error :: Errors,
-    message :: Text
+  { oa_error :: Errors,
+    oa_message :: Text
   }
-  deriving (Show, Eq, Generic)
+  deriving stock (Show, Eq, Generic)
   deriving anyclass (Exception)
 
 instance FromJSON OAuth2Error where
   parseJSON = withObject "oauth2 response" $ \o -> do
-    error <- o .: "error"
+    oa_error <- o .: "error"
     errors <- o .: "errors"
-    message <- flip (withObject "errors") errors $ \o' -> do
+    oa_message <- flip (withObject "errors") errors $ \o' -> do
       system <- o' .: "system"
       flip (withObject "system") system $ \o'' -> do
         o'' .: "message"
@@ -89,7 +90,7 @@ instance FromJSON OAuth2Error where
 data OAuth2Result
   = AuthSuccess OAuth2Token
   | AuthFailure OAuth2Error
-  deriving (Show, Eq, Generic)
+  deriving stock (Show, Eq, Generic)
 
 instance FromJSON OAuth2Result where
   parseJSON v =

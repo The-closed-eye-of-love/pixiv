@@ -10,7 +10,7 @@ type IllustId = QueryParam' '[Required, Strict] "illust_id" Int
 newtype IllustDetail = IllustDetail
   { illust :: Illust
   }
-  deriving (Show, Eq, Generic)
+  deriving stock (Show, Eq, Generic)
   deriving (FromJSON, ToJSON) via Snake IllustDetail
 
 type GetIllustDetail = Pixiv :> "v1" :> "illust" :> "detail" :> IllustId :> Get '[JSON] IllustDetail

@@ -10,18 +10,17 @@ import Control.Monad.Catch
 import Control.Monad.Error.Class
 import Control.Monad.Reader
 import Control.Monad.Trans.Control
-import Data.Text (Text)
 import Data.Time
-import GHC.Generics
+import GHC.Generics (Generic)
 import Servant.Client
 import Web.Pixiv.Auth
 
 data TokenState = TokenState
-  { accessToken :: Text,
-    refreshToken :: Text,
+  { accessToken :: Token,
+    refreshToken :: Token,
     expirationTime :: UTCTime
   }
-  deriving (Show, Eq, Generic)
+  deriving stock (Show, Eq, Generic)
 
 newtype PixivM a = PixivM
   { unPixivM :: ReaderT (MVar TokenState) ClientM a
@@ -43,7 +42,7 @@ newtype PixivM a = PixivM
 liftC :: ClientM a -> PixivM a
 liftC = PixivM . lift
 
-getAccessToken :: PixivM Text
+getAccessToken :: PixivM Token
 getAccessToken = do
   ref <- ask
   s@TokenState {..} <- liftIO $ takeMVar ref
@@ -58,9 +57,8 @@ getAccessToken = do
       case authRes of
         AuthFailure err -> throwM err
         AuthSuccess OAuth2Token {..} -> do
-          let offset = expiresIn `div` 5 * 4
+          let offset = oa_expiresIn `div` 5 * 4
               diff = secondsToNominalDiffTime $ toEnum offset
-              expirationTime = addUTCTime diff t
-              s' = TokenState {..}
+              s' = s {expirationTime = addUTCTime diff t}
           liftIO $ putMVar ref s'
           pure accessToken

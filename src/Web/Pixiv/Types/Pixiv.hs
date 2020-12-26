@@ -1,16 +1,17 @@
 module Web.Pixiv.Types.Pixiv where
 
 import Data.Function ((&))
-import Data.Proxy
-import Data.Text
+import Data.Proxy (Proxy (Proxy))
+import Data.Text (Text)
 import Servant.API hiding (addHeader)
 import Servant.Client.Core
+import Web.Pixiv.Auth (Token (..))
 
 data Pixiv
 
 instance HasClient m api => HasClient m (Pixiv :> api) where
-  type Client m (Pixiv :> api) = Text -> Client m api
-  clientWithRoute pm Proxy req = \token ->
+  type Client m (Pixiv :> api) = Token -> Client m api
+  clientWithRoute pm Proxy req = \(unToken -> token) ->
     clientWithRoute pm (Proxy @api) $
       req
         & addHeader @Text "App-OS" "ios"

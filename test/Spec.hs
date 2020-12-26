@@ -21,4 +21,4 @@ testDecode :: forall v. (FromJSON v) => FilePath -> IO ()
 testDecode path =
   eitherDecodeFileStrict @v path >>= \case
     Left err -> fail err
-    Right x -> putStrLn "Pass"
+    Right _ -> putStrLn "Pass"
