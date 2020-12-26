@@ -1,5 +1,6 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE DerivingVia #-}
+{-# LANGUAGE DuplicateRecordFields #-}
 
 module Web.Pixiv.Auth where
 
@@ -11,6 +12,7 @@ import Data.ByteString (ByteString)
 import qualified Data.ByteString.Base16 as B16
 import qualified Data.ByteString.Char8 as C
 import Data.Text (Text)
+import Data.Text.Encoding
 import Data.Time
 import Deriving.Aeson (CamelToSnake, ConstructorTagModifier)
 import Deriving.Aeson.Stock
@@ -27,11 +29,26 @@ clientSecret = "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"
 hashSecret :: ByteString
 hashSecret = "28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0bae2c"
 
-data Credential = Credential
-  { username :: ByteString,
-    password :: ByteString
-  }
+data Credential
+  = Password
+      { username :: ByteString,
+        password :: ByteString
+      }
+  | RefreshToken
+      { refreshToken :: Text
+      }
   deriving (Show, Eq, Generic)
+
+mkAuthParts :: Applicative m => Credential -> [PartM m]
+mkAuthParts Password {..} =
+  [ partBS "grant_type" "password",
+    partBS "username" username,
+    partBS "password" password
+  ]
+mkAuthParts RefreshToken {..} =
+  [ partBS "grant_type" "refresh_token",
+    partBS "refresh_token" (encodeUtf8 refreshToken)
+  ]
 
 data OAuth2Token = OAuth2Token
   { accessToken :: Text,
@@ -77,7 +94,7 @@ instance FromJSON OAuth2Result where
     AuthSuccess <$> parseJSON v <|> AuthFailure <$> parseJSON v
 
 auth :: Credential -> IO OAuth2Result
-auth Credential {..} = do
+auth credential = do
   manager <- newTlsManager
   let authUrl = "https://oauth.secure.pixiv.net/auth/token"
   initReq <- parseRequest authUrl
@@ -93,11 +110,9 @@ auth Credential {..} = do
       parts =
         [ partBS "client_id" clientId,
           partBS "client_secret" clientSecret,
-          partBS "get_secure_url" "1",
-          partBS "username" username,
-          partBS "password" password,
-          partBS "grant_type" "password"
+          partBS "get_secure_url" "1"
         ]
+          ++ mkAuthParts credential
   finalReq <- formDataBody parts req
   resp <- httpLbs finalReq manager
   let body = responseBody resp
