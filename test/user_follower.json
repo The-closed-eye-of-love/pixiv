@@ -1,0 +1,19 @@
+{
+  "user_previews": [
+      {
+          "user": {
+              "id": 47728789,
+              "name": "Mariela",
+              "account": "user_kfyy4372",
+              "profile_image_urls": {
+                  "medium": "https://i.pximg.net/user-profile/img/2020/01/24/06/03/38/17248164_c06a8e49e4d5eeea76b5c2ec15192e88_170.jpg"
+              },
+              "is_followed": false
+          },
+          "illusts": [],
+          "novels": [],
+          "is_muted": false
+      }
+  ],
+  "next_url": null
+}

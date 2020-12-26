@@ -16,6 +16,7 @@ makeFieldsNoPrefix ''Tag
 makeFieldsNoPrefix ''Series
 makeFieldsNoPrefix ''Illust
 makeFieldsNoPrefix ''Illusts
+makeFieldsNoPrefix ''MetaPage
 
 -----------------------------------------------------------------------------
 makeFieldsNoPrefix ''User

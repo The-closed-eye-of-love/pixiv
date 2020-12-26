@@ -4,7 +4,6 @@ module Web.Pixiv.Types where
 
 import qualified Data.Aeson as A
 import qualified Data.Aeson.Types as A
-import qualified Data.HashMap.Strict as HashMap
 import Data.List (stripPrefix)
 import Data.Maybe (fromMaybe)
 import Data.Proxy (Proxy (Proxy))
@@ -37,16 +36,16 @@ instance KnownSymbol k => StringModifier (PixivLabelModifier k) where
 type ImageUrl = Text
 
 data ImageUrls = ImageUrls
-  { _squareMedium :: ImageUrl,
-    _medium :: ImageUrl,
-    _large :: ImageUrl,
-    _original :: ImageUrl
+  { _squareMedium :: Maybe ImageUrl,
+    _medium :: Maybe ImageUrl,
+    _large :: Maybe ImageUrl,
+    _original :: Maybe ImageUrl
   }
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON' ImageUrls
 
 newtype OriginalImageUrl = OriginalImageUrl
-  { originalImageUrl :: ImageUrl
+  { originalImageUrl :: Maybe ImageUrl
   }
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON' OriginalImageUrl
@@ -82,6 +81,12 @@ instance FromJSON IllustType where
     "manga" -> pure TypeManga
     _ -> mempty
 
+newtype MetaPage = MetaPage
+  { _imageUrls :: ImageUrls
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' MetaPage
+
 data Illust = Illust
   { _illustId :: Int,
     _title :: Text,
@@ -100,8 +105,8 @@ data Illust = Illust
     _xRestrict :: Int,
     _series :: Maybe Series,
     -- TODO
-    _metaSinglePage :: A.Value,
-    _metaPages :: [ImageUrls],
+    _metaSinglePage :: Maybe OriginalImageUrl,
+    _metaPages :: [MetaPage],
     _totalView :: Int,
     _totalBookmarks :: Int,
     _isBookmarked :: Bool,
@@ -151,7 +156,7 @@ data UserProfile = UserProfile
     _twitterAccount :: Text,
     _twitterUrl :: Text,
     _pawooUrl :: Maybe Text,
-    _isPreminum :: Bool,
+    _isPreminum :: Maybe Bool,
     _isUsingCustomProfileImage :: Bool
   }
   deriving stock (Eq, Show, Generic)
@@ -176,7 +181,7 @@ data ProfilePublicity = ProfilePublicity
     _birthDay :: Publicity,
     _birthYear :: Publicity,
     _job :: Publicity,
-    _pawoo :: Publicity
+    _pawoo :: Bool
   }
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON' ProfilePublicity
@@ -211,21 +216,13 @@ data UserDetail = UserDetail
 -----------------------------------------------------------------------------
 
 data TrendingTag = TrendingTag
-  { _tag :: Tag,
+  { -- This is ugly, not consistent with normal 'Tag'
+    _trendTag :: Text,
+    _translatedName :: Maybe Text,
     _illust :: Illust
   }
   deriving stock (Eq, Show, Generic)
-
-instance FromJSON TrendingTag where
-  parseJSON v =
-    TrendingTag <$> A.parseJSON v <*> parse' v
-    where
-      parse' = A.withObject "TrendingTag" $ \o -> o A..: "_illust"
-
-instance ToJSON TrendingTag where
-  toJSON TrendingTag {..} = case A.toJSON _tag of
-    (A.Object m) -> A.Object $ HashMap.insert "_illust" (A.toJSON _illust) m
-    _ -> error "impossible"
+  deriving (FromJSON, ToJSON) via PixivJSON "trend" TrendingTag
 
 newtype TrendingTags = TrendingTags
   { _trend_tags :: [TrendingTag]

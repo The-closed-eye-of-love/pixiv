@@ -1,0 +1,61 @@
+{
+  "user": {
+      "id": 73798,
+      "name": "ユイザキカズヤ",
+      "account": "xx_merry",
+      "profile_image_urls": {
+          "medium": "https://i.pximg.net/user-profile/img/2012/08/08/20/42/56/4977749_e886862fc55f07ef3fb0b16458d374da_170.jpg"
+      },
+      "comment": "その時描きたいものを描いてます。\r\nお仕事依頼はyuizaki@c-holic.main.jpまでお願いします。\r\n（pixivメッセージでは受け付けておりません\r\nあまりpixivを見ていないのでコメントには気付きづらいですが、全て読ませて頂いてます。\r\n\r\nノーゲーム・ノーライフ、です！全４巻\r\nイキモノシステム全２巻\r\nその他イラストとか読み切りとか。\r\n\r\n*マイピクはお知り合いさんのみ承認しております。\r\n*リクエストは募集しておりません。",
+      "is_followed": false
+  },
+  "profile": {
+      "webpage": "http://c-holic.jp/",
+      "gender": "",
+      "birth": "",
+      "birth_day": "09-16",
+      "birth_year": 0,
+      "region": "日本 神奈川県",
+      "address_id": 14,
+      "country_code": "",
+      "job": "クリエーター系",
+      "job_id": 5,
+      "total_follow_users": 532,
+      "total_mypixiv_users": 21,
+      "total_illusts": 206,
+      "total_manga": 55,
+      "total_novels": 0,
+      "total_illust_bookmarks_public": 92,
+      "total_illust_series": 1,
+      "total_novel_series": 0,
+      "background_image_url": "https://i.pximg.net/c/1200x600_90_a2_g5/background/img/2019/09/20/02/00/01/73798_adebb9a16c4558ca0ac1c5b174890cad_master1200.jpg",
+      "twitter_account": "k_yuizaki",
+      "twitter_url": "https://twitter.com/k_yuizaki",
+      "pawoo_url": null,
+      "is_premium": true,
+      "is_using_custom_profile_image": true
+  },
+  "profile_publicity": {
+      "gender": "public",
+      "region": "public",
+      "birth_day": "public",
+      "birth_year": "public",
+      "job": "public",
+      "pawoo": true
+  },
+  "workspace": {
+      "pc": "",
+      "monitor": "",
+      "tool": "Clio Paint Studio",
+      "scanner": "",
+      "tablet": "cinteq21",
+      "mouse": "",
+      "printer": "",
+      "desktop": "",
+      "music": "",
+      "desk": "",
+      "chair": "",
+      "comment": "",
+      "workspace_image_url": null
+  }
+}

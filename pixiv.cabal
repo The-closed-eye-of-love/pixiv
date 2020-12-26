@@ -62,7 +62,6 @@ library
     , lens
     , text
     , time
-    , unordered-containers
 
   exposed-modules:
     Web.Pixiv.Auth
@@ -75,7 +74,7 @@ library
 test-suite pixiv-test
   import:         common-attrs
   type:           exitcode-stdio-1.0
-  build-depends:  pixiv
+  build-depends:  pixiv, aeson, bytestring, text
   hs-source-dirs: test
   main-is:        Spec.hs
 
