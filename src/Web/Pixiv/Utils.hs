@@ -1,21 +1,21 @@
 module Web.Pixiv.Utils where
 
+import Data.Data (Proxy (Proxy))
 import Data.List (stripPrefix)
 import Data.Maybe (fromMaybe)
-import Data.Proxy (Proxy (Proxy))
 import Deriving.Aeson
-import GHC.TypeLits
-import Network.HTTP.Client.TLS
+import GHC.TypeLits (KnownSymbol, Symbol, symbolVal)
+import Network.HTTP.Client (Manager)
+import Network.HTTP.Client.TLS (newTlsManager)
 import Servant.Client
 
-mkDefaultClientEnv :: IO ClientEnv
-mkDefaultClientEnv = do
-  manager <- newTlsManager
+mkDefaultClientEnv :: Manager -> IO ClientEnv
+mkDefaultClientEnv manager = do
   baseUrl <- parseBaseUrl "https://app-api.pixiv.net"
   pure $ mkClientEnv manager baseUrl
 
 runWithDefaultClientEnv :: ClientM a -> IO (Either ClientError a)
-runWithDefaultClientEnv m = mkDefaultClientEnv >>= runClientM m
+runWithDefaultClientEnv m = newTlsManager >>= mkDefaultClientEnv >>= runClientM m
 
 -----------------------------------------------------------------------------
 

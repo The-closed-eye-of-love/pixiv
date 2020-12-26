@@ -1,7 +1,7 @@
 module Web.Pixiv.Auth where
 
 import Control.Applicative ((<|>))
-import Control.Exception (Exception)
+import Control.Exception.Base
 import Crypto.Hash.MD5 (hash)
 import Data.Aeson
 import qualified Data.Aeson as A
@@ -15,7 +15,6 @@ import Deriving.Aeson (UnwrapUnaryRecords)
 import Deriving.Aeson.Stock
 import Network.HTTP.Client
 import Network.HTTP.Client.MultipartFormData (PartM, formDataBody, partBS)
-import Network.HTTP.Client.TLS (newTlsManager)
 import Web.Pixiv.Utils
 
 clientId :: ByteString
@@ -96,9 +95,8 @@ instance FromJSON OAuth2Result where
   parseJSON v =
     AuthSuccess <$> parseJSON v <|> AuthFailure <$> parseJSON v
 
-auth :: Credential -> IO OAuth2Result
-auth credential = do
-  manager <- newTlsManager
+auth :: Manager -> Credential -> IO OAuth2Result
+auth manager credential = do
   let authUrl = "https://oauth.secure.pixiv.net/auth/token"
   initReq <- parseRequest authUrl
   utcT <- getCurrentTime
@@ -120,3 +118,10 @@ auth credential = do
   resp <- httpLbs finalReq manager
   let body = responseBody resp
   maybe (fail "impossible: unable to parse response") pure (A.decode body)
+
+-- | Like 'auth', but immediately throws 'OAuth2Error' if auth failed
+auth' :: Manager -> Credential -> IO OAuth2Token
+auth' manager credential =
+  auth manager credential >>= \case
+    AuthSuccess t -> pure t
+    AuthFailure err -> throwIO err
