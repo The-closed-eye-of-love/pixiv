@@ -5,6 +5,7 @@
 module Web.Pixiv.Auth where
 
 import Control.Applicative
+import Control.Exception
 import Crypto.Hash.MD5
 import Data.Aeson
 import qualified Data.Aeson as A
@@ -73,6 +74,7 @@ data OAuth2Error = OAuth2Error
     message :: Text
   }
   deriving (Show, Eq, Generic)
+  deriving anyclass (Exception)
 
 instance FromJSON OAuth2Error where
   parseJSON = withObject "oauth2 response" $ \o -> do
