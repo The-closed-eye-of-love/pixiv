@@ -1,6 +1,9 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Web.Pixiv.Types.Lens where
+module Web.Pixiv.Types.Lens
+  ( module Web.Pixiv.Types.Lens,
+  )
+where
 
 import Control.Lens.TH
 import Web.Pixiv.Types

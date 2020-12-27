@@ -1,8 +1,14 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Web.Pixiv.Types.PixivM where
+module Web.Pixiv.Types.PixivM
+  ( PixivM,
+    runPixivM,
+    runPixivM',
+    liftC,
+    getAccessToken,
+  )
+where
 
 import Control.Concurrent (MVar, newMVar, putMVar, takeMVar)
 import Control.Monad.Base (MonadBase)

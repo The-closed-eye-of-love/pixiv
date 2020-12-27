@@ -1,4 +1,14 @@
-module Web.Pixiv.Auth where
+module Web.Pixiv.Auth
+  ( Token (..),
+    Credential (..),
+    OAuth2Token (..),
+    OAuth2Error (..),
+    OAuth2Result (..),
+    Errors (..),
+    auth,
+    auth',
+  )
+where
 
 import Control.Applicative ((<|>))
 import Control.Exception.Base
