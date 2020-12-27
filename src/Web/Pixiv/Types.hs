@@ -1,6 +1,38 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 
-module Web.Pixiv.Types where
+module Web.Pixiv.Types
+  ( -- * Image
+    ImageUrls (..),
+    OriginalImageUrl (..),
+
+    -- * Tag
+    Tag (..),
+    TrendingTag (..),
+    TrendingTags (..),
+
+    -- * Illust
+    Series (..),
+    IllustType (..),
+    MetaPage (..),
+    Illust (..),
+    Illusts (..),
+    IllustDetail (..),
+
+    -- * User
+    User (..),
+    UserProfile (..),
+    Publicity (..),
+    ProfilePublicity (..),
+    Workspace (..),
+    UserDetail (..),
+    UserPreview (..),
+    UserPreviews (..),
+
+    -- * Comment
+    Comment (..),
+    Comments (..),
+  )
+where
 
 import qualified Data.Aeson as A
 import Data.Text (Text)
@@ -36,6 +68,21 @@ data Tag = Tag
   }
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON' Tag
+
+data TrendingTag = TrendingTag
+  { -- This is ugly, not consistent with normal 'Tag'
+    _trendTag :: Text,
+    _translatedName :: Maybe Text,
+    _illust :: Illust
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON "trend" TrendingTag
+
+newtype TrendingTags = TrendingTags
+  { _trend_tags :: [TrendingTag]
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' TrendingTags
 
 -----------------------------------------------------------------------------
 
@@ -186,22 +233,21 @@ data UserDetail = UserDetail
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON' UserDetail
 
------------------------------------------------------------------------------
-
-data TrendingTag = TrendingTag
-  { -- This is ugly, not consistent with normal 'Tag'
-    _trendTag :: Text,
-    _translatedName :: Maybe Text,
-    _illust :: Illust
+data UserPreview = UserPreview
+  { _user :: User,
+    _illusts :: [Illust],
+    -- TODO
+    _novels :: A.Value,
+    _isMuted :: Bool
   }
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON "trend" TrendingTag
+  deriving (FromJSON, ToJSON) via PixivJSON' UserPreview
 
-newtype TrendingTags = TrendingTags
-  { _trend_tags :: [TrendingTag]
+newtype UserPreviews = UserPreviews
+  { _userPreviews :: [UserPreview]
   }
   deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' TrendingTags
+  deriving (FromJSON, ToJSON) via PixivJSON' UserPreviews
 
 -----------------------------------------------------------------------------
 
@@ -222,21 +268,3 @@ data Comments = Comments
   }
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON' Comments
-
------------------------------------------------------------------------------
-
-data UserPreview = UserPreview
-  { _user :: User,
-    _illusts :: [Illust],
-    -- TODO
-    _novels :: A.Value,
-    _isMuted :: Bool
-  }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' UserPreview
-
-newtype UserPreviews = UserPreviews
-  { _userPreviews :: [UserPreview]
-  }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' UserPreviews
