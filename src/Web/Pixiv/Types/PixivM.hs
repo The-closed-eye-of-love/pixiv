@@ -127,7 +127,7 @@ runPixivT manager credential m = do
 -- | Like 'runPixivT', but creates a new 'Manager' everythime.
 runPixivT' :: MonadIO m => Credential -> PixivT m a -> m (Either ClientError a)
 runPixivT' credential m = do
-  manager <- liftIO $ newTlsManager
+  manager <- liftIO newTlsManager
   runPixivT manager credential m
 
 computeTokenState :: Manager -> Credential -> UTCTime -> IO TokenState
