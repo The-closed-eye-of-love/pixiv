@@ -2,16 +2,14 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Web.Pixiv.Types.PixivM where
-
-{-
-  ( PixivM,
-    runPixivM,
-    runPixivM',
-    liftC,
+module Web.Pixiv.Types.PixivM
+  ( MonadPixiv (..),
+    PixivT,
+    runPixivT,
+    runPixivT',
     getAccessToken,
   )
--}
+where
 
 import Control.Concurrent (MVar, newMVar, putMVar, takeMVar)
 import Control.Monad.Base (MonadBase)
@@ -104,15 +102,21 @@ instance MonadIO m => RunClient (PixivT m) where
     liftC $ runRequestAcceptStatus status req
 
 class (RunClient m, MonadIO m) => MonadPixiv m where
+  -- | read the stored 'TokenState', when used in a multithreaded setting, this should block
+  -- all other thread from reading the 'TokenState' until 'putTokenState' is called
   takeTokenState :: m TokenState
+
+  -- | write a new 'TokenState'
   putTokenState :: TokenState -> m ()
 
+-- | A thread safe implementation of 'MonadPixiv'
 instance MonadIO m => MonadPixiv (PixivT m) where
   takeTokenState = ask >>= liftIO . takeMVar
   putTokenState s = do
     ref <- ask
     liftIO $ putMVar ref s
 
+-- | Interprets the 'PixivT' effect, with a supplied 'Manager'
 runPixivT :: MonadIO m => Manager -> Credential -> PixivT m a -> m (Either ClientError a)
 runPixivT manager credential m = do
   t <- liftIO getCurrentTime
