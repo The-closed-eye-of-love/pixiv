@@ -3,9 +3,10 @@ module Web.Pixiv.Types.PixivEntry where
 import Data.Function ((&))
 import Data.Proxy (Proxy (Proxy))
 import Data.Text (Text)
-import Servant.API hiding (addHeader)
-import Servant.Client.Core
+import Servant.API (QueryParam, type (:>))
+import Servant.Client.Core (HasClient (..), addHeader, appendToQueryString)
 import Web.Pixiv.Auth (Token (..))
+import Web.Pixiv.Types (Publicity)
 
 data PixivEntry
 
@@ -14,11 +15,10 @@ instance HasClient m api => HasClient m (PixivEntry :> api) where
   clientWithRoute pm Proxy req = \(unToken -> token) ->
     clientWithRoute pm (Proxy @api) $
       req
-        & addHeader @Text "App-OS" "ios"
-        & addHeader @Text "App-OS-Version" "12.2"
-        & addHeader @Text "App-Version" "7.6.2"
-        & addHeader @Text "User-Agent" "PixivIOSApp/7.6.2 (iOS 12.2; iPhone9,1)"
+        & addHeader @Text "Referer" "https://app-api.pixiv.net/"
+        & addHeader @Text "User-Agent" "PixivAndroidApp/5.0.175 (Android 6.0; PixivHaskell)"
         & addHeader @Text "Authorization" ("Bearer " <> token)
+        & appendToQueryString "filter" (Just "for_android")
   hoistClientMonad pm Proxy f m token =
     hoistClientMonad pm (Proxy @api) f (m token)
 
@@ -28,3 +28,5 @@ pageToOffset :: Int -> Maybe Int
 pageToOffset x
   | x > 0 = Just $ (x - 1) * 30
   | otherwise = Nothing
+
+type RestrictParam = QueryParam "restrict" Publicity

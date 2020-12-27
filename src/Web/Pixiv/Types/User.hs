@@ -21,6 +21,7 @@ type GetUserIllusts =
 type GetUserFollowing =
   PixivEntry :> "v1" :> "user" :> "following"
     :> UserIdParam
+    :> RestrictParam
     :> OffsetParam
     :> Get '[JSON] UserPreviews
 

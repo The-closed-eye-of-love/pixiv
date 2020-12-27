@@ -1,4 +1,28 @@
-module Web.Pixiv.API where
+module Web.Pixiv.API
+  ( -- * Trending
+    getTrendingTags,
+    getRecommendedIllusts,
+    getRecommendedMangas,
+
+    -- * Illust
+    getIllustDetail,
+    getIllustComments,
+    getIllustRelated,
+    getIllustRanking,
+    getIllustFollow,
+    getIllustNew,
+
+    -- * Search
+    searchIllust,
+
+    -- * User
+    getUserDetail,
+    getUserIllusts,
+    getUserFollowing,
+    getUserFollower,
+    getUserMypixiv,
+  )
+where
 
 import Data.Coerce
 import Data.Text (Text)
@@ -9,8 +33,27 @@ import Web.Pixiv.Types.PixivEntry (pageToOffset)
 import Web.Pixiv.Types.PixivM
 import Web.Pixiv.Types.Search
 
-getTrendingTags :: PixivM TrendingTags
-getTrendingTags = getAccessToken >>= (liftC . S.getTrendingTags)
+-----------------------------------------------------------------------------
+
+getTrendingTags :: Maybe Bool -> PixivM [TrendingTag]
+getTrendingTags includeTranslatedTagResults = do
+  token <- getAccessToken
+  tags <- liftC $ S.getTrendingTags token includeTranslatedTagResults
+  pure $ coerce tags
+
+getRecommendedIllusts :: Maybe Bool -> Maybe Bool -> PixivM [Illust]
+getRecommendedIllusts includePrivacyPolicy includeTranslatedTagResults = do
+  token <- getAccessToken
+  illusts <- liftC $ S.getRecommendedIllusts token includePrivacyPolicy includeTranslatedTagResults
+  pure $ coerce illusts
+
+getRecommendedMangas :: Maybe Bool -> Maybe Bool -> PixivM [Illust]
+getRecommendedMangas includePrivacyPolicy includeTranslatedTagResults = do
+  token <- getAccessToken
+  illusts <- liftC $ S.getRecommendedMangas token includePrivacyPolicy includeTranslatedTagResults
+  pure $ coerce illusts
+
+-----------------------------------------------------------------------------
 
 getIllustDetail :: Int -> PixivM Illust
 getIllustDetail illustId = do
@@ -29,16 +72,37 @@ getIllustRelated illustId (pageToOffset -> offset) = do
   illusts <- liftC $ S.getIllustRelated token illustId offset
   pure $ coerce illusts
 
+getIllustRanking :: Maybe RankMode -> Int -> PixivM [Illust]
+getIllustRanking mode (pageToOffset -> offset) = do
+  token <- getAccessToken
+  illusts <- liftC $ S.getIllustRanking token mode offset
+  pure $ coerce illusts
+
+getIllustFollow :: Maybe Publicity -> Int -> PixivM [Illust]
+getIllustFollow restrict (pageToOffset -> offset) = do
+  token <- getAccessToken
+  illusts <- liftC $ S.getIllustFollow token restrict offset
+  pure $ coerce illusts
+
+getIllustNew :: Int -> PixivM [Illust]
+getIllustNew (pageToOffset -> offset) = do
+  token <- getAccessToken
+  illusts <- liftC $ S.getIllustNew token offset
+  pure $ coerce illusts
+
+-----------------------------------------------------------------------------
+
 searchIllust ::
+  SearchTarget ->
   Text ->
   Maybe Bool ->
   Maybe SortingMethod ->
   Maybe Duration ->
   Int ->
   PixivM [Illust]
-searchIllust searchString includeTranslatedTag sortingMethod duration (pageToOffset -> offset) = do
+searchIllust searchTarget searchWord includeTranslatedTag sortingMethod duration (pageToOffset -> offset) = do
   token <- getAccessToken
-  illusts <- liftC $ S.searchIllust token searchString includeTranslatedTag sortingMethod duration offset
+  illusts <- liftC $ S.searchIllust token searchTarget searchWord includeTranslatedTag sortingMethod duration offset
   pure $ coerce illusts
 
 getUserDetail :: Int -> PixivM UserDetail
@@ -52,10 +116,10 @@ getUserIllusts userId illustType (pageToOffset -> offset) = do
   illusts <- liftC $ S.getUserIllusts token userId illustType offset
   pure $ coerce illusts
 
-getUserFollowing :: Int -> Int -> PixivM [UserPreview]
-getUserFollowing userId (pageToOffset -> offset) = do
+getUserFollowing :: Int -> Maybe Publicity -> Int -> PixivM [UserPreview]
+getUserFollowing userId restrict (pageToOffset -> offset) = do
   token <- getAccessToken
-  ups <- liftC $ S.getUserFollowing token userId offset
+  ups <- liftC $ S.getUserFollowing token userId restrict offset
   pure $ coerce ups
 
 getUserFollower :: Int -> Int -> PixivM [UserPreview]

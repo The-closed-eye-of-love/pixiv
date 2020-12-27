@@ -95,6 +95,12 @@ newtype Illusts = Illusts
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON' Illusts
 
+newtype IllustDetail = IllustDetail
+  { _illust :: Illust
+  }
+  deriving stock (Show, Eq, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' IllustDetail
+
 -----------------------------------------------------------------------------
 data User = User
   { _userId :: Int,
@@ -137,6 +143,10 @@ data UserProfile = UserProfile
 data Publicity = Public | Private
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via EnumJSON' Publicity
+
+instance ToHttpApiData Publicity where
+  toQueryParam Public = "public"
+  toQueryParam Private = "private"
 
 data ProfilePublicity = ProfilePublicity
   { _gender :: Publicity,

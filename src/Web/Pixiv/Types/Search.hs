@@ -20,6 +20,14 @@ data Duration
   | WithinLastYear
   deriving stock (Show, Eq)
 
+data SearchTarget = ExactMatchForTags | PartialMatchForTags | TitleAndCaption
+  deriving stock (Show, Eq)
+
+instance ToHttpApiData SearchTarget where
+  toQueryParam ExactMatchForTags = "exact_match_for_tags"
+  toQueryParam PartialMatchForTags = "partial_match_for_tags"
+  toQueryParam TitleAndCaption = "title_and_caption"
+
 instance ToHttpApiData Duration where
   toQueryParam WithinLastDay = "within_last_day"
   toQueryParam WithinLastMonth = "within_last_month"
@@ -27,6 +35,7 @@ instance ToHttpApiData Duration where
 
 type SearchIllust =
   PixivEntry :> "v1" :> "search" :> "illust"
+    :> QueryParam' '[Required, Strict] "search_target" SearchTarget
     :> QueryParam' '[Required, Strict] "word" Text
     :> QueryParam "include_translated_tag_results" Bool
     :> QueryParam "sort" SortingMethod
