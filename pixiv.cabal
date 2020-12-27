@@ -30,8 +30,8 @@ common common-attrs
   if impl(ghc >=8.2)
     ghc-options: -fhide-source-paths
 
---  if impl(ghc >=8.4)
---    ghc-options: -Wmissing-export-lists
+  --  if impl(ghc >=8.4)
+  --    ghc-options: -Wmissing-export-lists
 
   if impl(ghc >=8.8)
     ghc-options: -Wmissing-deriving-strategies
@@ -89,20 +89,18 @@ library
 
   exposed-modules:
     Web.Pixiv.API
-    Web.Pixiv.API.Servant
     Web.Pixiv.Auth
     Web.Pixiv.Types
     Web.Pixiv.Types.Illust
     Web.Pixiv.Types.Lens
     Web.Pixiv.Types.PixivEntry
-    Web.Pixiv.Types.PixivM
+    Web.Pixiv.Types.PixivT
     Web.Pixiv.Types.Search
     Web.Pixiv.Types.Trending
     Web.Pixiv.Types.User
     Web.Pixiv.Utils
 
-  other-modules:
-    Data.Generically
+  other-modules:   Data.Generically
   hs-source-dirs:  src
 
 test-suite pixiv-test

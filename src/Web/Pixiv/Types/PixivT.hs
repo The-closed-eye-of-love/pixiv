@@ -2,7 +2,7 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Web.Pixiv.Types.PixivM
+module Web.Pixiv.Types.PixivT
   ( MonadPixiv (..),
     PixivT,
     runPixivT,

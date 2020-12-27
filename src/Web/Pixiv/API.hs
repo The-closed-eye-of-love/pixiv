@@ -31,7 +31,7 @@ import Servant.Client.Core
 import Web.Pixiv.Types
 import Web.Pixiv.Types.Illust
 import Web.Pixiv.Types.PixivEntry (pageToOffset)
-import Web.Pixiv.Types.PixivM
+import Web.Pixiv.Types.PixivT
 import Web.Pixiv.Types.Search
 import Web.Pixiv.Types.Trending
 import Web.Pixiv.Types.User
