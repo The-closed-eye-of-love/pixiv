@@ -1,37 +1,28 @@
 module Web.Pixiv.Types.Search where
 
+import Data.Generically
 import Data.Text (Text)
+import GHC.Generics (Generic)
 import Servant.API
 import Web.Pixiv.Types
 import Web.Pixiv.Types.PixivEntry
 
 data SortingMethod
-  = DateDescending
-  | DateAscending
-  deriving stock (Show, Eq)
-
-instance ToHttpApiData SortingMethod where
-  toQueryParam DateDescending = "date_desc"
-  toQueryParam DateAscending = "date_asc"
+  = DateDesc
+  | DateAsc
+  deriving stock (Show, Eq, Generic)
+  deriving (ToHttpApiData) via Generically SortingMethod
 
 data Duration
   = WithinLastDay
   | WithinLastMonth
   | WithinLastYear
-  deriving stock (Show, Eq)
+  deriving stock (Show, Eq, Generic)
+  deriving (ToHttpApiData) via Generically Duration
 
 data SearchTarget = ExactMatchForTags | PartialMatchForTags | TitleAndCaption
-  deriving stock (Show, Eq)
-
-instance ToHttpApiData SearchTarget where
-  toQueryParam ExactMatchForTags = "exact_match_for_tags"
-  toQueryParam PartialMatchForTags = "partial_match_for_tags"
-  toQueryParam TitleAndCaption = "title_and_caption"
-
-instance ToHttpApiData Duration where
-  toQueryParam WithinLastDay = "within_last_day"
-  toQueryParam WithinLastMonth = "within_last_month"
-  toQueryParam WithinLastYear = "within_last_year"
+  deriving stock (Show, Eq, Generic)
+  deriving (ToHttpApiData) via Generically SearchTarget
 
 type SearchIllust =
   PixivEntry :> "v1" :> "search" :> "illust"

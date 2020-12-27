@@ -35,6 +35,7 @@ module Web.Pixiv.Types
 where
 
 import qualified Data.Aeson as A
+import Data.Generically
 import Data.Text (Text)
 import Data.Time (UTCTime)
 import Deriving.Aeson
@@ -190,10 +191,7 @@ data UserProfile = UserProfile
 data Publicity = Public | Private
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via EnumJSON' Publicity
-
-instance ToHttpApiData Publicity where
-  toQueryParam Public = "public"
-  toQueryParam Private = "private"
+  deriving (ToHttpApiData) via Generically Publicity
 
 data ProfilePublicity = ProfilePublicity
   { _gender :: Publicity,

@@ -102,6 +102,7 @@ library
     Web.Pixiv.Utils
 
   other-modules:
+    Data.Generically
   hs-source-dirs:  src
 
 test-suite pixiv-test
