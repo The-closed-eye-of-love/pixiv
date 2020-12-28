@@ -4,31 +4,24 @@ module Web.Pixiv.Download
   )
 where
 
-import Control.Applicative ((<|>))
 import Control.Lens
-import Control.Monad (join)
 import Control.Monad.IO.Class (MonadIO (..))
 import Data.ByteString (ByteString)
 import Data.ByteString.Lazy (toStrict)
 import qualified Data.Text as T
 import Network.HTTP.Client
 import Web.Pixiv.Types
-import Web.Pixiv.Types.Lens
 import Web.Pixiv.Types.PixivT
+import Web.Pixiv.Utils (extractImageUrlsFromIllust)
 
 -- | Download a single page illust.
 -- Choose the first one if the illust has many pages.
 -- Prefer high quality images.
 downloadSingleIllust :: Manager -> Illust -> IO (Maybe ByteString)
 downloadSingleIllust manager i = do
-  let single = join $ (i ^. metaSinglePage) & each %~ (^. originalImageUrl)
-      multiFirst =
-        join $
-          i ^. metaPages ^? _head
-            & each %~ (^. imageUrls)
-            & each %~ (\x -> x ^. original <|> x ^. large <|> x ^. medium <|> x ^. squareMedium)
+  let url = extractImageUrlsFromIllust i ^? _head
       addReferer r = r {requestHeaders = [("Referer", "https://app-api.pixiv.net/")]}
-  req <- (parseRequest . T.unpack) `traverse` (single <|> multiFirst)
+  req <- (parseRequest . T.unpack) `traverse` url
   case req of
     Just (addReferer -> req') -> do
       resp <- httpLbs req' manager

@@ -45,12 +45,11 @@ module Web.Pixiv.Types
 where
 
 import qualified Data.Aeson as A
-import Data.Generically
 import Data.Text (Text)
 import Data.Time (UTCTime)
 import Deriving.Aeson
 import Servant.API (ToHttpApiData (..))
-import Web.Pixiv.Utils
+import Data.Generically
 
 type family NextUrlLess a
 
@@ -214,7 +213,7 @@ data UserProfile = UserProfile
 data Publicity = Public | Private
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via EnumJSON' Publicity
-  deriving (ToHttpApiData) via Generically Publicity
+  deriving (ToHttpApiData) via SnakeHTTP Publicity
 
 data ProfilePublicity = ProfilePublicity
   { _gender :: Publicity,
@@ -317,21 +316,21 @@ data RankMode
   | DayR18
   | DayManga
   deriving stock (Show, Eq, Ord, Enum, Generic)
-  deriving (ToHttpApiData) via Generically RankMode
+  deriving (ToHttpApiData) via SnakeHTTP RankMode
 
 data SortingMethod
   = DateDesc
   | DateAsc
   deriving stock (Show, Eq, Ord, Enum, Generic)
-  deriving (ToHttpApiData) via Generically SortingMethod
+  deriving (ToHttpApiData) via SnakeHTTP SortingMethod
 
 data Duration
   = WithinLastDay
   | WithinLastMonth
   | WithinLastYear
   deriving stock (Show, Eq, Ord, Generic)
-  deriving (ToHttpApiData) via Generically Duration
+  deriving (ToHttpApiData) via SnakeHTTP Duration
 
 data SearchTarget = ExactMatchForTags | PartialMatchForTags | TitleAndCaption
   deriving stock (Show, Eq, Ord, Enum, Generic)
-  deriving (ToHttpApiData) via Generically SearchTarget
+  deriving (ToHttpApiData) via SnakeHTTP SearchTarget
