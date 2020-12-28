@@ -31,6 +31,16 @@ module Web.Pixiv.Types
     -- * Comment
     Comment (..),
     Comments (..),
+
+    -- * NextUrl
+    NextUrlLess,
+    HasNextUrl (..),
+
+    -- * Http
+    RankMode (..),
+    SearchTarget (..),
+    SortingMethod (..),
+    Duration (..),
   )
 where
 
@@ -41,6 +51,13 @@ import Data.Time (UTCTime)
 import Deriving.Aeson
 import Servant.API (ToHttpApiData (..))
 import Web.Pixiv.Utils
+
+type family NextUrlLess a
+
+class HasNextUrl a where
+  unNextUrl :: a -> NextUrlLess a
+  getNextUrl :: a -> Maybe Text
+  
 
 -----------------------------------------------------------------------------
 
@@ -137,11 +154,18 @@ data Illust = Illust
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON "illust" Illust
 
-newtype Illusts = Illusts
-  { _illusts :: [Illust]
+data Illusts = Illusts
+  { _illusts :: [Illust],
+    _nextUrl :: Maybe Text
   }
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON' Illusts
+
+type instance NextUrlLess Illusts = [Illust]
+
+instance HasNextUrl Illusts where
+  unNextUrl Illusts {..} = _illusts
+  getNextUrl Illusts {..} = _nextUrl
 
 newtype IllustDetail = IllustDetail
   { _illust :: Illust
@@ -241,11 +265,18 @@ data UserPreview = UserPreview
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON' UserPreview
 
-newtype UserPreviews = UserPreviews
-  { _userPreviews :: [UserPreview]
+data UserPreviews = UserPreviews
+  { _userPreviews :: [UserPreview],
+    _nextUrl :: Maybe Text
   }
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON' UserPreviews
+
+type instance NextUrlLess UserPreviews = [UserPreview]
+
+instance HasNextUrl UserPreviews where
+  unNextUrl UserPreviews {..} = _userPreviews
+  getNextUrl UserPreviews {..} = _nextUrl
 
 -----------------------------------------------------------------------------
 
@@ -262,7 +293,45 @@ data Comment = Comment
 
 data Comments = Comments
   { _totalComments :: Int,
-    _comments :: [Comment]
+    _comments :: [Comment],
+    _nextUrl :: Maybe Text
   }
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON' Comments
+
+type instance NextUrlLess Comments = [Comment]
+
+instance HasNextUrl Comments where
+  unNextUrl Comments {..} = _comments
+  getNextUrl Comments {..} = _nextUrl
+
+-----------------------------------------------------------------------------
+
+data RankMode
+  = Day
+  | Week
+  | Month
+  | DayMale
+  | DayFemale
+  | WeekOriginal
+  | WeekRookie
+  | DayR18
+  deriving stock (Show, Eq, Ord, Enum, Generic)
+  deriving (ToHttpApiData) via Generically RankMode
+
+data SortingMethod
+  = DateDesc
+  | DateAsc
+  deriving stock (Show, Eq, Ord, Enum, Generic)
+  deriving (ToHttpApiData) via Generically SortingMethod
+
+data Duration
+  = WithinLastDay
+  | WithinLastMonth
+  | WithinLastYear
+  deriving stock (Show, Eq, Ord, Generic)
+  deriving (ToHttpApiData) via Generically Duration
+
+data SearchTarget = ExactMatchForTags | PartialMatchForTags | TitleAndCaption
+  deriving stock (Show, Eq, Ord, Enum, Generic)
+  deriving (ToHttpApiData) via Generically SearchTarget

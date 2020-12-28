@@ -36,3 +36,10 @@ type GetUserMypixiv =
     :> UserIdParam
     :> OffsetParam
     :> Get '[JSON] UserPreviews
+
+type GetUserBookmarks =
+  PixivEntry :> "v1" :> "user" :> "bookmarks" :> "illust"
+    :> UserIdParam
+    :> RestrictParam
+    :> QueryParam "max_bookmark_id" Int
+    :> Get '[JSON] Illusts

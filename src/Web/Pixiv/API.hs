@@ -21,12 +21,16 @@ module Web.Pixiv.API
     getUserFollowing,
     getUserFollower,
     getUserMypixiv,
+    getUserBookmarks,
   )
 where
 
+import Control.Lens
 import Data.Coerce
 import Data.Proxy
 import Data.Text (Text)
+import qualified Data.Text as T
+import Data.Text.Read (decimal)
 import Servant.Client.Core
 import Web.Pixiv.Types
 import Web.Pixiv.Types.Illust
@@ -48,13 +52,13 @@ getRecommendedIllusts :: MonadPixiv m => Maybe Bool -> Maybe Bool -> m [Illust]
 getRecommendedIllusts includePrivacyPolicy includeTranslatedTagResults = do
   token <- getAccessToken
   illusts <- clientIn (Proxy @GetRecommendedIllusts) Proxy token includePrivacyPolicy includeTranslatedTagResults
-  pure $ coerce illusts
+  pure $ unNextUrl illusts
 
 getRecommendedMangas :: MonadPixiv m => Maybe Bool -> Maybe Bool -> m [Illust]
 getRecommendedMangas includePrivacyPolicy includeTranslatedTagResults = do
   token <- getAccessToken
   illusts <- clientIn (Proxy @GetRecommendedMangas) Proxy token includePrivacyPolicy includeTranslatedTagResults
-  pure $ coerce illusts
+  pure $ unNextUrl illusts
 
 -----------------------------------------------------------------------------
 
@@ -73,25 +77,25 @@ getIllustRelated :: MonadPixiv m => Int -> Int -> m [Illust]
 getIllustRelated illustId (pageToOffset -> offset) = do
   token <- getAccessToken
   illusts <- clientIn (Proxy @GetIllustRelated) Proxy token illustId offset
-  pure $ coerce illusts
+  pure $ unNextUrl illusts
 
 getIllustRanking :: MonadPixiv m => Maybe RankMode -> Int -> m [Illust]
 getIllustRanking mode (pageToOffset -> offset) = do
   token <- getAccessToken
   illusts <- clientIn (Proxy @GetIllustRanking) Proxy token mode offset
-  pure $ coerce illusts
+  pure $ unNextUrl illusts
 
-getIllustFollow :: MonadPixiv m => Maybe Publicity -> Int -> m [Illust]
+getIllustFollow :: MonadPixiv m => Publicity -> Int -> m [Illust]
 getIllustFollow restrict (pageToOffset -> offset) = do
   token <- getAccessToken
   illusts <- clientIn (Proxy @GetIllustFollow) Proxy token restrict offset
-  pure $ coerce illusts
+  pure $ unNextUrl illusts
 
 getIllustNew :: MonadPixiv m => Int -> m [Illust]
 getIllustNew (pageToOffset -> offset) = do
   token <- getAccessToken
   illusts <- clientIn (Proxy @GetIllustNew) Proxy token offset
-  pure $ coerce illusts
+  pure $ unNextUrl illusts
 
 -----------------------------------------------------------------------------
 
@@ -107,7 +111,7 @@ searchIllust ::
 searchIllust searchTarget searchWord includeTranslatedTag sortingMethod duration (pageToOffset -> offset) = do
   token <- getAccessToken
   illusts <- clientIn (Proxy @SearchIllust) Proxy token searchTarget searchWord includeTranslatedTag sortingMethod duration offset
-  pure $ coerce illusts
+  pure $ unNextUrl illusts
 
 getUserDetail :: MonadPixiv m => Int -> m UserDetail
 getUserDetail userId = do
@@ -118,22 +122,28 @@ getUserIllusts :: MonadPixiv m => Int -> Maybe IllustType -> Int -> m [Illust]
 getUserIllusts userId illustType (pageToOffset -> offset) = do
   token <- getAccessToken
   illusts <- clientIn (Proxy @GetUserIllusts) Proxy token userId illustType offset
-  pure $ coerce illusts
+  pure $ unNextUrl illusts
 
-getUserFollowing :: MonadPixiv m => Int -> Maybe Publicity -> Int -> m [UserPreview]
+getUserFollowing :: MonadPixiv m => Int -> Publicity -> Int -> m [UserPreview]
 getUserFollowing userId restrict (pageToOffset -> offset) = do
   token <- getAccessToken
   ups <- clientIn (Proxy @GetUserFollowing) Proxy token userId restrict offset
-  pure $ coerce ups
+  pure $ unNextUrl ups
 
 getUserFollower :: MonadPixiv m => Int -> Int -> m [UserPreview]
 getUserFollower userId (pageToOffset -> offset) = do
   token <- getAccessToken
   ups <- clientIn (Proxy @GetUserFollower) Proxy token userId offset
-  pure $ coerce ups
+  pure $ unNextUrl ups
 
 getUserMypixiv :: MonadPixiv m => Int -> Int -> m [UserPreview]
 getUserMypixiv userId (pageToOffset -> offset) = do
   token <- getAccessToken
   ups <- clientIn (Proxy @GetUserMypixiv) Proxy token userId offset
-  pure $ coerce ups
+  pure $ unNextUrl ups
+
+getUserBookmarks :: MonadPixiv m => Int -> Publicity -> Maybe Int -> m ([Illust], Maybe Int)
+getUserBookmarks userId restrict maxBookmarkId = do
+  token <- getAccessToken
+  illusts <- clientIn (Proxy @GetUserBookmarks) Proxy token userId restrict maxBookmarkId
+  pure (unNextUrl illusts, getNextUrl illusts >>= ((^? _Right . _1) . decimal . T.takeWhileEnd (/= '=')))

@@ -18,7 +18,6 @@ makeFieldsNoPrefix ''Tag
 -----------------------------------------------------------------------------
 makeFieldsNoPrefix ''Series
 makeFieldsNoPrefix ''Illust
-makeFieldsNoPrefix ''Illusts
 makeFieldsNoPrefix ''MetaPage
 
 -----------------------------------------------------------------------------
@@ -30,12 +29,9 @@ makeFieldsNoPrefix ''UserDetail
 
 -----------------------------------------------------------------------------
 makeFieldsNoPrefix ''TrendingTag
-makeFieldsNoPrefix ''TrendingTags
 
 -----------------------------------------------------------------------------
 makeFieldsNoPrefix ''Comment
-makeFieldsNoPrefix ''Comments
 
 -----------------------------------------------------------------------------
 makeFieldsNoPrefix ''UserPreview
-makeFieldsNoPrefix ''UserPreviews
