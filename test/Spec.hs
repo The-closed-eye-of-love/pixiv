@@ -20,10 +20,10 @@ main = do
   testDecode @UserPreviews "test/user_following.json"
   testDecode @UserPreviews "test/user_mypixiv.json"
 
-  pillust <- eitherDecodeFileStrict @IllustDetail "test/illust_detail.json"
+  pillust <- eitherDecodeFileStrict @IllustWrapper "test/illust_detail.json"
   case pillust of
     Left err -> fail err
-    Right IllustDetail {..} -> do
+    Right IllustWrapper {..} -> do
       manager <- newTlsManager
       mresult <- downloadSingleIllust manager _illust
       case mresult of
