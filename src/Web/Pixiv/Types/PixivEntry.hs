@@ -25,7 +25,7 @@ type OffsetParam = QueryParam "offset" Int
 
 pageToOffset :: Int -> Maybe Int
 pageToOffset x
-  | x > 0 = Just $ (x - 1) * 30
+  | x > 1 = Just $ (x - 1) * 30
   | otherwise = Nothing
 
 type RestrictParam = QueryParam' '[Strict, Required] "restrict" Publicity
