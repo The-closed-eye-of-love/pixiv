@@ -15,7 +15,6 @@ instance HasClient m api => HasClient m (PixivEntry :> api) where
   clientWithRoute pm Proxy req = \(unToken -> token) ->
     clientWithRoute pm (Proxy @api) $
       req
-        & addHeader @Text "Referer" "https://app-api.pixiv.net/"
         & addHeader @Text "User-Agent" "PixivAndroidApp/5.0.175 (Android 6.0; PixivHaskell)"
         & addHeader @Text "Authorization" ("Bearer " <> token)
         & appendToQueryString "filter" (Just "for_android")

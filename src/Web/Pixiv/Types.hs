@@ -57,7 +57,6 @@ type family NextUrlLess a
 class HasNextUrl a where
   unNextUrl :: a -> NextUrlLess a
   getNextUrl :: a -> Maybe Text
-  
 
 -----------------------------------------------------------------------------
 
@@ -316,6 +315,7 @@ data RankMode
   | WeekOriginal
   | WeekRookie
   | DayR18
+  | DayManga
   deriving stock (Show, Eq, Ord, Enum, Generic)
   deriving (ToHttpApiData) via Generically RankMode
 

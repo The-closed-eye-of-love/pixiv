@@ -90,6 +90,7 @@ library
   exposed-modules:
     Web.Pixiv.API
     Web.Pixiv.Auth
+    Web.Pixiv.Download
     Web.Pixiv.Types
     Web.Pixiv.Types.Illust
     Web.Pixiv.Types.Lens
@@ -109,8 +110,9 @@ test-suite pixiv-test
   build-depends:
     , aeson
     , bytestring
+    , http-client
+    , http-client-tls
     , pixiv
-    , text
 
   hs-source-dirs: test
   main-is:        Spec.hs

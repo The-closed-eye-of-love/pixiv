@@ -3,6 +3,9 @@
 module Main where
 
 import Data.Aeson
+import qualified Data.ByteString as BS
+import Network.HTTP.Client.TLS (newTlsManager)
+import Web.Pixiv.Download
 import Web.Pixiv.Types
 
 main :: IO ()
@@ -16,6 +19,16 @@ main = do
   testDecode @UserPreviews "test/user_follower.json"
   testDecode @UserPreviews "test/user_following.json"
   testDecode @UserPreviews "test/user_mypixiv.json"
+
+  pillust <- eitherDecodeFileStrict @IllustDetail "test/illust_detail.json"
+  case pillust of
+    Left err -> fail err
+    Right IllustDetail {..} -> do
+      manager <- newTlsManager
+      mresult <- downloadSingleIllust manager _illust
+      case mresult of
+        Just result -> BS.writeFile "temp.jpg" result
+        _ -> fail "Failed to download"
 
 testDecode :: forall v. (FromJSON v) => FilePath -> IO ()
 testDecode path =

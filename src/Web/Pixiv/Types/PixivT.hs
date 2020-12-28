@@ -4,6 +4,7 @@
 
 module Web.Pixiv.Types.PixivT
   ( MonadPixiv (..),
+    TokenState (..),
     PixivT,
     runPixivT,
     runPixivT',
