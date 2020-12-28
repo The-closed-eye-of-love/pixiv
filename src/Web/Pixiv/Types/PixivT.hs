@@ -5,7 +5,11 @@
 module Web.Pixiv.Types.PixivT
   ( MonadPixiv (..),
     TokenState (..),
-    PixivT,
+    PixivT (..),
+    ClientT (..),
+    runClientT,
+    liftC,
+    computeTokenState,
     runPixivT,
     runPixivT',
     getAccessToken,
