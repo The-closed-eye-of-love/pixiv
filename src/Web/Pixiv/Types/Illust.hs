@@ -6,7 +6,7 @@ import Web.Pixiv.Types.PixivEntry
 
 type IllustIdParam = QueryParam' '[Required, Strict] "illust_id" Int
 
-type GetIllustDetail = PixivEntry :> "v1" :> "illust" :> "detail" :> IllustIdParam :> Get '[JSON] IllustDetail
+type GetIllustDetail = PixivEntry :> "v1" :> "illust" :> "detail" :> IllustIdParam :> Get '[JSON] IllustWrapper
 
 type GetIllustComments = PixivEntry :> "v1" :> "illust" :> "comments" :> IllustIdParam :> OffsetParam :> Get '[JSON] Comments
 
@@ -17,3 +17,5 @@ type GetIllustRanking = PixivEntry :> "v1" :> "illust" :> "ranking" :> QueryPara
 type GetIllustFollow = PixivEntry :> "v1" :> "illust" :> "follow" :> RestrictParam :> OffsetParam :> Get '[JSON] Illusts
 
 type GetIllustNew = PixivEntry :> "v1" :> "illust" :> "new" :> OffsetParam :> Get '[JSON] Illusts
+
+type GetUgoiraMetadata = PixivEntry :> "v1" :> "illust" :> "ugoira" :> "metadata" :> IllustIdParam :> Get '[JSON] UgoiraMetadataWrapper

@@ -16,7 +16,7 @@ module Web.Pixiv.Types
     MetaPage (..),
     Illust (..),
     Illusts (..),
-    IllustDetail (..),
+    IllustWrapper (..),
 
     -- * User
     User (..),
@@ -36,6 +36,12 @@ module Web.Pixiv.Types
     NextUrlLess,
     HasNextUrl (..),
 
+    -- * Ugoria
+    UgoiraFrame (..),
+    ZipUrls (..),
+    UgoiraMetadata (..),
+    UgoiraMetadataWrapper (..),
+
     -- * Http
     RankMode (..),
     SearchTarget (..),
@@ -45,11 +51,11 @@ module Web.Pixiv.Types
 where
 
 import qualified Data.Aeson as A
+import Data.Generically
 import Data.Text (Text)
 import Data.Time (UTCTime)
 import Deriving.Aeson
 import Servant.API (ToHttpApiData (..))
-import Data.Generically
 
 type family NextUrlLess a
 
@@ -109,13 +115,14 @@ data Series = Series
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON "series" Series
 
-data IllustType = TypeIllust | TypeManga
+data IllustType = TypeIllust | TypeManga | TypeUgoira
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via EnumJSON "Type" IllustType
 
 instance ToHttpApiData IllustType where
   toQueryParam TypeIllust = "illust"
   toQueryParam TypeManga = "manga"
+  toQueryParam TypeUgoira = "ugoira"
 
 newtype MetaPage = MetaPage
   { _imageUrls :: ImageUrls
@@ -165,11 +172,11 @@ instance HasNextUrl Illusts where
   unNextUrl Illusts {..} = _illusts
   getNextUrl Illusts {..} = _nextUrl
 
-newtype IllustDetail = IllustDetail
+newtype IllustWrapper = IllustWrapper
   { _illust :: Illust
   }
   deriving stock (Show, Eq, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' IllustDetail
+  deriving (FromJSON, ToJSON) via PixivJSON' IllustWrapper
 
 -----------------------------------------------------------------------------
 data User = User
@@ -302,6 +309,34 @@ type instance NextUrlLess Comments = [Comment]
 instance HasNextUrl Comments where
   unNextUrl Comments {..} = _comments
   getNextUrl Comments {..} = _nextUrl
+
+-----------------------------------------------------------------------------
+
+data UgoiraFrame = UgoiraFrame
+  { _ugoiraFile :: Text,
+    _ugoiraDelay :: Int
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON "ugoira" UgoiraFrame
+
+newtype ZipUrls = ZipUrls
+  { _zipMedium :: Text
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON "zip" ZipUrls
+
+data UgoiraMetadata = UgoiraMetadata
+  { _zipUrls :: ZipUrls,
+    _frames :: [UgoiraFrame]
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' UgoiraMetadata
+
+newtype UgoiraMetadataWrapper = UgoiraMetadataWrapper
+  { _ugoiraMetadata :: UgoiraMetadata
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' UgoiraMetadataWrapper
 
 -----------------------------------------------------------------------------
 

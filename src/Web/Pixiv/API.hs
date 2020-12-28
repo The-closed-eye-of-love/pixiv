@@ -11,6 +11,7 @@ module Web.Pixiv.API
     getIllustRanking,
     getIllustFollow,
     getIllustNew,
+    getUgoiraMetadata,
 
     -- * Search
     searchIllust,
@@ -27,7 +28,7 @@ module Web.Pixiv.API
 where
 
 import Control.Lens
-import Data.Coerce
+import Data.Coerce (coerce)
 import Data.Proxy
 import Data.Text (Text)
 import qualified Data.Text as T
@@ -97,6 +98,12 @@ getIllustNew (pageToOffset -> offset) = do
   token <- getAccessToken
   illusts <- clientIn (Proxy @GetIllustNew) Proxy token offset
   pure $ unNextUrl illusts
+
+getUgoiraMetadata :: MonadPixiv m => Int -> m UgoiraMetadata
+getUgoiraMetadata illustId = do
+  token <- getAccessToken
+  ug <- clientIn (Proxy @GetUgoiraMetadata) Proxy token illustId
+  pure $ coerce ug
 
 -----------------------------------------------------------------------------
 
