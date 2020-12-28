@@ -14,6 +14,7 @@ module Web.Pixiv.API
 
     -- * Search
     searchIllust,
+    searchUser,
 
     -- * User
     getUserDetail,
@@ -112,6 +113,19 @@ searchIllust searchTarget searchWord includeTranslatedTag sortingMethod duration
   token <- getAccessToken
   illusts <- clientIn (Proxy @SearchIllust) Proxy token searchTarget searchWord includeTranslatedTag sortingMethod duration offset
   pure $ unNextUrl illusts
+
+searchUser ::
+  MonadPixiv m =>
+  Text ->
+  Maybe SortingMethod ->
+  Int ->
+  m [UserPreview]
+searchUser searchWord sortingMethod (pageToOffset -> offset) = do
+  token <- getAccessToken
+  ups <- clientIn (Proxy @SearchUser) Proxy token searchWord sortingMethod offset
+  pure $ unNextUrl ups
+
+-----------------------------------------------------------------------------
 
 getUserDetail :: MonadPixiv m => Int -> m UserDetail
 getUserDetail userId = do

@@ -14,3 +14,10 @@ type SearchIllust =
     :> QueryParam "duration" Duration
     :> OffsetParam
     :> Get '[JSON] Illusts
+
+type SearchUser =
+  PixivEntry :> "v1" :> "search" :> "illust"
+    :> QueryParam' '[Required, Strict] "word" Text
+    :> QueryParam "sort" SortingMethod
+    :> OffsetParam
+    :> Get '[JSON] UserPreviews
