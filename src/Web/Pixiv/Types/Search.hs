@@ -16,7 +16,7 @@ type SearchIllust =
     :> Get '[JSON] Illusts
 
 type SearchUser =
-  PixivEntry :> "v1" :> "search" :> "illust"
+  PixivEntry :> "v1" :> "search" :> "user"
     :> QueryParam' '[Required, Strict] "word" Text
     :> QueryParam "sort" SortingMethod
     :> OffsetParam
