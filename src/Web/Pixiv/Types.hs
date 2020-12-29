@@ -54,8 +54,6 @@ import qualified Data.Aeson as A
 import Data.Generically
 import Data.Text (Text)
 import Data.Time (UTCTime)
-import Deriving.Aeson
-import Servant.API (ToHttpApiData (..))
 
 type family NextUrlLess a
 

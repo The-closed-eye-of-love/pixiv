@@ -3,30 +3,42 @@
 {-# LANGUAGE UndecidableInstances #-}
 
 module Data.Generically
-  ( CustomHttpApiData (..),
+  ( -- * HttpApiData
+    CustomHttpApiData (..),
     PixivHttpApiData,
     PixivHttpApiData',
+
+    -- * JSON
     PixivJSON,
     EnumJSON,
     PixivJSON',
     EnumJSON',
+
+    -- * re-export
+    ToHttpApiData (..),
+    module Deriving.Aeson,
   )
 where
 
 import Data.List (stripPrefix)
 import Data.Maybe (fromMaybe)
-import Data.Proxy
+import Data.Proxy (Proxy (..))
 import Data.Text (Text, pack)
 import Deriving.Aeson
 import GHC.Generics
 import GHC.TypeLits
-import Servant.API
+import Servant.API (ToHttpApiData (..))
 
+-----------------------------------------------------------------------------
+
+-- | A wrapper to derive 'ToHttpApiData' instances with modifications
 newtype CustomHttpApiData t a = CustomHttpApiData {unCustomHttpApiData :: a}
 
+-- | Strip prefix @k@ from query parameter's name then convert to snake case
 type PixivHttpApiData (k :: Symbol) = CustomHttpApiData '[StripPrefix k, CamelToSnake]
 
-type PixivHttpApiData' = CustomHttpApiData '[CamelToSnake]
+-- | Convert query parameter's name  to snake case
+type PixivHttpApiData' = PixivHttpApiData ""
 
 class CustomHttpApiDataOption xs where
   option :: String -> String
@@ -63,13 +75,13 @@ instance (GToHttpApiData a) => GToHttpApiData (D1 m a) where
 
 -----------------------------------------------------------------------------
 
--- | Strip prefix @'_'@ and @k@ from fields' labels then convert to snake case, making sure results are non-empty
+-- | Strip prefix @_@ and @k@ from fields' labels then convert to snake case, making sure results are non-empty
 type PixivJSON (k :: Symbol) = CustomJSON '[FieldLabelModifier (PixivLabelModifier k, CamelToSnake)]
 
 -- | Strip prefix @k@ from constructors' tags then convert to snake case
 type EnumJSON (k :: Symbol) = CustomJSON '[ConstructorTagModifier (StripPrefix k, CamelToSnake)]
 
--- | Strip prefix @'_'@ from fields' labels then convert to snake case
+-- | Strip prefix @_@ from fields' labels then convert to snake case
 type PixivJSON' = PixivJSON ""
 
 -- | Convert constructors' tags to snake case

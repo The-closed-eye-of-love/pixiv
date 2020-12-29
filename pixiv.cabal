@@ -1,14 +1,16 @@
 cabal-version:   3.0
 name:            pixiv
 version:         0.1.0
+synopsis:        Pixiv api binding
 
--- synopsis:
 -- description:
--- category:
+category:        Web
 license:         BSD-3-Clause
 license-file:    LICENSE
-author:          Poscat
-maintainer:      Poscat <poscat@mail.poscat.moe>
+author:          Poscat, berberman
+maintainer:
+  Poscat <poscat@mail.poscat.moe>, berberman <berberman@yandex.com>
+
 copyright:       Copyright (c) Poscat 2020
 stability:       alpha
 homepage:        https://github.com/poscat0x04/pixiv
@@ -17,8 +19,15 @@ extra-doc-files:
   CHANGELOG.md
   README.md
 
+tested-with:
+  GHC ==8.8.3 || ==8.8.4 || ==8.10.1 || ==8.10.2 || ==8.10.3
+
 common common-attrs
-  build-depends:      base >=4.10 && <5
+  build-depends:
+    , aeson
+    , base        >=4.10 && <5
+    , bytestring
+
   default-language:   Haskell2010
   ghc-options:
     -Wall -Wcompat -Widentities -Wincomplete-uni-patterns
@@ -30,8 +39,8 @@ common common-attrs
   if impl(ghc >=8.2)
     ghc-options: -fhide-source-paths
 
-  --  if impl(ghc >=8.4)
-  --    ghc-options: -Wmissing-export-lists
+    if impl(ghc >=8.4)
+      ghc-options: -Wmissing-export-lists
 
   if impl(ghc >=8.8)
     ghc-options: -Wmissing-deriving-strategies
@@ -68,9 +77,7 @@ common common-attrs
 library
   import:          common-attrs
   build-depends:
-    , aeson
     , base16-bytestring
-    , bytestring
     , cryptohash-md5
     , deriving-aeson
     , exceptions
@@ -108,8 +115,6 @@ test-suite pixiv-test
   import:         common-attrs
   type:           exitcode-stdio-1.0
   build-depends:
-    , aeson
-    , bytestring
     , http-client
     , http-client-tls
     , pixiv

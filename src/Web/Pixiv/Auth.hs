@@ -22,8 +22,6 @@ import Data.Generically
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
 import Data.Time (defaultTimeLocale, formatTime, getCurrentTime)
-import Deriving.Aeson (UnwrapUnaryRecords)
-import Deriving.Aeson.Stock
 import Network.HTTP.Client
 import Network.HTTP.Client.MultipartFormData (PartM, formDataBody, partBS)
 
