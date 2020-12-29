@@ -1,8 +1,11 @@
-module Web.Pixiv.Types.User where
+module Web.Pixiv.API.User
+  ( module Web.Pixiv.API.User,
+  )
+where
 
 import Servant.API
+import Web.Pixiv.API.PixivEntry
 import Web.Pixiv.Types
-import Web.Pixiv.Types.PixivEntry
 
 type UserIdParam = QueryParam' '[Required, Strict] "user_id" Int
 

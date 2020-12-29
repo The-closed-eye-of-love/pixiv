@@ -1,9 +1,12 @@
-module Web.Pixiv.Types.Search where
+module Web.Pixiv.API.Search
+  ( module Web.Pixiv.API.Search,
+  )
+where
 
 import Data.Text (Text)
 import Servant.API
+import Web.Pixiv.API.PixivEntry
 import Web.Pixiv.Types
-import Web.Pixiv.Types.PixivEntry
 
 type SearchIllust =
   PixivEntry :> "v1" :> "search" :> "illust"

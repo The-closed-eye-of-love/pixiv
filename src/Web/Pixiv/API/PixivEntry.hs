@@ -1,4 +1,7 @@
-module Web.Pixiv.Types.PixivEntry where
+module Web.Pixiv.API.PixivEntry
+  ( module Web.Pixiv.API.PixivEntry,
+  )
+where
 
 import Data.Function ((&))
 import Data.Proxy (Proxy (Proxy))

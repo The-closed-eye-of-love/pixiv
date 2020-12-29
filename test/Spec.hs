@@ -1,6 +1,6 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
-module Main where
+module Main (main) where
 
 import Data.Aeson
 import qualified Data.ByteString as BS

@@ -1,8 +1,11 @@
-module Web.Pixiv.Types.Trending where
+module Web.Pixiv.API.Trending
+  ( module Web.Pixiv.API.Trending,
+  )
+where
 
 import Servant.API
+import Web.Pixiv.API.PixivEntry
 import Web.Pixiv.Types
-import Web.Pixiv.Types.PixivEntry
 
 type GetTrendingTags =
   PixivEntry :> "v1" :> "trending-tags" :> "illust"

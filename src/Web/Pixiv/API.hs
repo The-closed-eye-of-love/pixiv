@@ -34,13 +34,13 @@ import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Text.Read (decimal)
 import Servant.Client.Core
+import Web.Pixiv.API.Illust
+import Web.Pixiv.API.PixivEntry (pageToOffset)
+import Web.Pixiv.API.Search
+import Web.Pixiv.API.Trending
+import Web.Pixiv.API.User
 import Web.Pixiv.Types
-import Web.Pixiv.Types.Illust
-import Web.Pixiv.Types.PixivEntry (pageToOffset)
 import Web.Pixiv.Types.PixivT
-import Web.Pixiv.Types.Search
-import Web.Pixiv.Types.Trending
-import Web.Pixiv.Types.User
 
 -----------------------------------------------------------------------------
 

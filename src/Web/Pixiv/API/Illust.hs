@@ -1,8 +1,11 @@
-module Web.Pixiv.Types.Illust where
+module Web.Pixiv.API.Illust
+  ( module Web.Pixiv.API.Illust,
+  )
+where
 
 import Servant.API
+import Web.Pixiv.API.PixivEntry
 import Web.Pixiv.Types
-import Web.Pixiv.Types.PixivEntry
 
 type IllustIdParam = QueryParam' '[Required, Strict] "illust_id" Int
 
