@@ -118,11 +118,7 @@ data Series = Series
 data IllustType = TypeIllust | TypeManga | TypeUgoira
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via EnumJSON "Type" IllustType
-
-instance ToHttpApiData IllustType where
-  toQueryParam TypeIllust = "illust"
-  toQueryParam TypeManga = "manga"
-  toQueryParam TypeUgoira = "ugoira"
+  deriving (ToHttpApiData) via PixivHttpApiData "Type" IllustType
 
 newtype MetaPage = MetaPage
   { _imageUrls :: ImageUrls
@@ -220,7 +216,7 @@ data UserProfile = UserProfile
 data Publicity = Public | Private
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via EnumJSON' Publicity
-  deriving (ToHttpApiData) via SnakeHTTP Publicity
+  deriving (ToHttpApiData) via PixivHttpApiData' Publicity
 
 data ProfilePublicity = ProfilePublicity
   { _gender :: Publicity,
@@ -351,21 +347,21 @@ data RankMode
   | DayR18
   | DayManga
   deriving stock (Show, Eq, Ord, Enum, Generic)
-  deriving (ToHttpApiData) via SnakeHTTP RankMode
+  deriving (ToHttpApiData) via PixivHttpApiData' RankMode
 
 data SortingMethod
   = DateDesc
   | DateAsc
   deriving stock (Show, Eq, Ord, Enum, Generic)
-  deriving (ToHttpApiData) via SnakeHTTP SortingMethod
+  deriving (ToHttpApiData) via PixivHttpApiData' SortingMethod
 
 data Duration
   = WithinLastDay
   | WithinLastMonth
   | WithinLastYear
   deriving stock (Show, Eq, Ord, Generic)
-  deriving (ToHttpApiData) via SnakeHTTP Duration
+  deriving (ToHttpApiData) via PixivHttpApiData' Duration
 
 data SearchTarget = ExactMatchForTags | PartialMatchForTags | TitleAndCaption
   deriving stock (Show, Eq, Ord, Enum, Generic)
-  deriving (ToHttpApiData) via SnakeHTTP SearchTarget
+  deriving (ToHttpApiData) via PixivHttpApiData' SearchTarget

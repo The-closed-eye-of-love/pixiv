@@ -1,7 +1,11 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE UndecidableInstances #-}
 
 module Data.Generically
-  ( SnakeHTTP (..),
+  ( CustomHttpApiData (..),
+    PixivHttpApiData,
+    PixivHttpApiData',
     PixivJSON,
     EnumJSON,
     PixivJSON',
@@ -9,7 +13,6 @@ module Data.Generically
   )
 where
 
-import Data.Aeson
 import Data.List (stripPrefix)
 import Data.Maybe (fromMaybe)
 import Data.Proxy
@@ -19,24 +22,37 @@ import GHC.Generics
 import GHC.TypeLits
 import Servant.API
 
-newtype SnakeHTTP a = SnakeHTTP {unSnakeHTTP :: a}
+newtype CustomHttpApiData t a = CustomHttpApiData {unCustomHttpApiData :: a}
 
-instance Generic a => Generic (SnakeHTTP a) where
-  type Rep (SnakeHTTP a) = Rep a
-  to = SnakeHTTP . to
-  from = from . SnakeHTTP
+type PixivHttpApiData (k :: Symbol) = CustomHttpApiData '[StripPrefix k, CamelToSnake]
 
-instance (Generic a, GToHttpApiData (Rep a)) => ToHttpApiData (SnakeHTTP a) where
-  toQueryParam a = gToQueryParam (from a)
+type PixivHttpApiData' = CustomHttpApiData '[CamelToSnake]
+
+class CustomHttpApiDataOption xs where
+  option :: String -> String
+
+instance CustomHttpApiDataOption '[] where
+  option = id
+
+instance (StringModifier f, CustomHttpApiDataOption xs) => CustomHttpApiDataOption (f ': xs) where
+  option = (option @xs) . getStringModifier @f
+
+instance Generic a => Generic (CustomHttpApiData t a) where
+  type Rep (CustomHttpApiData t a) = Rep a
+  to = CustomHttpApiData . to
+  from = from . unCustomHttpApiData
+
+instance (Generic a, CustomHttpApiDataOption t, GToHttpApiData (Rep a)) => ToHttpApiData (CustomHttpApiData t a) where
+  toQueryParam a = gToQueryParam (from a) (option @t)
 
 class GToHttpApiData f where
-  gToQueryParam :: f p -> Text
+  gToQueryParam :: f p -> (String -> String) -> Text
 
 instance GToHttpApiData V1 where
   gToQueryParam = undefined
 
 instance Constructor m => GToHttpApiData (C1 m U1) where
-  gToQueryParam a = pack $ camelTo2 '_' $ conName a
+  gToQueryParam a f = pack $ f $ conName a
 
 instance (GToHttpApiData l, GToHttpApiData r) => GToHttpApiData (l :+: r) where
   gToQueryParam (L1 a) = gToQueryParam a
