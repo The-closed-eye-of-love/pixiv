@@ -133,7 +133,7 @@ runPixivT manager credential m = do
     & flip runReaderT ref
     & runClientT clientEnv
 
--- | Like 'runPixivT', but creates a new 'Manager' everythime.
+-- | Like 'runPixivT', but creates a new 'Manager' everytime.
 runPixivT' :: MonadIO m => Credential -> PixivT m a -> m (Either ClientError a)
 runPixivT' credential m = do
   manager <- liftIO newTlsManager
