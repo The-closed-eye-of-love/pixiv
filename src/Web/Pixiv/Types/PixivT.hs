@@ -25,6 +25,7 @@ import Control.Monad.Trans.Control (MonadBaseControl)
 import Data.Function ((&))
 import Data.Time
 import GHC.Generics (Generic)
+import GHC.Show (showCommaSpace)
 import Network.HTTP.Client (Manager)
 import Network.HTTP.Client.TLS (newTlsManager)
 import Servant.Client
@@ -75,6 +76,20 @@ data TokenState = TokenState
     expirationTime :: UTCTime,
     manager :: Manager
   }
+
+instance Show TokenState where
+  showsPrec d TokenState {..} =
+    showParen (d >= 11) $
+      showString "TokenState {"
+        . showString "accessToken = "
+        . shows accessToken
+        . showCommaSpace
+        . showString "refreshToken = "
+        . shows refreshToken
+        . showCommaSpace
+        . showString "expirationTime = "
+        . shows expirationTime
+        . showString "}"
 
 newtype PixivT m a = PixivT
   { unPixivT :: ReaderT (MVar TokenState) (ClientT m) a
