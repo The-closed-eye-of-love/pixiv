@@ -4,6 +4,7 @@
 
 module Web.Pixiv.Types.PixivT
   ( MonadPixiv (..),
+    PixivState (..),
     TokenState (..),
     PixivT (..),
     ClientT (..),
@@ -13,16 +14,18 @@ module Web.Pixiv.Types.PixivT
     runPixivT,
     runPixivT',
     getAccessToken,
+    getAccessTokenWithAccpetLanguage,
   )
 where
 
-import Control.Concurrent (MVar, newMVar, putMVar, takeMVar)
+import Control.Concurrent.MVar
 import Control.Monad.Base (MonadBase)
 import Control.Monad.Catch
 import Control.Monad.Except
 import Control.Monad.Reader
 import Control.Monad.Trans.Control (MonadBaseControl)
 import Data.Function ((&))
+import Data.Text (Text)
 import Data.Time
 import GHC.Generics (Generic)
 import GHC.Show (showCommaSpace)
@@ -76,6 +79,7 @@ data TokenState = TokenState
     expirationTime :: UTCTime,
     manager :: Manager
   }
+  deriving stock (Generic)
 
 instance Show TokenState where
   showsPrec d TokenState {..} =
@@ -91,8 +95,14 @@ instance Show TokenState where
         . shows expirationTime
         . showString "}"
 
+data PixivState = PixivState
+  { tokenState :: TokenState,
+    acceptLanguage :: Maybe Text
+  }
+  deriving stock (Generic, Show)
+
 newtype PixivT m a = PixivT
-  { unPixivT :: ReaderT (MVar TokenState) (ClientT m) a
+  { unPixivT :: ReaderT (MVar PixivState) (ClientT m) a
   }
   deriving newtype
     ( Functor,
@@ -101,7 +111,7 @@ newtype PixivT m a = PixivT
       MonadIO,
       MonadThrow,
       MonadCatch,
-      MonadReader (MVar TokenState),
+      MonadReader (MVar PixivState),
       MonadError ClientError
     )
   deriving stock (Generic)
@@ -122,17 +132,37 @@ instance MonadIO m => RunClient (PixivT m) where
     liftC $ runRequestAcceptStatus status req
 
 class (RunClient m, MonadIO m) => MonadPixiv m where
-  -- | read the stored 'TokenState', when used in a multithreaded setting, this should block
-  -- all other thread from reading the 'TokenState' until 'putTokenState' is called
-  takeTokenState :: m TokenState
+  modifyPixivState :: (PixivState -> IO (PixivState, a)) -> m a
 
-  -- | write a new 'TokenState'
+  modifyPixivState_ :: (PixivState -> IO PixivState) -> m ()
+  modifyPixivState_ f = modifyPixivState $ f >=> (pure <$> (,()))
+
+  -- | read the stored 'PixivState', when used in a multithreaded setting, this should block
+  -- all other thread from reading the 'PixivState' until 'putPixivState' is called
+  takePixivState :: m PixivState
+  takePixivState = modifyPixivState $ \s -> pure (s, s)
+
+  -- | write a new 'PixivState'
+  putPixivState :: PixivState -> m ()
+  putPixivState s = modifyPixivState_ $ \_ -> pure s
+
+  takeTokenState :: m TokenState
+  takeTokenState = tokenState <$> takePixivState
+
   putTokenState :: TokenState -> m ()
+  putTokenState s = modifyPixivState_ (\p -> pure p {tokenState = s})
+
+  takeAccpetLanguage :: m (Maybe Text)
+  takeAccpetLanguage = acceptLanguage <$> takePixivState
+
+  putAccpetLanguage :: Maybe Text -> m ()
+  putAccpetLanguage lang = modifyPixivState_ (\p -> pure p {acceptLanguage = lang})
 
 -- | A thread safe implementation of 'MonadPixiv'
 instance MonadIO m => MonadPixiv (PixivT m) where
-  takeTokenState = ask >>= liftIO . takeMVar
-  putTokenState s = do
+  modifyPixivState f = ask >>= liftIO . (`modifyMVar` f)
+  takePixivState = ask >>= liftIO . takeMVar
+  putPixivState s = do
     ref <- ask
     liftIO $ putMVar ref s
 
@@ -142,7 +172,7 @@ runPixivT manager credential m = do
   t <- liftIO getCurrentTime
   s <- liftIO $ computeTokenState manager credential t
   clientEnv <- liftIO $ mkDefaultClientEnv manager
-  ref <- liftIO $ newMVar s
+  ref <- liftIO . newMVar $ PixivState s Nothing
   m
     & unPixivT
     & flip runReaderT ref
@@ -177,3 +207,6 @@ getAccessToken = do
       s' <- liftIO $ computeTokenState manager credential t
       putTokenState s'
       pure accessToken
+
+getAccessTokenWithAccpetLanguage :: MonadPixiv m => m (Token, Maybe Text)
+getAccessTokenWithAccpetLanguage = (,) <$> getAccessToken <*> takeAccpetLanguage

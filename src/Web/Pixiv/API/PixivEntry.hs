@@ -14,15 +14,16 @@ import Web.Pixiv.Types (Publicity)
 data PixivEntry
 
 instance HasClient m api => HasClient m (PixivEntry :> api) where
-  type Client m (PixivEntry :> api) = Token -> Client m api
-  clientWithRoute pm Proxy req = \(unToken -> token) ->
+  type Client m (PixivEntry :> api) = (Token, Maybe Text) -> Client m api
+  clientWithRoute pm Proxy req = \(unToken -> token, mLanguage) ->
     clientWithRoute pm (Proxy @api) $
       req
         & addHeader @Text "User-Agent" "PixivAndroidApp/5.0.175 (Android 6.0; PixivHaskell)"
         & addHeader @Text "Authorization" ("Bearer " <> token)
         & appendToQueryString "filter" (Just "for_android")
-  hoistClientMonad pm Proxy f m token =
-    hoistClientMonad pm (Proxy @api) f (m token)
+        & maybe id (addHeader @Text "Accept-Language") mLanguage
+  hoistClientMonad pm Proxy f m p =
+    hoistClientMonad pm (Proxy @api) f (m p)
 
 type OffsetParam = QueryParam "offset" Int
 
