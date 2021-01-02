@@ -21,4 +21,4 @@ type GetIllustFollow = PixivEntry :> "v1" :> "illust" :> "follow" :> RestrictPar
 
 type GetIllustNew = PixivEntry :> "v1" :> "illust" :> "new" :> OffsetParam :> Get '[JSON] Illusts
 
-type GetUgoiraMetadata = PixivEntry :> "v1" :> "illust" :> "ugoira" :> "metadata" :> IllustIdParam :> Get '[JSON] UgoiraMetadataWrapper
+type GetUgoiraMetadata = PixivEntry :> "v1" :> "ugoira" :> "metadata" :> IllustIdParam :> Get '[JSON] UgoiraMetadataWrapper
