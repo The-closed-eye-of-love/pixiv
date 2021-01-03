@@ -35,3 +35,8 @@ makeFieldsNoPrefix ''Comment
 
 -----------------------------------------------------------------------------
 makeFieldsNoPrefix ''UserPreview
+
+-----------------------------------------------------------------------------
+makeFieldsNoPrefix ''UgoiraFrame
+makeFieldsNoPrefix ''ZipUrls
+makeFieldsNoPrefix ''UgoiraMetadata

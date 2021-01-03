@@ -88,6 +88,11 @@ library
     , time
     , transformers
     , transformers-base
+    , zip-archive
+    , process
+    , directory
+    , temporary
+    , filepath
 
   exposed-modules:
     Web.Pixiv
