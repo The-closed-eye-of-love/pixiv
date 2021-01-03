@@ -161,10 +161,6 @@ class (RunClient m, MonadIO m) => MonadPixiv m where
 -- | A thread safe implementation of 'MonadPixiv'
 instance MonadIO m => MonadPixiv (PixivT m) where
   modifyPixivState f = ask >>= liftIO . (`modifyMVar` f)
-  takePixivState = ask >>= liftIO . takeMVar
-  putPixivState s = do
-    ref <- ask
-    liftIO $ putMVar ref s
 
 -- | Interprets the 'PixivT' effect, with a supplied 'Manager'
 runPixivT :: MonadIO m => Manager -> Credential -> PixivT m a -> m (Either ClientError a)
