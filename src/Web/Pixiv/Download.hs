@@ -36,8 +36,8 @@ runDownloadM manager m = runMaybeT m & flip runReaderT manager
 
 liftToPixivT :: (MonadIO m) => DownloadM a -> PixivT m (Maybe a)
 liftToPixivT m = do
-  manager' <- manager <$> takeTokenState
-  liftIO $ runDownloadM manager' m
+  PixivState {tokenState = TokenState {..}} <- readPixivState
+  liftIO $ runDownloadM manager m
 
 downloadPixiv :: Text -> DownloadM LBS.ByteString
 downloadPixiv url = do

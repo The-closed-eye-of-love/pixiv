@@ -132,35 +132,22 @@ instance MonadIO m => RunClient (PixivT m) where
     liftC $ runRequestAcceptStatus status req
 
 class (RunClient m, MonadIO m) => MonadPixiv m where
-  modifyPixivState :: (PixivState -> IO (PixivState, a)) -> m a
-
-  modifyPixivState_ :: (PixivState -> IO PixivState) -> m ()
-  modifyPixivState_ f = modifyPixivState $ f >=> (pure <$> (,()))
-
   -- | read the stored 'PixivState', when used in a multithreaded setting, this should block
   -- all other thread from reading the 'PixivState' until 'putPixivState' is called
   takePixivState :: m PixivState
-  takePixivState = modifyPixivState $ \s -> pure (s, s)
 
   -- | write a new 'PixivState'
   putPixivState :: PixivState -> m ()
-  putPixivState s = modifyPixivState_ $ \_ -> pure s
 
-  takeTokenState :: m TokenState
-  takeTokenState = tokenState <$> takePixivState
-
-  putTokenState :: TokenState -> m ()
-  putTokenState s = modifyPixivState_ (\p -> pure p {tokenState = s})
-
-  takeAccpetLanguage :: m (Maybe Text)
-  takeAccpetLanguage = acceptLanguage <$> takePixivState
-
-  putAccpetLanguage :: Maybe Text -> m ()
-  putAccpetLanguage lang = modifyPixivState_ (\p -> pure p {acceptLanguage = lang})
+  readPixivState :: m PixivState
 
 -- | A thread safe implementation of 'MonadPixiv'
 instance MonadIO m => MonadPixiv (PixivT m) where
-  modifyPixivState f = ask >>= liftIO . (`modifyMVar` f)
+  takePixivState = ask >>= liftIO . takeMVar
+  putPixivState s = do
+    ref <- ask
+    liftIO $ putMVar ref s
+  readPixivState = ask >>= liftIO . readMVar
 
 -- | Interprets the 'PixivT' effect, with a supplied 'Manager'
 runPixivT :: MonadIO m => Manager -> Credential -> PixivT m a -> m (Either ClientError a)
@@ -192,17 +179,20 @@ computeTokenState manager credential time = do
 
 getAccessToken :: MonadPixiv m => m Token
 getAccessToken = do
-  s@TokenState {..} <- takeTokenState
+  s@PixivState {tokenState = TokenState {..}} <- takePixivState
   t <- liftIO getCurrentTime
   if t < expirationTime
     then do
-      putTokenState s
+      putPixivState s
       pure accessToken
     else do
       let credential = RefreshToken refreshToken
-      s' <- liftIO $ computeTokenState manager credential t
-      putTokenState s'
+      ts <- liftIO $ computeTokenState manager credential t
+      putPixivState s {tokenState = ts}
       pure accessToken
 
+getAccpetLanguage :: MonadPixiv m => m (Maybe Text)
+getAccpetLanguage = acceptLanguage <$> readPixivState
+
 getAccessTokenWithAccpetLanguage :: MonadPixiv m => m (Token, Maybe Text)
-getAccessTokenWithAccpetLanguage = (,) <$> getAccessToken <*> takeAccpetLanguage
+getAccessTokenWithAccpetLanguage = (,) <$> getAccessToken <*> getAccpetLanguage
