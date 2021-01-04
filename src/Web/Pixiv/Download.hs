@@ -55,7 +55,7 @@ downloadSingleIllust i = do
   url <- liftMaybe $ extractImageUrlsFromIllust i ^? _head
   downloadPixiv url
 
-downloadUgoiraToMP4 :: UgoiraMetadata -> Maybe FilePath -> DownloadM LBS.ByteString
+downloadUgoiraToMP4 :: UgoiraMetadata -> Maybe FilePath -> DownloadM (String, LBS.ByteString)
 downloadUgoiraToMP4 meta (fromMaybe "ffmpeg" -> ffmpeg) = do
   let ffconcat = ugoiraMetadataToFFConcat meta
   bs0 <- downloadPixiv $ meta ^. zipUrls . zipMedium
@@ -84,5 +84,5 @@ downloadUgoiraToMP4 meta (fromMaybe "ffmpeg" -> ffmpeg) = do
               { cwd = Just temp
               }
       BS.writeFile concatFilePath ffconcat
-      (_code, _stdout, _stderr) <- readCreateProcessWithExitCode convertProcess ""
-      LBS.readFile $ temp </> "ugoira.mp4"
+      (_code, _stdout, stderr) <- readCreateProcessWithExitCode convertProcess ""
+      (stderr,) <$> LBS.readFile (temp </> "ugoira.mp4")
