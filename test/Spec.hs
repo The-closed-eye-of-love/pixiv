@@ -36,7 +36,9 @@ main = do
     Right UgoiraMetadataWrapper {..} -> do
       mresult <- runDownloadM manager $ downloadUgoiraToMP4 _ugoiraMetadata Nothing
       case mresult of
-        Just result -> LBS.writeFile "temp.mp4" result >> putStrLn "Write mp4"
+        Just (stderr, result) -> do
+          putStrLn stderr
+          LBS.writeFile "temp.mp4" result >> putStrLn "Write mp4"
         _ -> fail "Failed to download"
 
 testDecode :: forall v. (FromJSON v) => FilePath -> IO ()
