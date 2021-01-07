@@ -1,7 +1,11 @@
+-- | Copyright: (c) 2021 The closed eye of love
+-- SPDX-License-Identifier: BSD-3-Clause
+-- Maintainer: Poscat <poscat@mail.poscat.moe>, berberman <berberman@yandex.com>
+-- Stability: alpha
+-- Portability: portable
+-- Miscellaneous utilities.
 module Web.Pixiv.Utils
-  ( mkDefaultClientEnv,
-    runWithDefaultClientEnv,
-    isSinglePageIllust,
+  ( isSinglePageIllust,
     extractHighestQualityImageUrl,
     extractImageUrlsFromIllust,
     unzipArchive,
@@ -18,26 +22,17 @@ import qualified Data.ByteString.Lazy as LBS
 import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Text.Encoding (encodeUtf8)
-import Network.HTTP.Client (Manager)
-import Network.HTTP.Client.TLS (newTlsManager)
 import Numeric (showFFloat)
-import Servant.Client
 import Web.Pixiv.Types
 import Web.Pixiv.Types.Lens
 
-mkDefaultClientEnv :: Manager -> IO ClientEnv
-mkDefaultClientEnv manager = do
-  baseUrl <- parseBaseUrl "https://app-api.pixiv.net"
-  pure $ mkClientEnv manager baseUrl
-
-runWithDefaultClientEnv :: ClientM a -> IO (Either ClientError a)
-runWithDefaultClientEnv m = newTlsManager >>= mkDefaultClientEnv >>= runClientM m
-
 -----------------------------------------------------------------------------
 
+-- | Judges if an illustration has only one image.
 isSinglePageIllust :: Illust -> Bool
 isSinglePageIllust i = null $ i ^. metaPages
 
+-- | Extracts the url of the highest quality image.
 extractHighestQualityImageUrl :: ImageUrls -> Maybe Text
 extractHighestQualityImageUrl x =
   x ^. original
@@ -45,6 +40,7 @@ extractHighestQualityImageUrl x =
     <|> x ^. medium
     <|> x ^. squareMedium
 
+-- | Extracts all urls from an illustration, using 'extractHighestQualityImageUrl'.
 extractImageUrlsFromIllust :: Illust -> [Text]
 extractImageUrlsFromIllust i
   | isSinglePageIllust i = (single <|> (multi ^? _head)) ^.. each
@@ -55,12 +51,19 @@ extractImageUrlsFromIllust i
 
 -----------------------------------------------------------------------------
 
-unzipArchive :: FilePath -> LBS.ByteString -> IO ()
+-- | Unzip a zip archive represented in 'LBS.ByteString' to a directory.
+unzipArchive ::
+  -- | destination directory
+  FilePath ->
+  -- | zip archive
+  LBS.ByteString ->
+  IO ()
 unzipArchive dir bs = do
   let archive = Zip.toArchive bs
       option = [Zip.OptDestination dir]
   Zip.extractFilesFromArchive option archive
 
+-- | Generates ffconcat meta file of an ugoira.
 ugoiraMetadataToFFConcat :: UgoiraMetadata -> BS.ByteString
 ugoiraMetadataToFFConcat meta =
   encodeUtf8 . T.unlines $

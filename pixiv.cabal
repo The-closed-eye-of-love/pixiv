@@ -1,9 +1,11 @@
 cabal-version:   3.0
 name:            pixiv
 version:         0.1.0
-synopsis:        Pixiv api binding
+synopsis:        Pixiv API binding based on servant-client
+description:
+  Pixiv API binding based on servant-client.
+  See README for details.
 
--- description:
 category:        Web
 license:         BSD-3-Clause
 license-file:    LICENSE
@@ -11,10 +13,10 @@ author:          Poscat, berberman
 maintainer:
   Poscat <poscat@mail.poscat.moe>, berberman <berberman@yandex.com>
 
-copyright:       Copyright (c) Poscat 2020
+copyright:       Copyright (c) The closed eye of love 2021
 stability:       alpha
-homepage:        https://github.com/poscat0x04/pixiv
-bug-reports:     https://github.com/poscat0x04/pixiv/issues
+homepage:        https://github.com/The-closed-eye-of-love/pixiv
+bug-reports:     https://github.com/The-closed-eye-of-love/pixiv/issues
 extra-doc-files:
   CHANGELOG.md
   README.md
@@ -77,22 +79,22 @@ library
     , base16-bytestring
     , cryptohash-md5
     , deriving-aeson
+    , directory
     , exceptions
+    , filepath
     , lens
     , monad-control
     , mtl
+    , process
     , servant
     , servant-client
     , servant-client-core
+    , temporary
     , text
     , time
     , transformers
     , transformers-base
     , zip-archive
-    , process
-    , directory
-    , temporary
-    , filepath
 
   exposed-modules:
     Web.Pixiv

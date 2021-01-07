@@ -1,3 +1,12 @@
+-- | Copyright: (c) 2021 The closed eye of love
+-- SPDX-License-Identifier: BSD-3-Clause
+-- Maintainer: Poscat <poscat@mail.poscat.moe>, berberman <berberman@yandex.com>
+-- Stability: alpha
+-- Portability: portable
+-- Functions to access pixiv api. They are supposed to be run in "PixivT".
+--
+-- You may notice that except 'getUserBookmarks', many of functions take a @page@ as input.
+-- This is because each query contains 30 entries, i.e. you should pass @2@ if you want items ranged from 31 to 60.
 module Web.Pixiv.API
   ( -- * Trending
     getTrendingTags,
@@ -44,18 +53,31 @@ import Web.Pixiv.Types.PixivT
 
 -----------------------------------------------------------------------------
 
-getTrendingTags :: MonadPixiv m => Maybe Bool -> m [TrendingTag]
+-- | Gets trending tags.
+getTrendingTags ::
+  MonadPixiv m =>
+  -- | includes translated tag results
+  Maybe Bool ->
+  m [TrendingTag]
 getTrendingTags includeTranslatedTagResults = do
   p <- getAccessTokenWithAccpetLanguage
   tags <- clientIn (Proxy @GetTrendingTags) Proxy p includeTranslatedTagResults
   pure $ coerce tags
 
-getRecommendedIllusts :: MonadPixiv m => Maybe Bool -> Maybe Bool -> m [Illust]
+-- | Gets recommended illustrations of the account which is used for login.
+getRecommendedIllusts ::
+  MonadPixiv m =>
+  -- | includes privacy policy
+  Maybe Bool ->
+  -- | includes translated tag results
+  Maybe Bool ->
+  m [Illust]
 getRecommendedIllusts includePrivacyPolicy includeTranslatedTagResults = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetRecommendedIllusts) Proxy p includePrivacyPolicy includeTranslatedTagResults
   pure $ unNextUrl illusts
 
+-- | Gets recommended mangas of the account which is used for login.
 getRecommendedMangas :: MonadPixiv m => Maybe Bool -> Maybe Bool -> m [Illust]
 getRecommendedMangas includePrivacyPolicy includeTranslatedTagResults = do
   p <- getAccessTokenWithAccpetLanguage
@@ -64,42 +86,85 @@ getRecommendedMangas includePrivacyPolicy includeTranslatedTagResults = do
 
 -----------------------------------------------------------------------------
 
-getIllustDetail :: MonadPixiv m => Int -> m Illust
+-- | Gets the details of a illustration.
+getIllustDetail ::
+  MonadPixiv m =>
+  -- | illust id
+  Int ->
+  m Illust
 getIllustDetail illustId = do
   p <- getAccessTokenWithAccpetLanguage
   detail <- clientIn (Proxy @GetIllustDetail) Proxy p illustId
   pure $ coerce detail
 
-getIllustComments :: MonadPixiv m => Int -> Int -> m Comments
+-- | Gets the comments of a illustration.
+getIllustComments ::
+  MonadPixiv m =>
+  -- | illust id
+  Int ->
+  -- | page
+  Int ->
+  m Comments
 getIllustComments illustId (pageToOffset -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   clientIn (Proxy @GetIllustComments) Proxy p illustId offset
 
-getIllustRelated :: MonadPixiv m => Int -> Int -> m [Illust]
+-- | Gets related illustrations.
+getIllustRelated ::
+  MonadPixiv m =>
+  -- | illust id
+  Int ->
+  -- | page
+  Int ->
+  m [Illust]
 getIllustRelated illustId (pageToOffset -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetIllustRelated) Proxy p illustId offset
   pure $ unNextUrl illusts
 
-getIllustRanking :: MonadPixiv m => Maybe RankMode -> Int -> m [Illust]
+-- | Gets ranking illustrations.
+getIllustRanking ::
+  MonadPixiv m =>
+  -- | rank mode
+  Maybe RankMode ->
+  -- | page
+  Int ->
+  m [Illust]
 getIllustRanking mode (pageToOffset -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetIllustRanking) Proxy p mode offset
   pure $ unNextUrl illusts
 
-getIllustFollow :: MonadPixiv m => Publicity -> Int -> m [Illust]
+-- | Gets illustrations of artists which the login account follows.
+getIllustFollow ::
+  MonadPixiv m =>
+  -- | restrict
+  Publicity ->
+  -- | page
+  Int ->
+  m [Illust]
 getIllustFollow restrict (pageToOffset -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetIllustFollow) Proxy p restrict offset
   pure $ unNextUrl illusts
 
-getIllustNew :: MonadPixiv m => Int -> m [Illust]
+-- | Gets the newest illustrations.
+getIllustNew ::
+  MonadPixiv m =>
+  -- | page
+  Int ->
+  m [Illust]
 getIllustNew (pageToOffset -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetIllustNew) Proxy p offset
   pure $ unNextUrl illusts
 
-getUgoiraMetadata :: MonadPixiv m => Int -> m UgoiraMetadata
+-- | Gets the metadata of a ugoira
+getUgoiraMetadata ::
+  MonadPixiv m =>
+  -- | illust id
+  Int ->
+  m UgoiraMetadata
 getUgoiraMetadata illustId = do
   p <- getAccessTokenWithAccpetLanguage
   ug <- clientIn (Proxy @GetUgoiraMetadata) Proxy p illustId
@@ -107,13 +172,20 @@ getUgoiraMetadata illustId = do
 
 -----------------------------------------------------------------------------
 
+-- | Searches an illustration.
 searchIllust ::
   MonadPixiv m =>
+  -- | search target
   SearchTarget ->
+  -- | word
   Text ->
+  -- | includes translated tag
   Maybe Bool ->
+  -- | sorting method
   Maybe SortingMethod ->
+  -- | duration
   Maybe Duration ->
+  -- | page
   Int ->
   m [Illust]
 searchIllust searchTarget searchWord includeTranslatedTag sortingMethod duration (pageToOffset -> offset) = do
@@ -121,10 +193,14 @@ searchIllust searchTarget searchWord includeTranslatedTag sortingMethod duration
   illusts <- clientIn (Proxy @SearchIllust) Proxy p searchTarget searchWord includeTranslatedTag sortingMethod duration offset
   pure $ unNextUrl illusts
 
+-- | Searches an user.
 searchUser ::
   MonadPixiv m =>
+  -- | word
   Text ->
+  -- | sorting method
   Maybe SortingMethod ->
+  -- | page
   Int ->
   m [UserPreview]
 searchUser searchWord sortingMethod (pageToOffset -> offset) = do
@@ -134,36 +210,83 @@ searchUser searchWord sortingMethod (pageToOffset -> offset) = do
 
 -----------------------------------------------------------------------------
 
-getUserDetail :: MonadPixiv m => Int -> m UserDetail
+-- | Gets the details of an user.
+getUserDetail ::
+  MonadPixiv m =>
+  -- | user id
+  Int ->
+  m UserDetail
 getUserDetail userId = do
   p <- getAccessTokenWithAccpetLanguage
   clientIn (Proxy @GetUserDetail) Proxy p userId
 
-getUserIllusts :: MonadPixiv m => Int -> Maybe IllustType -> Int -> m [Illust]
+-- | Gets illustrations submitted by a specific user.
+getUserIllusts ::
+  MonadPixiv m =>
+  -- | user id
+  Int ->
+  -- | illust type
+  Maybe IllustType ->
+  -- | page
+  Int ->
+  m [Illust]
 getUserIllusts userId illustType (pageToOffset -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetUserIllusts) Proxy p userId illustType offset
   pure $ unNextUrl illusts
 
-getUserFollowing :: MonadPixiv m => Int -> Publicity -> Int -> m [UserPreview]
+-- |  Gets the following of an user.
+getUserFollowing ::
+  MonadPixiv m =>
+  -- | user id
+  Int ->
+  -- | restrict
+  Publicity ->
+  -- | page
+  Int ->
+  m [UserPreview]
 getUserFollowing userId restrict (pageToOffset -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   ups <- clientIn (Proxy @GetUserFollowing) Proxy p userId restrict offset
   pure $ unNextUrl ups
 
-getUserFollower :: MonadPixiv m => Int -> Int -> m [UserPreview]
+-- | Gets the followers of an user.
+getUserFollower ::
+  MonadPixiv m =>
+  -- | user id
+  Int ->
+  -- | page
+  Int ->
+  m [UserPreview]
 getUserFollower userId (pageToOffset -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   ups <- clientIn (Proxy @GetUserFollower) Proxy p userId offset
   pure $ unNextUrl ups
 
-getUserMypixiv :: MonadPixiv m => Int -> Int -> m [UserPreview]
+-- | Gets @mypixiv@ of an user.
+getUserMypixiv ::
+  MonadPixiv m =>
+  -- | user id
+  Int ->
+  -- | page
+  Int ->
+  m [UserPreview]
 getUserMypixiv userId (pageToOffset -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   ups <- clientIn (Proxy @GetUserMypixiv) Proxy p userId offset
   pure $ unNextUrl ups
 
-getUserBookmarks :: MonadPixiv m => Int -> Publicity -> Maybe Int -> m ([Illust], Maybe Int)
+-- | Gets illustrations collected by a specific user.
+-- Returns the a list of illustrations and result and an integer for paging.
+getUserBookmarks ::
+  MonadPixiv m =>
+  -- | user id
+  Int ->
+  -- | restrict
+  Publicity ->
+  -- | the last illust id of this query
+  Maybe Int ->
+  m ([Illust], Maybe Int)
 getUserBookmarks userId restrict maxBookmarkId = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetUserBookmarks) Proxy p userId restrict maxBookmarkId
