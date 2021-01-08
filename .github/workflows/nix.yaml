@@ -17,11 +17,10 @@ jobs:
             experimental-features = nix-command flakes
 
       - name: Build and generate haddock
-        run: |
-          nix develop --command cabal update && cabal haddock --haddock-html-location='https://hackage.haskell.org/package/$pkg-$version/docs' --haddock-hyperlink-source --haddock-quickjump
+        run: nix build
       
       - name: Deploy generated haddock to github pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist-newstyle/build/x86_64-linux/ghc-*/pixiv-*/doc/html/pixiv
+          publish_dir: ./result-doc/share/doc/pixiv-*/html

@@ -17,7 +17,8 @@
       overlay = self: super:
         let
           hpkgs = super.haskellPackages;
-          pixiv = with super.haskell.lib; disableLibraryProfiling (dontCheck (hpkgs.callCabal2nix "pixiv" ./. {}));
+          linkHaddockToHackage = drv: super.haskell.lib.overrideCabal drv (drv: {haddockFlags = ["--html-location='https://hackage.haskell.org/package/$pkg-$version/docs'"];});
+          pixiv = with super.haskell.lib; linkHaddockToHackage(disableLibraryProfiling (dontCheck (hpkgs.callCabal2nix "pixiv" ./. {})));
         in
           with super; with haskell.lib;
           {
