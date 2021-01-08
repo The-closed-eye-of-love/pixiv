@@ -17,7 +17,7 @@
       overlay = self: super:
         let
           hpkgs = super.haskellPackages;
-          pixiv = super.haskell.lib.dontCheck (hpkgs.callCabal2nix "pixiv" ./. {});
+          pixiv = with super.haskell.lib; disableLibraryProfiling (dontCheck (hpkgs.callCabal2nix "pixiv" ./. {}));
         in
           with super; with haskell.lib;
           {
