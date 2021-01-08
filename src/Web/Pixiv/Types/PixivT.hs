@@ -64,7 +64,9 @@ newtype ClientT m a = ClientT
       MonadThrow,
       MonadCatch,
       MonadReader ClientEnv,
-      MonadError ClientError
+      MonadError ClientError,
+      MonadBase b,
+      MonadBaseControl b
     )
 
 instance MonadTrans ClientT where
@@ -77,10 +79,6 @@ runClientT env m =
     & unClientT
     & flip runReaderT env
     & runExceptT
-
-deriving newtype instance MonadBase IO m => MonadBase IO (ClientT m)
-
-deriving newtype instance MonadBaseControl IO m => MonadBaseControl IO (ClientT m)
 
 instance MonadIO m => RunClient (ClientT m) where
   throwClientError = throwError
@@ -174,6 +172,19 @@ class (RunClient m, MonadIO m) => MonadPixiv m where
   --
   -- Don't confuse with 'takePixivState', please refer to 'readMVar'.
   readPixivState :: m PixivState
+
+instance
+  {-# OVERLAPPABLE #-}
+  ( MonadPixiv m,
+    MonadTrans f,
+    MonadIO (f m),
+    RunClient (f m)
+  ) =>
+  MonadPixiv (f m)
+  where
+  takePixivState = lift takePixivState
+  putPixivState = lift . putPixivState
+  readPixivState = lift readPixivState
 
 instance MonadIO m => MonadPixiv (PixivT m) where
   takePixivState = ask >>= liftIO . takeMVar
