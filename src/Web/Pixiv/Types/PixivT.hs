@@ -172,6 +172,19 @@ class (RunClient m, MonadIO m) => MonadPixiv m where
   -- Don't confuse with 'takePixivState', please refer to 'readMVar'.
   readPixivState :: m PixivState
 
+instance
+  {-# OVERLAPPABLE #-}
+  ( MonadPixiv m,
+    MonadTrans f,
+    MonadIO (f m),
+    RunClient (f m)
+  ) =>
+  MonadPixiv (f m)
+  where
+  takePixivState = lift takePixivState
+  putPixivState = lift . putPixivState
+  readPixivState = lift readPixivState
+
 instance MonadIO m => MonadPixiv (PixivT m) where
   takePixivState = ask >>= liftIO . takeMVar
   putPixivState s = do
