@@ -2,9 +2,19 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE UndecidableInstances #-}
 
+-- | Copyright: (c) 2021 The closed eye of love
+-- SPDX-License-Identifier: BSD-3-Clause
+-- Maintainer: Poscat <poscat@mail.poscat.moe>, berberman <berberman@yandex.com>
+-- Stability: alpha
+-- Portability: portable
+-- This module provides some generic functions to create instances
+-- of 'FromJSON', 'Data.Aeson.toJSON', and 'ToHttpApiData' using [DerivingVia](https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/glasgow_exts.html#extension-DerivingVia).
+-- You can find usages in "Web.Pixiv.Types".
 module Data.Generically
   ( -- * HttpApiData
     CustomHttpApiData (..),
+    CustomHttpApiDataOption (..),
+    GToHttpApiData (..),
     PixivHttpApiData,
     PixivHttpApiData',
 
@@ -13,8 +23,9 @@ module Data.Generically
     EnumJSON,
     PixivJSON',
     EnumJSON',
+    PixivLabelModifier,
 
-    -- * re-export
+    -- * Re-export
     ToHttpApiData (..),
     module Deriving.Aeson,
   )
@@ -31,15 +42,16 @@ import Servant.API (ToHttpApiData (..))
 
 -----------------------------------------------------------------------------
 
--- | A wrapper to derive 'ToHttpApiData' instances with modifications
+-- | A wrapper to derive 'ToHttpApiData' instances with modifications.
 newtype CustomHttpApiData t a = CustomHttpApiData {unCustomHttpApiData :: a}
 
--- | Strip prefix @k@ from query parameter's name then convert to snake case
+-- | Strips prefix @k@ from query parameter's name then converts it to snake case.
 type PixivHttpApiData (k :: Symbol) = CustomHttpApiData '[StripPrefix k, CamelToSnake]
 
--- | Convert query parameter's name  to snake case
+-- | Converts query parameter's name to snake case.
 type PixivHttpApiData' = PixivHttpApiData ""
 
+-- | Reifies 'StringModifier's applied on 'CustomHttpApiData'.
 class CustomHttpApiDataOption xs where
   option :: String -> String
 
@@ -57,6 +69,7 @@ instance Generic a => Generic (CustomHttpApiData t a) where
 instance (Generic a, CustomHttpApiDataOption t, GToHttpApiData (Rep a)) => ToHttpApiData (CustomHttpApiData t a) where
   toQueryParam a = gToQueryParam (from a) (option @t)
 
+-- | Class of generic representation types that can be converted to query param.
 class GToHttpApiData f where
   gToQueryParam :: f p -> (String -> String) -> Text
 
@@ -75,18 +88,19 @@ instance (GToHttpApiData a) => GToHttpApiData (D1 m a) where
 
 -----------------------------------------------------------------------------
 
--- | Strip prefix @_@ and @k@ from fields' labels then convert to snake case, making sure results are non-empty
+-- | Strips prefix @_@ and @k@ from /fields' labels/ then converts it to snake case, making sure results are non-empty.
 type PixivJSON (k :: Symbol) = CustomJSON '[FieldLabelModifier (PixivLabelModifier k, CamelToSnake)]
 
--- | Strip prefix @k@ from constructors' tags then convert to snake case
+-- | Strips prefix @k@ from /constructors' tags/ then converts it to snake case.
 type EnumJSON (k :: Symbol) = CustomJSON '[ConstructorTagModifier (StripPrefix k, CamelToSnake)]
 
--- | Strip prefix @_@ from fields' labels then convert to snake case
+-- | Strips prefix @_@ from /fields' labels/ then converts it to snake case.
 type PixivJSON' = PixivJSON ""
 
--- | Convert constructors' tags to snake case
+-- | Converts /constructors' tags/ to snake case.
 type EnumJSON' = EnumJSON ""
 
+-- | A 'StringModifier' that strips prefix @_@ and @k@, and returns non-empty 'String'.
 data PixivLabelModifier (k :: Symbol)
 
 instance KnownSymbol k => StringModifier (PixivLabelModifier k) where

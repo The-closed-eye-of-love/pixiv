@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide, prune #-}
+
 module Web.Pixiv.API.User
   ( module Web.Pixiv.API.User,
   )

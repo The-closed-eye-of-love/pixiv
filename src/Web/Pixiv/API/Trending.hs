@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide, prune #-}
+
 module Web.Pixiv.API.Trending
   ( module Web.Pixiv.API.Trending,
   )

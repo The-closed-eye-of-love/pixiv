@@ -171,6 +171,7 @@ class (RunClient m, MonadIO m) => MonadPixiv m where
   putPixivState :: PixivState -> m ()
 
   -- | Reads the stored 'PixivState', without blocking other threads which want to read this state.
+  --
   -- Don't confuse with 'takePixivState', please refer to 'readMVar'.
   readPixivState :: m PixivState
 
@@ -217,6 +218,7 @@ computeTokenState manager credential time = do
   pure TokenState {..}
 
 -- | Retrieves the 'accessToken' from pixiv monad.
+--
 -- If the token is overdue, it will call 'computeTokenState' to refresh.
 getAccessToken :: MonadPixiv m => m Token
 getAccessToken = do

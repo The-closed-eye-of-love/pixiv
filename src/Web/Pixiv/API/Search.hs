@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK hide, prune #-}
+
 module Web.Pixiv.API.Search
   ( module Web.Pixiv.API.Search,
   )

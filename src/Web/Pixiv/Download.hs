@@ -48,6 +48,7 @@ runDownloadM :: Manager -> DownloadM a -> IO (Maybe a)
 runDownloadM manager m = runMaybeT m & flip runReaderT manager
 
 -- | Lifts a download computation to 'PixivT'.
+--
 -- 'DownloadM' needs 'Manager' to perform the download, which can be provided by 'TokenState'.
 liftToPixivT :: (MonadIO m) => DownloadM a -> PixivT m (Maybe a)
 liftToPixivT m = do
@@ -64,6 +65,7 @@ downloadPixiv url = do
   pure $ responseBody resp
 
 -- | Downloads a single page illust.
+--
 -- Chooses the first one if the illust has many pages,
 -- preferring high quality images. Returns `Nothing` if can't find any image url.
 downloadSingleIllust :: Illust -> DownloadM LBS.ByteString

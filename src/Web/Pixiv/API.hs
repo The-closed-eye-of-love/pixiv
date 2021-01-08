@@ -3,7 +3,7 @@
 -- Maintainer: Poscat <poscat@mail.poscat.moe>, berberman <berberman@yandex.com>
 -- Stability: alpha
 -- Portability: portable
--- Functions to access pixiv api. They are supposed to be run in "PixivT".
+-- Functions to access pixiv api. They are supposed to be run in "Web.Pixiv.Types.PixivT".
 --
 -- You may notice that except 'getUserBookmarks', many of functions take a @page@ as input.
 -- This is because each query contains 30 entries, i.e. you should pass @2@ if you want items ranged from 31 to 60.

@@ -1,5 +1,11 @@
 {-# LANGUAGE TemplateHaskell #-}
 
+-- | Copyright: (c) 2021 The closed eye of love
+-- SPDX-License-Identifier: BSD-3-Clause
+-- Maintainer: Poscat <poscat@mail.poscat.moe>, berberman <berberman@yandex.com>
+-- Stability: alpha
+-- Portability: portable
+-- Lenses of "Web.Pixiv.Types".
 module Web.Pixiv.Types.Lens
   ( module Web.Pixiv.Types.Lens,
   )
