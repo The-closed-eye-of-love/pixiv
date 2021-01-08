@@ -1,4 +1,5 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE EmptyCase #-}
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE UndecidableInstances #-}
 
@@ -74,7 +75,7 @@ class GToHttpApiData f where
   gToQueryParam :: f p -> (String -> String) -> Text
 
 instance GToHttpApiData V1 where
-  gToQueryParam = undefined
+  gToQueryParam a = case a of
 
 instance Constructor m => GToHttpApiData (C1 m U1) where
   gToQueryParam a f = pack $ f $ conName a
