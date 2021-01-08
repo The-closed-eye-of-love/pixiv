@@ -8,6 +8,66 @@
 @package pixiv
 @version 0.1.0
 
+
+-- | This module provides some generic functions to create instances of
+--   <a>FromJSON</a>, <a>toJSON</a>, and <a>ToHttpApiData</a> using
+--   <a>DerivingVia</a>. You can find usages in <a>Web.Pixiv.Types</a>.
+module Data.Generically
+
+-- | A wrapper to derive <a>ToHttpApiData</a> instances with modifications.
+newtype CustomHttpApiData t a
+CustomHttpApiData :: a -> CustomHttpApiData t a
+[unCustomHttpApiData] :: CustomHttpApiData t a -> a
+
+-- | Reifies <a>StringModifier</a>s applied on <a>CustomHttpApiData</a>.
+class CustomHttpApiDataOption xs
+option :: CustomHttpApiDataOption xs => String -> String
+
+-- | Class of generic representation types that can be converted to query
+--   param.
+class GToHttpApiData f
+gToQueryParam :: GToHttpApiData f => f p -> (String -> String) -> Text
+
+-- | Strips prefix <tt>k</tt> from query parameter's name then converts it
+--   to snake case.
+type PixivHttpApiData (k :: Symbol) = CustomHttpApiData '[StripPrefix k, CamelToSnake]
+
+-- | Converts query parameter's name to snake case.
+type PixivHttpApiData' = PixivHttpApiData ""
+
+-- | Strips prefix <tt>_</tt> and <tt>k</tt> from <i>fields' labels</i>
+--   then converts it to snake case, making sure results are non-empty.
+type PixivJSON (k :: Symbol) = CustomJSON '[FieldLabelModifier (PixivLabelModifier k, CamelToSnake)]
+
+-- | Strips prefix <tt>k</tt> from <i>constructors' tags</i> then converts
+--   it to snake case.
+type EnumJSON (k :: Symbol) = CustomJSON '[ConstructorTagModifier (StripPrefix k, CamelToSnake)]
+
+-- | Strips prefix <tt>_</tt> from <i>fields' labels</i> then converts it
+--   to snake case.
+type PixivJSON' = PixivJSON ""
+
+-- | Converts <i>constructors' tags</i> to snake case.
+type EnumJSON' = EnumJSON ""
+
+-- | A <a>StringModifier</a> that strips prefix <tt>_</tt> and <tt>k</tt>,
+--   and returns non-empty <a>String</a>.
+data PixivLabelModifier (k :: Symbol)
+class ToHttpApiData a
+toUrlPiece :: ToHttpApiData a => a -> Text
+toEncodedUrlPiece :: ToHttpApiData a => a -> Builder
+toHeader :: ToHttpApiData a => a -> ByteString
+toQueryParam :: ToHttpApiData a => a -> Text
+instance GHC.TypeLits.KnownSymbol k => Deriving.Aeson.StringModifier (Data.Generically.PixivLabelModifier k)
+instance forall k a (t :: k). (GHC.Generics.Generic a, Data.Generically.CustomHttpApiDataOption t, Data.Generically.GToHttpApiData (GHC.Generics.Rep a)) => Web.Internal.HttpApiData.ToHttpApiData (Data.Generically.CustomHttpApiData t a)
+instance Data.Generically.GToHttpApiData GHC.Generics.V1
+instance GHC.Generics.Constructor m => Data.Generically.GToHttpApiData (GHC.Generics.C1 m GHC.Generics.U1)
+instance forall k (l :: k -> Type) (r :: k -> Type). (Data.Generically.GToHttpApiData l, Data.Generically.GToHttpApiData r) => Data.Generically.GToHttpApiData (l GHC.Generics.:+: r)
+instance forall k (a :: k -> Type) (m :: GHC.Generics.Meta). Data.Generically.GToHttpApiData a => Data.Generically.GToHttpApiData (GHC.Generics.D1 m a)
+instance Data.Generically.CustomHttpApiDataOption '[]
+instance forall a (f :: a) (xs :: [a]). (Deriving.Aeson.StringModifier f, Data.Generically.CustomHttpApiDataOption xs) => Data.Generically.CustomHttpApiDataOption (f : xs)
+instance forall k a (t :: k). GHC.Generics.Generic a => GHC.Generics.Generic (Data.Generically.CustomHttpApiData t a)
+
 module Web.Pixiv.Auth
 newtype Token
 Token :: Text -> Token
