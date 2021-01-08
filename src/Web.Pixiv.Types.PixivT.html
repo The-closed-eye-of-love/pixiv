@@ -1,0 +1,1140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-pragma">{-# LANGUAGE GeneralizedNewtypeDeriving #-}</span><span>
+</span><span id="line-2"></span><span class="hs-pragma">{-# LANGUAGE StandaloneDeriving #-}</span><span>
+</span><span id="line-3"></span><span class="hs-pragma">{-# LANGUAGE UndecidableInstances #-}</span><span>
+</span><span id="line-4"></span><span>
+</span><span id="line-5"></span><span class="hs-comment">-- | Copyright: (c) 2021 The closed eye of love</span><span>
+</span><span id="line-6"></span><span class="hs-comment">-- SPDX-License-Identifier: BSD-3-Clause</span><span>
+</span><span id="line-7"></span><span class="hs-comment">-- Maintainer: Poscat &lt;poscat@mail.poscat.moe&gt;, berberman &lt;berberman@yandex.com&gt;</span><span>
+</span><span id="line-8"></span><span class="hs-comment">-- Stability: alpha</span><span>
+</span><span id="line-9"></span><span class="hs-comment">-- Portability: portable</span><span>
+</span><span id="line-10"></span><span class="hs-comment">-- The core monad of this library. 'PixivT' maintains a pixiv login state,</span><span>
+</span><span id="line-11"></span><span class="hs-comment">-- and provides an environment to perform computations created by servant.</span><span>
+</span><span id="line-12"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Web.Pixiv.Types.PixivT</span><span>
+</span><span id="line-13"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-comment">-- * ClientT monad transformer</span></span><span>
+</span><span id="line-14"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier">ClientT</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-15"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#runClientT"><span class="hs-identifier">runClientT</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-16"></span><span>
+</span><span id="line-17"></span><span>    </span><span class="annot"><span class="hs-comment">-- * MonadPixiv class</span></span><span>
+</span><span id="line-18"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier">MonadPixiv</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-19"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier">PixivState</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-20"></span><span>
+</span><span id="line-21"></span><span>    </span><span class="annot"><span class="hs-comment">-- * PixivT monad transformer</span></span><span>
+</span><span id="line-22"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier">PixivT</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-23"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#liftC"><span class="hs-identifier">liftC</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-24"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#runPixivT"><span class="hs-identifier">runPixivT</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-25"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#runPixivT%27"><span class="hs-identifier">runPixivT'</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-26"></span><span>
+</span><span id="line-27"></span><span>    </span><span class="annot"><span class="hs-comment">-- * Token</span></span><span>
+</span><span id="line-28"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier">TokenState</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-29"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier">computeTokenState</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-30"></span><span>
+</span><span id="line-31"></span><span>    </span><span class="annot"><span class="hs-comment">-- * Utilities</span></span><span>
+</span><span id="line-32"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccessToken"><span class="hs-identifier">getAccessToken</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-33"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier">getAccessTokenWithAccpetLanguage</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-34"></span><span>  </span><span class="hs-special">)</span><span>
+</span><span id="line-35"></span><span class="hs-keyword">where</span><span>
+</span><span id="line-36"></span><span>
+</span><span id="line-37"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier">Control.Concurrent.MVar</span></a></span><span>
+</span><span id="line-38"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/pmrs94cz0n2z4fc7jvlzm6hd4qkxzzdc-transformers-base-0.4.5.2-doc/share/doc/transformers-base-0.4.5.2/html/src"><span class="hs-identifier">Control.Monad.Base</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/pmrs94cz0n2z4fc7jvlzm6hd4qkxzzdc-transformers-base-0.4.5.2-doc/share/doc/transformers-base-0.4.5.2/html/src"><span class="hs-identifier">MonadBase</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-39"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/exceptions-0.10.4/src"><span class="hs-identifier">Control.Monad.Catch</span></a></span><span>
+</span><span id="line-40"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier">Control.Monad.Except</span></a></span><span>
+</span><span id="line-41"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier">Control.Monad.Reader</span></a></span><span>
+</span><span id="line-42"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/x1h7znw5kbj4n7izfb4n551nca5pvbc5-monad-control-1.0.2.3-doc/share/doc/monad-control-1.0.2.3/html/src"><span class="hs-identifier">Control.Monad.Trans.Control</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/x1h7znw5kbj4n7izfb4n551nca5pvbc5-monad-control-1.0.2.3-doc/share/doc/monad-control-1.0.2.3/html/src"><span class="hs-identifier">MonadBaseControl</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-43"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier">Data.Function</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator">(&amp;)</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-44"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/text-1.2.4.1/src"><span class="hs-identifier">Data.Text</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/text-1.2.4.1/src"><span class="hs-identifier">Text</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-45"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/time-1.9.3/src"><span class="hs-identifier">Data.Time</span></a></span><span>
+</span><span id="line-46"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier">GHC.Generics</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier">Generic</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-47"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier">GHC.Show</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier">showCommaSpace</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-48"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/q154lh8gnk0296vcdn0362im65lndldy-http-client-0.6.4.1-doc/share/doc/http-client-0.6.4.1/html/src"><span class="hs-identifier">Network.HTTP.Client</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/q154lh8gnk0296vcdn0362im65lndldy-http-client-0.6.4.1-doc/share/doc/http-client-0.6.4.1/html/src"><span class="hs-identifier">Manager</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-49"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/bxw5vw9bb44j41pqfdpzgh7nzh1vjckc-http-client-tls-0.3.5.3-doc/share/doc/http-client-tls-0.3.5.3/html/src"><span class="hs-identifier">Network.HTTP.Client.TLS</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/bxw5vw9bb44j41pqfdpzgh7nzh1vjckc-http-client-tls-0.3.5.3-doc/share/doc/http-client-tls-0.3.5.3/html/src"><span class="hs-identifier">newTlsManager</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-50"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/8yay48hxild8d4lq0196w5imn8il6gxn-servant-client-0.18.2-doc/share/doc/servant-client-0.18.2/html/src"><span class="hs-identifier">Servant.Client</span></a></span><span>
+</span><span id="line-51"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier">Servant.Client.Core</span></a></span><span>
+</span><span id="line-52"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="../file:///nix/store/8yay48hxild8d4lq0196w5imn8il6gxn-servant-client-0.18.2-doc/share/doc/servant-client-0.18.2/html/src"><span class="hs-identifier">Servant.Client.Internal.HttpClient</span></a></span><span>
+</span><span id="line-53"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html"><span class="hs-identifier">Web.Pixiv.Auth</span></a></span><span>
+</span><span id="line-54"></span><span>
+</span><span id="line-55"></span><span class="hs-comment">-- | Transformer version of 'ClientM', changing the base 'IO' to @m@.</span><span>
+</span><span id="line-56"></span><span class="hs-keyword">newtype</span><span> </span><span id="ClientT"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-var">ClientT</span></a></span></span><span> </span><span id="local-6989586621679848731"><span class="annot"><a href="#local-6989586621679848731"><span class="hs-identifier hs-type">m</span></a></span></span><span> </span><span id="local-6989586621679848730"><span class="annot"><a href="#local-6989586621679848730"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="ClientT"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-var">ClientT</span></a></span></span><span>
+</span><span id="line-57"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="unClientT"><span class="annot"><span class="annottext">ClientT m a -&gt; ReaderT ClientEnv (ExceptT ClientError m) a
+</span><a href="Web.Pixiv.Types.PixivT.html#unClientT"><span class="hs-identifier hs-var hs-var">unClientT</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-type">ReaderT</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/8yay48hxild8d4lq0196w5imn8il6gxn-servant-client-0.18.2-doc/share/doc/servant-client-0.18.2/html/src"><span class="hs-identifier hs-type">ClientEnv</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-type">ExceptT</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-type">ClientError</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848731"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><a href="#local-6989586621679848730"><span class="hs-identifier hs-type">a</span></a></span><span>
+</span><span id="line-58"></span><span>  </span><span class="hs-special">}</span><span>
+</span><span id="line-59"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679848571"><span id="local-6989586621679848572"><span class="annot"><a href="#local-6989586621679848571"><span class="hs-keyword hs-type hs-type">newtype</span></a></span></span></span><span>
+</span><span id="line-60"></span><span>    </span><span class="hs-special">(</span><span> </span><span id="local-6989586621679848567"><span id="local-6989586621679848569"><span class="annot"><span class="annottext">a -&gt; ClientT m b -&gt; ClientT m a
+(a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b
+(forall a b. (a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b)
+-&gt; (forall a b. a -&gt; ClientT m b -&gt; ClientT m a)
+-&gt; Functor (ClientT m)
+forall a b. a -&gt; ClientT m b -&gt; ClientT m a
+forall a b. (a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b
+forall (m :: Type -&gt; Type) a b.
+Functor m =&gt;
+a -&gt; ClientT m b -&gt; ClientT m a
+forall (m :: Type -&gt; Type) a b.
+Functor m =&gt;
+(a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b
+forall (f :: Type -&gt; Type).
+(forall a b. (a -&gt; b) -&gt; f a -&gt; f b)
+-&gt; (forall a b. a -&gt; f b -&gt; f a) -&gt; Functor f
+&lt;$ :: a -&gt; ClientT m b -&gt; ClientT m a
+$c&lt;$ :: forall (m :: Type -&gt; Type) a b.
+Functor m =&gt;
+a -&gt; ClientT m b -&gt; ClientT m a
+fmap :: (a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b
+$cfmap :: forall (m :: Type -&gt; Type) a b.
+Functor m =&gt;
+(a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Functor</span></a></span></span></span><span class="hs-special">,</span><span>
+</span><span id="line-61"></span><span>      </span><span id="local-6989586621679848555"><span id="local-6989586621679848557"><span id="local-6989586621679848559"><span id="local-6989586621679848561"><span id="local-6989586621679848563"><span class="annot"><span class="annottext">Functor (ClientT m)
+a -&gt; ClientT m a
+Functor (ClientT m)
+-&gt; (forall a. a -&gt; ClientT m a)
+-&gt; (forall a b. ClientT m (a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b)
+-&gt; (forall a b c.
+    (a -&gt; b -&gt; c) -&gt; ClientT m a -&gt; ClientT m b -&gt; ClientT m c)
+-&gt; (forall a b. ClientT m a -&gt; ClientT m b -&gt; ClientT m b)
+-&gt; (forall a b. ClientT m a -&gt; ClientT m b -&gt; ClientT m a)
+-&gt; Applicative (ClientT m)
+ClientT m a -&gt; ClientT m b -&gt; ClientT m b
+ClientT m a -&gt; ClientT m b -&gt; ClientT m a
+ClientT m (a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b
+(a -&gt; b -&gt; c) -&gt; ClientT m a -&gt; ClientT m b -&gt; ClientT m c
+forall a. a -&gt; ClientT m a
+forall a b. ClientT m a -&gt; ClientT m b -&gt; ClientT m a
+forall a b. ClientT m a -&gt; ClientT m b -&gt; ClientT m b
+forall a b. ClientT m (a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b
+forall a b c.
+(a -&gt; b -&gt; c) -&gt; ClientT m a -&gt; ClientT m b -&gt; ClientT m c
+forall (m :: Type -&gt; Type). Monad m =&gt; Functor (ClientT m)
+forall (m :: Type -&gt; Type) a. Monad m =&gt; a -&gt; ClientT m a
+forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+ClientT m a -&gt; ClientT m b -&gt; ClientT m a
+forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+ClientT m a -&gt; ClientT m b -&gt; ClientT m b
+forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+ClientT m (a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b
+forall (m :: Type -&gt; Type) a b c.
+Monad m =&gt;
+(a -&gt; b -&gt; c) -&gt; ClientT m a -&gt; ClientT m b -&gt; ClientT m c
+forall (f :: Type -&gt; Type).
+Functor f
+-&gt; (forall a. a -&gt; f a)
+-&gt; (forall a b. f (a -&gt; b) -&gt; f a -&gt; f b)
+-&gt; (forall a b c. (a -&gt; b -&gt; c) -&gt; f a -&gt; f b -&gt; f c)
+-&gt; (forall a b. f a -&gt; f b -&gt; f b)
+-&gt; (forall a b. f a -&gt; f b -&gt; f a)
+-&gt; Applicative f
+&lt;* :: ClientT m a -&gt; ClientT m b -&gt; ClientT m a
+$c&lt;* :: forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+ClientT m a -&gt; ClientT m b -&gt; ClientT m a
+*&gt; :: ClientT m a -&gt; ClientT m b -&gt; ClientT m b
+$c*&gt; :: forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+ClientT m a -&gt; ClientT m b -&gt; ClientT m b
+liftA2 :: (a -&gt; b -&gt; c) -&gt; ClientT m a -&gt; ClientT m b -&gt; ClientT m c
+$cliftA2 :: forall (m :: Type -&gt; Type) a b c.
+Monad m =&gt;
+(a -&gt; b -&gt; c) -&gt; ClientT m a -&gt; ClientT m b -&gt; ClientT m c
+&lt;*&gt; :: ClientT m (a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b
+$c&lt;*&gt; :: forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+ClientT m (a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b
+pure :: a -&gt; ClientT m a
+$cpure :: forall (m :: Type -&gt; Type) a. Monad m =&gt; a -&gt; ClientT m a
+$cp1Applicative :: forall (m :: Type -&gt; Type). Monad m =&gt; Functor (ClientT m)
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Applicative</span></a></span></span></span></span></span></span><span class="hs-special">,</span><span>
+</span><span id="line-62"></span><span>      </span><span id="local-6989586621679848547"><span id="local-6989586621679848549"><span id="local-6989586621679848551"><span class="annot"><span class="annottext">Applicative (ClientT m)
+a -&gt; ClientT m a
+Applicative (ClientT m)
+-&gt; (forall a b. ClientT m a -&gt; (a -&gt; ClientT m b) -&gt; ClientT m b)
+-&gt; (forall a b. ClientT m a -&gt; ClientT m b -&gt; ClientT m b)
+-&gt; (forall a. a -&gt; ClientT m a)
+-&gt; Monad (ClientT m)
+ClientT m a -&gt; (a -&gt; ClientT m b) -&gt; ClientT m b
+ClientT m a -&gt; ClientT m b -&gt; ClientT m b
+forall a. a -&gt; ClientT m a
+forall a b. ClientT m a -&gt; ClientT m b -&gt; ClientT m b
+forall a b. ClientT m a -&gt; (a -&gt; ClientT m b) -&gt; ClientT m b
+forall (m :: Type -&gt; Type). Monad m =&gt; Applicative (ClientT m)
+forall (m :: Type -&gt; Type) a. Monad m =&gt; a -&gt; ClientT m a
+forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+ClientT m a -&gt; ClientT m b -&gt; ClientT m b
+forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+ClientT m a -&gt; (a -&gt; ClientT m b) -&gt; ClientT m b
+forall (m :: Type -&gt; Type).
+Applicative m
+-&gt; (forall a b. m a -&gt; (a -&gt; m b) -&gt; m b)
+-&gt; (forall a b. m a -&gt; m b -&gt; m b)
+-&gt; (forall a. a -&gt; m a)
+-&gt; Monad m
+return :: a -&gt; ClientT m a
+$creturn :: forall (m :: Type -&gt; Type) a. Monad m =&gt; a -&gt; ClientT m a
+&gt;&gt; :: ClientT m a -&gt; ClientT m b -&gt; ClientT m b
+$c&gt;&gt; :: forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+ClientT m a -&gt; ClientT m b -&gt; ClientT m b
+&gt;&gt;= :: ClientT m a -&gt; (a -&gt; ClientT m b) -&gt; ClientT m b
+$c&gt;&gt;= :: forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+ClientT m a -&gt; (a -&gt; ClientT m b) -&gt; ClientT m b
+$cp1Monad :: forall (m :: Type -&gt; Type). Monad m =&gt; Applicative (ClientT m)
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Monad</span></a></span></span></span></span><span class="hs-special">,</span><span>
+</span><span id="line-63"></span><span>      </span><span id="local-6989586621679848543"><span class="annot"><span class="annottext">Monad (ClientT m)
+Monad (ClientT m)
+-&gt; (forall a. IO a -&gt; ClientT m a) -&gt; MonadIO (ClientT m)
+IO a -&gt; ClientT m a
+forall a. IO a -&gt; ClientT m a
+forall (m :: Type -&gt; Type).
+Monad m -&gt; (forall a. IO a -&gt; m a) -&gt; MonadIO m
+forall (m :: Type -&gt; Type). MonadIO m =&gt; Monad (ClientT m)
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; ClientT m a
+liftIO :: IO a -&gt; ClientT m a
+$cliftIO :: forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; ClientT m a
+$cp1MonadIO :: forall (m :: Type -&gt; Type). MonadIO m =&gt; Monad (ClientT m)
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadIO</span></a></span></span><span class="hs-special">,</span><span>
+</span><span id="line-64"></span><span>      </span><span id="local-6989586621679848539"><span class="annot"><span class="annottext">Monad (ClientT m)
+e -&gt; ClientT m a
+Monad (ClientT m)
+-&gt; (forall e a. Exception e =&gt; e -&gt; ClientT m a)
+-&gt; MonadThrow (ClientT m)
+forall e a. Exception e =&gt; e -&gt; ClientT m a
+forall (m :: Type -&gt; Type).
+Monad m -&gt; (forall e a. Exception e =&gt; e -&gt; m a) -&gt; MonadThrow m
+forall (m :: Type -&gt; Type). MonadThrow m =&gt; Monad (ClientT m)
+forall (m :: Type -&gt; Type) e a.
+(MonadThrow m, Exception e) =&gt;
+e -&gt; ClientT m a
+throwM :: e -&gt; ClientT m a
+$cthrowM :: forall (m :: Type -&gt; Type) e a.
+(MonadThrow m, Exception e) =&gt;
+e -&gt; ClientT m a
+$cp1MonadThrow :: forall (m :: Type -&gt; Type). MonadThrow m =&gt; Monad (ClientT m)
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/exceptions-0.10.4/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadThrow</span></a></span></span><span class="hs-special">,</span><span>
+</span><span id="line-65"></span><span>      </span><span id="local-6989586621679848535"><span class="annot"><span class="annottext">MonadThrow (ClientT m)
+MonadThrow (ClientT m)
+-&gt; (forall e a.
+    Exception e =&gt;
+    ClientT m a -&gt; (e -&gt; ClientT m a) -&gt; ClientT m a)
+-&gt; MonadCatch (ClientT m)
+ClientT m a -&gt; (e -&gt; ClientT m a) -&gt; ClientT m a
+forall e a.
+Exception e =&gt;
+ClientT m a -&gt; (e -&gt; ClientT m a) -&gt; ClientT m a
+forall (m :: Type -&gt; Type).
+MonadThrow m
+-&gt; (forall e a. Exception e =&gt; m a -&gt; (e -&gt; m a) -&gt; m a)
+-&gt; MonadCatch m
+forall (m :: Type -&gt; Type). MonadCatch m =&gt; MonadThrow (ClientT m)
+forall (m :: Type -&gt; Type) e a.
+(MonadCatch m, Exception e) =&gt;
+ClientT m a -&gt; (e -&gt; ClientT m a) -&gt; ClientT m a
+catch :: ClientT m a -&gt; (e -&gt; ClientT m a) -&gt; ClientT m a
+$ccatch :: forall (m :: Type -&gt; Type) e a.
+(MonadCatch m, Exception e) =&gt;
+ClientT m a -&gt; (e -&gt; ClientT m a) -&gt; ClientT m a
+$cp1MonadCatch :: forall (m :: Type -&gt; Type). MonadCatch m =&gt; MonadThrow (ClientT m)
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/exceptions-0.10.4/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadCatch</span></a></span></span><span class="hs-special">,</span><span>
+</span><span id="line-66"></span><span>      </span><span id="local-6989586621679848527"><span id="local-6989586621679848529"><span id="local-6989586621679848531"><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier hs-type">MonadReader</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/8yay48hxild8d4lq0196w5imn8il6gxn-servant-client-0.18.2-doc/share/doc/servant-client-0.18.2/html/src"><span class="hs-identifier hs-type">ClientEnv</span></a></span></span></span></span><span class="hs-special">,</span><span>
+</span><span id="line-67"></span><span>      </span><span id="local-6989586621679848521"><span id="local-6989586621679848523"><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier hs-type">MonadError</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-type">ClientError</span></a></span></span></span><span class="hs-special">,</span><span>
+</span><span id="line-68"></span><span>      </span><span id="local-6989586621679848514"><span class="annot"><a href="../file:///nix/store/pmrs94cz0n2z4fc7jvlzm6hd4qkxzzdc-transformers-base-0.4.5.2-doc/share/doc/transformers-base-0.4.5.2/html/src"><span class="hs-identifier hs-type">MonadBase</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848572"><span class="hs-identifier hs-type">b</span></a></span></span><span class="hs-special">,</span><span>
+</span><span id="line-69"></span><span>      </span><span id="local-6989586621679848508"><span id="local-6989586621679848510"><span class="annot"><a href="../file:///nix/store/x1h7znw5kbj4n7izfb4n551nca5pvbc5-monad-control-1.0.2.3-doc/share/doc/monad-control-1.0.2.3/html/src"><span class="hs-identifier hs-type">MonadBaseControl</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848571"><span class="hs-identifier hs-type">b</span></a></span></span></span><span>
+</span><span id="line-70"></span><span>    </span><span class="hs-special">)</span><span>
+</span><span id="line-71"></span><span>
+</span><span id="line-72"></span><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-type">MonadTrans</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-73"></span><span>  </span><span id="local-6989586621679848504"><span class="annot"><span class="annottext">lift :: m a -&gt; ClientT m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">lift</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ReaderT ClientEnv (ExceptT ClientError m) a -&gt; ClientT m a
+forall (m :: Type -&gt; Type) a.
+ReaderT ClientEnv (ExceptT ClientError m) a -&gt; ClientT m a
+</span><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-var">ClientT</span></a></span><span> </span><span class="annot"><span class="annottext">(ReaderT ClientEnv (ExceptT ClientError m) a -&gt; ClientT m a)
+-&gt; (m a -&gt; ReaderT ClientEnv (ExceptT ClientError m) a)
+-&gt; m a
+-&gt; ClientT m a
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">ExceptT ClientError m a
+-&gt; ReaderT ClientEnv (ExceptT ClientError m) a
+forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
+(MonadTrans t, Monad m) =&gt;
+m a -&gt; t m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-var">lift</span></a></span><span> </span><span class="annot"><span class="annottext">(ExceptT ClientError m a
+ -&gt; ReaderT ClientEnv (ExceptT ClientError m) a)
+-&gt; (m a -&gt; ExceptT ClientError m a)
+-&gt; m a
+-&gt; ReaderT ClientEnv (ExceptT ClientError m) a
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">m a -&gt; ExceptT ClientError m a
+forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
+(MonadTrans t, Monad m) =&gt;
+m a -&gt; t m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-var">lift</span></a></span><span>
+</span><span id="line-74"></span><span>
+</span><span id="line-75"></span><span class="hs-comment">-- | Executes a computation in the client monad.</span><span>
+</span><span id="line-76"></span><span id="local-6989586621679848605"><span id="local-6989586621679848606"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#runClientT"><span class="hs-identifier hs-type">runClientT</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///nix/store/8yay48hxild8d4lq0196w5imn8il6gxn-servant-client-0.18.2-doc/share/doc/servant-client-0.18.2/html/src"><span class="hs-identifier hs-type">ClientEnv</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848606"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848605"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848606"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Either</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-type">ClientError</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848605"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span></span><span>
+</span><span id="line-77"></span><span id="runClientT"><span class="annot"><span class="annottext">runClientT :: ClientEnv -&gt; ClientT m a -&gt; m (Either ClientError a)
+</span><a href="Web.Pixiv.Types.PixivT.html#runClientT"><span class="hs-identifier hs-var hs-var">runClientT</span></a></span></span><span> </span><span id="local-6989586621679848501"><span class="annot"><span class="annottext">ClientEnv
+</span><a href="#local-6989586621679848501"><span class="hs-identifier hs-var">env</span></a></span></span><span> </span><span id="local-6989586621679848500"><span class="annot"><span class="annottext">ClientT m a
+</span><a href="#local-6989586621679848500"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-78"></span><span>  </span><span class="annot"><span class="annottext">ClientT m a
+</span><a href="#local-6989586621679848500"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><span id="line-79"></span><span>    </span><span class="annot"><span class="annottext">ClientT m a
+-&gt; (ClientT m a -&gt; ReaderT ClientEnv (ExceptT ClientError m) a)
+-&gt; ReaderT ClientEnv (ExceptT ClientError m) a
+forall a b. a -&gt; (a -&gt; b) -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&amp;</span></a></span><span> </span><span class="annot"><span class="annottext">ClientT m a -&gt; ReaderT ClientEnv (ExceptT ClientError m) a
+forall (m :: Type -&gt; Type) a.
+ClientT m a -&gt; ReaderT ClientEnv (ExceptT ClientError m) a
+</span><a href="Web.Pixiv.Types.PixivT.html#unClientT"><span class="hs-identifier hs-var hs-var">unClientT</span></a></span><span>
+</span><span id="line-80"></span><span>    </span><span class="annot"><span class="annottext">ReaderT ClientEnv (ExceptT ClientError m) a
+-&gt; (ReaderT ClientEnv (ExceptT ClientError m) a
+    -&gt; ExceptT ClientError m a)
+-&gt; ExceptT ClientError m a
+forall a b. a -&gt; (a -&gt; b) -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&amp;</span></a></span><span> </span><span class="annot"><span class="annottext">(ReaderT ClientEnv (ExceptT ClientError m) a
+ -&gt; ClientEnv -&gt; ExceptT ClientError m a)
+-&gt; ClientEnv
+-&gt; ReaderT ClientEnv (ExceptT ClientError m) a
+-&gt; ExceptT ClientError m a
+forall a b c. (a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">flip</span></a></span><span> </span><span class="annot"><span class="annottext">ReaderT ClientEnv (ExceptT ClientError m) a
+-&gt; ClientEnv -&gt; ExceptT ClientError m a
+forall r (m :: Type -&gt; Type) a. ReaderT r m a -&gt; r -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-var hs-var">runReaderT</span></a></span><span> </span><span class="annot"><span class="annottext">ClientEnv
+</span><a href="#local-6989586621679848501"><span class="hs-identifier hs-var">env</span></a></span><span>
+</span><span id="line-81"></span><span>    </span><span class="annot"><span class="annottext">ExceptT ClientError m a
+-&gt; (ExceptT ClientError m a -&gt; m (Either ClientError a))
+-&gt; m (Either ClientError a)
+forall a b. a -&gt; (a -&gt; b) -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&amp;</span></a></span><span> </span><span class="annot"><span class="annottext">ExceptT ClientError m a -&gt; m (Either ClientError a)
+forall e (m :: Type -&gt; Type) a. ExceptT e m a -&gt; m (Either e a)
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-var">runExceptT</span></a></span><span>
+</span><span id="line-82"></span><span>
+</span><span id="line-83"></span><span id="local-6989586621679848496"><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">MonadIO</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848496"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-type">RunClient</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848496"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-84"></span><span>  </span><span id="local-6989586621679848491"><span class="annot"><span class="annottext">throwClientError :: ClientError -&gt; ClientT m a
+</span><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">throwClientError</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ClientError -&gt; ClientT m a
+forall e (m :: Type -&gt; Type) a. MonadError e m =&gt; e -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier hs-var">throwError</span></a></span><span>
+</span><span id="line-85"></span><span>  </span><span id="local-6989586621679848488"><span class="annot"><span class="annottext">runRequestAcceptStatus :: Maybe [Status] -&gt; Request -&gt; ClientT m Response
+</span><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">runRequestAcceptStatus</span></a></span></span><span> </span><span id="local-6989586621679848486"><span class="annot"><span class="annottext">Maybe [Status]
+</span><a href="#local-6989586621679848486"><span class="hs-identifier hs-var">status</span></a></span></span><span> </span><span id="local-6989586621679848485"><span class="annot"><span class="annottext">Request
+</span><a href="#local-6989586621679848485"><span class="hs-identifier hs-var">req</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-86"></span><span>    </span><span id="local-6989586621679848484"><span class="annot"><span class="annottext">ClientEnv
+</span><a href="#local-6989586621679848484"><span class="hs-identifier hs-var">env</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">ClientT m ClientEnv
+forall r (m :: Type -&gt; Type). MonadReader r m =&gt; m r
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier hs-var">ask</span></a></span><span>
+</span><span id="line-87"></span><span>    </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679848482"><span class="annot"><span class="annottext">m :: ClientM Response
+</span><a href="#local-6989586621679848482"><span class="hs-identifier hs-var hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Maybe [Status] -&gt; Request -&gt; ClientM Response
+</span><a href="../file:///nix/store/8yay48hxild8d4lq0196w5imn8il6gxn-servant-client-0.18.2-doc/share/doc/servant-client-0.18.2/html/src"><span class="hs-identifier hs-var">performRequest</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe [Status]
+</span><a href="#local-6989586621679848486"><span class="hs-identifier hs-var">status</span></a></span><span> </span><span class="annot"><span class="annottext">Request
+</span><a href="#local-6989586621679848485"><span class="hs-identifier hs-var">req</span></a></span><span>
+</span><span id="line-88"></span><span>    </span><span id="local-6989586621679848480"><span class="annot"><span class="annottext">Either ClientError Response
+</span><a href="#local-6989586621679848480"><span class="hs-identifier hs-var">res</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO (Either ClientError Response)
+-&gt; ClientT m (Either ClientError Response)
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">liftIO</span></a></span><span> </span><span class="annot"><span class="annottext">(IO (Either ClientError Response)
+ -&gt; ClientT m (Either ClientError Response))
+-&gt; IO (Either ClientError Response)
+-&gt; ClientT m (Either ClientError Response)
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">ClientM Response -&gt; ClientEnv -&gt; IO (Either ClientError Response)
+forall a. ClientM a -&gt; ClientEnv -&gt; IO (Either ClientError a)
+</span><a href="../file:///nix/store/8yay48hxild8d4lq0196w5imn8il6gxn-servant-client-0.18.2-doc/share/doc/servant-client-0.18.2/html/src"><span class="hs-identifier hs-var">runClientM</span></a></span><span> </span><span class="annot"><span class="annottext">ClientM Response
+</span><a href="#local-6989586621679848482"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="annot"><span class="annottext">ClientEnv
+</span><a href="#local-6989586621679848484"><span class="hs-identifier hs-var">env</span></a></span><span>
+</span><span id="line-89"></span><span>    </span><span class="annot"><span class="annottext">Either ClientError Response -&gt; ClientT m Response
+forall e (m :: Type -&gt; Type) a. MonadError e m =&gt; Either e a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier hs-var">liftEither</span></a></span><span> </span><span class="annot"><span class="annottext">Either ClientError Response
+</span><a href="#local-6989586621679848480"><span class="hs-identifier hs-var">res</span></a></span></span><span>
+</span><span id="line-90"></span><span>
+</span><span id="line-91"></span><span class="hs-comment">-- | Given 'Manager', creates a 'ClientEnv' using @&quot;https://app-api.pixiv.net&quot;@ as base url.</span><span>
+</span><span id="line-92"></span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#mkDefaultClientEnv"><span class="hs-identifier hs-type">mkDefaultClientEnv</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///nix/store/q154lh8gnk0296vcdn0362im65lndldy-http-client-0.6.4.1-doc/share/doc/http-client-0.6.4.1/html/src"><span class="hs-identifier hs-type">Manager</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">IO</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/8yay48hxild8d4lq0196w5imn8il6gxn-servant-client-0.18.2-doc/share/doc/servant-client-0.18.2/html/src"><span class="hs-identifier hs-type">ClientEnv</span></a></span><span>
+</span><span id="line-93"></span><span id="mkDefaultClientEnv"><span class="annot"><span class="annottext">mkDefaultClientEnv :: Manager -&gt; IO ClientEnv
+</span><a href="Web.Pixiv.Types.PixivT.html#mkDefaultClientEnv"><span class="hs-identifier hs-var hs-var">mkDefaultClientEnv</span></a></span></span><span> </span><span id="local-6989586621679848475"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679848475"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-94"></span><span>  </span><span id="local-6989586621679848474"><span class="annot"><span class="annottext">BaseUrl
+</span><a href="#local-6989586621679848474"><span class="hs-identifier hs-var">baseUrl</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">String -&gt; IO BaseUrl
+forall (m :: Type -&gt; Type). MonadThrow m =&gt; String -&gt; m BaseUrl
+</span><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-var">parseBaseUrl</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-string">&quot;https://app-api.pixiv.net&quot;</span></span><span>
+</span><span id="line-95"></span><span>  </span><span class="annot"><span class="annottext">ClientEnv -&gt; IO ClientEnv
+forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">pure</span></a></span><span> </span><span class="annot"><span class="annottext">(ClientEnv -&gt; IO ClientEnv) -&gt; ClientEnv -&gt; IO ClientEnv
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">Manager -&gt; BaseUrl -&gt; ClientEnv
+</span><a href="../file:///nix/store/8yay48hxild8d4lq0196w5imn8il6gxn-servant-client-0.18.2-doc/share/doc/servant-client-0.18.2/html/src"><span class="hs-identifier hs-var">mkClientEnv</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679848475"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">BaseUrl
+</span><a href="#local-6989586621679848474"><span class="hs-identifier hs-var">baseUrl</span></a></span><span>
+</span><span id="line-96"></span><span>
+</span><span id="line-97"></span><span class="hs-comment">-- | Pixiv auth state.</span><span>
+</span><span id="line-98"></span><span id="local-6989586621679848470"><span id="local-6989586621679848471"></span></span><span class="hs-keyword">data</span><span> </span><span id="TokenState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-var">TokenState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="TokenState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-var">TokenState</span></a></span></span><span>
+</span><span id="line-99"></span><span>  </span><span class="hs-special">{</span><span> </span><span class="hs-comment">-- | Token to access pixiv api.</span><span>
+</span><span id="line-100"></span><span>    </span><span id="accessToken"><span class="annot"><span class="annottext">TokenState -&gt; Token
+</span><a href="Web.Pixiv.Types.PixivT.html#accessToken"><span class="hs-identifier hs-var hs-var">accessToken</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-101"></span><span>    </span><span class="hs-comment">-- | Token to obtain new 'accessToken' without giving username and password.</span><span>
+</span><span id="line-102"></span><span>    </span><span id="refreshToken"><span class="annot"><span class="annottext">TokenState -&gt; Token
+</span><a href="Web.Pixiv.Types.PixivT.html#refreshToken"><span class="hs-identifier hs-var hs-var">refreshToken</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-103"></span><span>    </span><span class="hs-comment">-- | Time stamp when /both/ 'accessToken' and 'refreshToken' are invalid.</span><span>
+</span><span id="line-104"></span><span>    </span><span id="expirationTime"><span class="annot"><span class="annottext">TokenState -&gt; UTCTime
+</span><a href="Web.Pixiv.Types.PixivT.html#expirationTime"><span class="hs-identifier hs-var hs-var">expirationTime</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/time-1.9.3/src"><span class="hs-identifier hs-type">UTCTime</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-105"></span><span>    </span><span id="manager"><span class="annot"><span class="annottext">TokenState -&gt; Manager
+</span><a href="Web.Pixiv.Types.PixivT.html#manager"><span class="hs-identifier hs-var hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///nix/store/q154lh8gnk0296vcdn0362im65lndldy-http-client-0.6.4.1-doc/share/doc/http-client-0.6.4.1/html/src"><span class="hs-identifier hs-type">Manager</span></a></span><span>
+</span><span id="line-106"></span><span>  </span><span class="hs-special">}</span><span>
+</span><span id="line-107"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(forall x. TokenState -&gt; Rep TokenState x)
+-&gt; (forall x. Rep TokenState x -&gt; TokenState) -&gt; Generic TokenState
+forall x. Rep TokenState x -&gt; TokenState
+forall x. TokenState -&gt; Rep TokenState x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cto :: forall x. Rep TokenState x -&gt; TokenState
+$cfrom :: forall x. TokenState -&gt; Rep TokenState x
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-108"></span><span>
+</span><span id="line-109"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679848457"><span id="local-6989586621679848459"><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Show</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-110"></span><span>  </span><span id="local-6989586621679848455"><span class="annot"><span class="annottext">showsPrec :: Int -&gt; TokenState -&gt; ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">showsPrec</span></a></span></span><span> </span><span id="local-6989586621679848453"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679848453"><span class="hs-identifier hs-var">d</span></a></span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679848449"><span id="local-6989586621679848450"><span id="local-6989586621679848451"><span id="local-6989586621679848452"><span class="annot"><span class="annottext">UTCTime
+Manager
+Token
+manager :: Manager
+expirationTime :: UTCTime
+refreshToken :: Token
+accessToken :: Token
+manager :: TokenState -&gt; Manager
+expirationTime :: TokenState -&gt; UTCTime
+refreshToken :: TokenState -&gt; Token
+accessToken :: TokenState -&gt; Token
+</span><a href="#local-6989586621679848449"><span class="hs-glyph hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">..</span></a></span></span></span></span></span><span class="hs-special">}</span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-111"></span><span>    </span><span class="annot"><span class="annottext">Bool -&gt; ShowS -&gt; ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">showParen</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679848453"><span class="hs-identifier hs-var">d</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Bool
+forall a. Ord a =&gt; a -&gt; a -&gt; Bool
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">&gt;=</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><span class="hs-number">11</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(ShowS -&gt; ShowS) -&gt; ShowS -&gt; ShowS
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span>
+</span><span id="line-112"></span><span>      </span><span class="annot"><span class="annottext">String -&gt; ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">showString</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-string">&quot;TokenState {&quot;</span></span><span>
+</span><span id="line-113"></span><span>        </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">showString</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-string">&quot;accessToken = &quot;</span></span><span>
+</span><span id="line-114"></span><span>        </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">Token -&gt; ShowS
+forall a. Show a =&gt; a -&gt; ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">shows</span></a></span><span> </span><span class="annot"><span class="annottext">Token
+</span><a href="#local-6989586621679848452"><span class="hs-identifier hs-var">accessToken</span></a></span><span>
+</span><span id="line-115"></span><span>        </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">showCommaSpace</span></a></span><span>
+</span><span id="line-116"></span><span>        </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">showString</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-string">&quot;refreshToken = &quot;</span></span><span>
+</span><span id="line-117"></span><span>        </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">Token -&gt; ShowS
+forall a. Show a =&gt; a -&gt; ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">shows</span></a></span><span> </span><span class="annot"><span class="annottext">Token
+</span><a href="#local-6989586621679848451"><span class="hs-identifier hs-var">refreshToken</span></a></span><span>
+</span><span id="line-118"></span><span>        </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">showCommaSpace</span></a></span><span>
+</span><span id="line-119"></span><span>        </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">showString</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-string">&quot;expirationTime = &quot;</span></span><span>
+</span><span id="line-120"></span><span>        </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime -&gt; ShowS
+forall a. Show a =&gt; a -&gt; ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">shows</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679848450"><span class="hs-identifier hs-var">expirationTime</span></a></span><span>
+</span><span id="line-121"></span><span>        </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">showString</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-string">&quot;}&quot;</span></span><span>
+</span><span id="line-122"></span><span>
+</span><span id="line-123"></span><span class="hs-comment">-- | State stored in 'MonadPixiv'.</span><span>
+</span><span id="line-124"></span><span id="local-6989586621679848444"><span id="local-6989586621679848445"></span></span><span class="hs-keyword">data</span><span> </span><span id="PixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-var">PixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="PixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-var">PixivState</span></a></span></span><span>
+</span><span id="line-125"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="tokenState"><span class="annot"><span class="annottext">PixivState -&gt; TokenState
+</span><a href="Web.Pixiv.Types.PixivT.html#tokenState"><span class="hs-identifier hs-var hs-var">tokenState</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-126"></span><span>    </span><span id="acceptLanguage"><span class="annot"><span class="annottext">PixivState -&gt; Maybe Text
+</span><a href="Web.Pixiv.Types.PixivT.html#acceptLanguage"><span class="hs-identifier hs-var hs-var">acceptLanguage</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Maybe</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/text-1.2.4.1/src"><span class="hs-identifier hs-type">Text</span></a></span><span>
+</span><span id="line-127"></span><span>  </span><span class="hs-special">}</span><span>
+</span><span id="line-128"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(forall x. PixivState -&gt; Rep PixivState x)
+-&gt; (forall x. Rep PixivState x -&gt; PixivState) -&gt; Generic PixivState
+forall x. Rep PixivState x -&gt; PixivState
+forall x. PixivState -&gt; Rep PixivState x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+$cto :: forall x. Rep PixivState x -&gt; PixivState
+$cfrom :: forall x. PixivState -&gt; Rep PixivState x
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679848433"><span id="local-6989586621679848435"><span id="local-6989586621679848437"><span class="annot"><span class="annottext">Int -&gt; PixivState -&gt; ShowS
+[PixivState] -&gt; ShowS
+PixivState -&gt; String
+(Int -&gt; PixivState -&gt; ShowS)
+-&gt; (PixivState -&gt; String)
+-&gt; ([PixivState] -&gt; ShowS)
+-&gt; Show PixivState
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+showList :: [PixivState] -&gt; ShowS
+$cshowList :: [PixivState] -&gt; ShowS
+show :: PixivState -&gt; String
+$cshow :: PixivState -&gt; String
+showsPrec :: Int -&gt; PixivState -&gt; ShowS
+$cshowsPrec :: Int -&gt; PixivState -&gt; ShowS
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></a></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-129"></span><span>
+</span><span id="line-130"></span><span class="hs-comment">-- | A thread safe implementation of 'MonadPixiv'.</span><span>
+</span><span id="line-131"></span><span id="local-6989586621679848431"><span id="local-6989586621679848432"></span></span><span class="hs-keyword">newtype</span><span> </span><span id="PixivT"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-var">PixivT</span></a></span></span><span> </span><span id="local-6989586621679848631"><span class="annot"><a href="#local-6989586621679848631"><span class="hs-identifier hs-type">m</span></a></span></span><span> </span><span id="local-6989586621679848630"><span class="annot"><a href="#local-6989586621679848630"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="PixivT"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-var">PixivT</span></a></span></span><span>
+</span><span id="line-132"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="unPixivT"><span class="annot"><span class="annottext">PixivT m a -&gt; ReaderT (MVar PixivState) (ClientT m) a
+</span><a href="Web.Pixiv.Types.PixivT.html#unPixivT"><span class="hs-identifier hs-var hs-var">unPixivT</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-type">ReaderT</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">MVar</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848631"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><a href="#local-6989586621679848630"><span class="hs-identifier hs-type">a</span></a></span><span>
+</span><span id="line-133"></span><span>  </span><span class="hs-special">}</span><span>
+</span><span id="line-134"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">newtype</span></span><span>
+</span><span id="line-135"></span><span>    </span><span class="hs-special">(</span><span> </span><span id="local-6989586621679848425"><span id="local-6989586621679848427"><span class="annot"><span class="annottext">a -&gt; PixivT m b -&gt; PixivT m a
+(a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b
+(forall a b. (a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b)
+-&gt; (forall a b. a -&gt; PixivT m b -&gt; PixivT m a)
+-&gt; Functor (PixivT m)
+forall a b. a -&gt; PixivT m b -&gt; PixivT m a
+forall a b. (a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b
+forall (m :: Type -&gt; Type) a b.
+Functor m =&gt;
+a -&gt; PixivT m b -&gt; PixivT m a
+forall (m :: Type -&gt; Type) a b.
+Functor m =&gt;
+(a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b
+forall (f :: Type -&gt; Type).
+(forall a b. (a -&gt; b) -&gt; f a -&gt; f b)
+-&gt; (forall a b. a -&gt; f b -&gt; f a) -&gt; Functor f
+&lt;$ :: a -&gt; PixivT m b -&gt; PixivT m a
+$c&lt;$ :: forall (m :: Type -&gt; Type) a b.
+Functor m =&gt;
+a -&gt; PixivT m b -&gt; PixivT m a
+fmap :: (a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b
+$cfmap :: forall (m :: Type -&gt; Type) a b.
+Functor m =&gt;
+(a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Functor</span></a></span></span></span><span class="hs-special">,</span><span>
+</span><span id="line-136"></span><span>      </span><span id="local-6989586621679848414"><span id="local-6989586621679848416"><span id="local-6989586621679848418"><span id="local-6989586621679848420"><span id="local-6989586621679848422"><span class="annot"><span class="annottext">Functor (PixivT m)
+a -&gt; PixivT m a
+Functor (PixivT m)
+-&gt; (forall a. a -&gt; PixivT m a)
+-&gt; (forall a b. PixivT m (a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b)
+-&gt; (forall a b c.
+    (a -&gt; b -&gt; c) -&gt; PixivT m a -&gt; PixivT m b -&gt; PixivT m c)
+-&gt; (forall a b. PixivT m a -&gt; PixivT m b -&gt; PixivT m b)
+-&gt; (forall a b. PixivT m a -&gt; PixivT m b -&gt; PixivT m a)
+-&gt; Applicative (PixivT m)
+PixivT m a -&gt; PixivT m b -&gt; PixivT m b
+PixivT m a -&gt; PixivT m b -&gt; PixivT m a
+PixivT m (a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b
+(a -&gt; b -&gt; c) -&gt; PixivT m a -&gt; PixivT m b -&gt; PixivT m c
+forall a. a -&gt; PixivT m a
+forall a b. PixivT m a -&gt; PixivT m b -&gt; PixivT m a
+forall a b. PixivT m a -&gt; PixivT m b -&gt; PixivT m b
+forall a b. PixivT m (a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b
+forall a b c.
+(a -&gt; b -&gt; c) -&gt; PixivT m a -&gt; PixivT m b -&gt; PixivT m c
+forall (m :: Type -&gt; Type). Monad m =&gt; Functor (PixivT m)
+forall (m :: Type -&gt; Type) a. Monad m =&gt; a -&gt; PixivT m a
+forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+PixivT m a -&gt; PixivT m b -&gt; PixivT m a
+forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+PixivT m a -&gt; PixivT m b -&gt; PixivT m b
+forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+PixivT m (a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b
+forall (m :: Type -&gt; Type) a b c.
+Monad m =&gt;
+(a -&gt; b -&gt; c) -&gt; PixivT m a -&gt; PixivT m b -&gt; PixivT m c
+forall (f :: Type -&gt; Type).
+Functor f
+-&gt; (forall a. a -&gt; f a)
+-&gt; (forall a b. f (a -&gt; b) -&gt; f a -&gt; f b)
+-&gt; (forall a b c. (a -&gt; b -&gt; c) -&gt; f a -&gt; f b -&gt; f c)
+-&gt; (forall a b. f a -&gt; f b -&gt; f b)
+-&gt; (forall a b. f a -&gt; f b -&gt; f a)
+-&gt; Applicative f
+&lt;* :: PixivT m a -&gt; PixivT m b -&gt; PixivT m a
+$c&lt;* :: forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+PixivT m a -&gt; PixivT m b -&gt; PixivT m a
+*&gt; :: PixivT m a -&gt; PixivT m b -&gt; PixivT m b
+$c*&gt; :: forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+PixivT m a -&gt; PixivT m b -&gt; PixivT m b
+liftA2 :: (a -&gt; b -&gt; c) -&gt; PixivT m a -&gt; PixivT m b -&gt; PixivT m c
+$cliftA2 :: forall (m :: Type -&gt; Type) a b c.
+Monad m =&gt;
+(a -&gt; b -&gt; c) -&gt; PixivT m a -&gt; PixivT m b -&gt; PixivT m c
+&lt;*&gt; :: PixivT m (a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b
+$c&lt;*&gt; :: forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+PixivT m (a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b
+pure :: a -&gt; PixivT m a
+$cpure :: forall (m :: Type -&gt; Type) a. Monad m =&gt; a -&gt; PixivT m a
+$cp1Applicative :: forall (m :: Type -&gt; Type). Monad m =&gt; Functor (PixivT m)
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Applicative</span></a></span></span></span></span></span></span><span class="hs-special">,</span><span>
+</span><span id="line-137"></span><span>      </span><span id="local-6989586621679848407"><span id="local-6989586621679848409"><span id="local-6989586621679848411"><span class="annot"><span class="annottext">Applicative (PixivT m)
+a -&gt; PixivT m a
+Applicative (PixivT m)
+-&gt; (forall a b. PixivT m a -&gt; (a -&gt; PixivT m b) -&gt; PixivT m b)
+-&gt; (forall a b. PixivT m a -&gt; PixivT m b -&gt; PixivT m b)
+-&gt; (forall a. a -&gt; PixivT m a)
+-&gt; Monad (PixivT m)
+PixivT m a -&gt; (a -&gt; PixivT m b) -&gt; PixivT m b
+PixivT m a -&gt; PixivT m b -&gt; PixivT m b
+forall a. a -&gt; PixivT m a
+forall a b. PixivT m a -&gt; PixivT m b -&gt; PixivT m b
+forall a b. PixivT m a -&gt; (a -&gt; PixivT m b) -&gt; PixivT m b
+forall (m :: Type -&gt; Type). Monad m =&gt; Applicative (PixivT m)
+forall (m :: Type -&gt; Type) a. Monad m =&gt; a -&gt; PixivT m a
+forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+PixivT m a -&gt; PixivT m b -&gt; PixivT m b
+forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+PixivT m a -&gt; (a -&gt; PixivT m b) -&gt; PixivT m b
+forall (m :: Type -&gt; Type).
+Applicative m
+-&gt; (forall a b. m a -&gt; (a -&gt; m b) -&gt; m b)
+-&gt; (forall a b. m a -&gt; m b -&gt; m b)
+-&gt; (forall a. a -&gt; m a)
+-&gt; Monad m
+return :: a -&gt; PixivT m a
+$creturn :: forall (m :: Type -&gt; Type) a. Monad m =&gt; a -&gt; PixivT m a
+&gt;&gt; :: PixivT m a -&gt; PixivT m b -&gt; PixivT m b
+$c&gt;&gt; :: forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+PixivT m a -&gt; PixivT m b -&gt; PixivT m b
+&gt;&gt;= :: PixivT m a -&gt; (a -&gt; PixivT m b) -&gt; PixivT m b
+$c&gt;&gt;= :: forall (m :: Type -&gt; Type) a b.
+Monad m =&gt;
+PixivT m a -&gt; (a -&gt; PixivT m b) -&gt; PixivT m b
+$cp1Monad :: forall (m :: Type -&gt; Type). Monad m =&gt; Applicative (PixivT m)
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Monad</span></a></span></span></span></span><span class="hs-special">,</span><span>
+</span><span id="line-138"></span><span>      </span><span id="local-6989586621679848404"><span class="annot"><span class="annottext">Monad (PixivT m)
+Monad (PixivT m)
+-&gt; (forall a. IO a -&gt; PixivT m a) -&gt; MonadIO (PixivT m)
+IO a -&gt; PixivT m a
+forall a. IO a -&gt; PixivT m a
+forall (m :: Type -&gt; Type).
+Monad m -&gt; (forall a. IO a -&gt; m a) -&gt; MonadIO m
+forall (m :: Type -&gt; Type). MonadIO m =&gt; Monad (PixivT m)
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; PixivT m a
+liftIO :: IO a -&gt; PixivT m a
+$cliftIO :: forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; PixivT m a
+$cp1MonadIO :: forall (m :: Type -&gt; Type). MonadIO m =&gt; Monad (PixivT m)
+</span><a href="#local-6989586621679848404"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadIO</span></a></span></span><span class="hs-special">,</span><span>
+</span><span id="line-139"></span><span>      </span><span id="local-6989586621679848401"><span class="annot"><span class="annottext">Monad (PixivT m)
+e -&gt; PixivT m a
+Monad (PixivT m)
+-&gt; (forall e a. Exception e =&gt; e -&gt; PixivT m a)
+-&gt; MonadThrow (PixivT m)
+forall e a. Exception e =&gt; e -&gt; PixivT m a
+forall (m :: Type -&gt; Type).
+Monad m -&gt; (forall e a. Exception e =&gt; e -&gt; m a) -&gt; MonadThrow m
+forall (m :: Type -&gt; Type). MonadThrow m =&gt; Monad (PixivT m)
+forall (m :: Type -&gt; Type) e a.
+(MonadThrow m, Exception e) =&gt;
+e -&gt; PixivT m a
+throwM :: e -&gt; PixivT m a
+$cthrowM :: forall (m :: Type -&gt; Type) e a.
+(MonadThrow m, Exception e) =&gt;
+e -&gt; PixivT m a
+$cp1MonadThrow :: forall (m :: Type -&gt; Type). MonadThrow m =&gt; Monad (PixivT m)
+</span><a href="#local-6989586621679848401"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadThrow</span></a></span></span><span class="hs-special">,</span><span>
+</span><span id="line-140"></span><span>      </span><span id="local-6989586621679848398"><span class="annot"><span class="annottext">MonadThrow (PixivT m)
+MonadThrow (PixivT m)
+-&gt; (forall e a.
+    Exception e =&gt;
+    PixivT m a -&gt; (e -&gt; PixivT m a) -&gt; PixivT m a)
+-&gt; MonadCatch (PixivT m)
+PixivT m a -&gt; (e -&gt; PixivT m a) -&gt; PixivT m a
+forall e a.
+Exception e =&gt;
+PixivT m a -&gt; (e -&gt; PixivT m a) -&gt; PixivT m a
+forall (m :: Type -&gt; Type).
+MonadThrow m
+-&gt; (forall e a. Exception e =&gt; m a -&gt; (e -&gt; m a) -&gt; m a)
+-&gt; MonadCatch m
+forall (m :: Type -&gt; Type). MonadCatch m =&gt; MonadThrow (PixivT m)
+forall (m :: Type -&gt; Type) e a.
+(MonadCatch m, Exception e) =&gt;
+PixivT m a -&gt; (e -&gt; PixivT m a) -&gt; PixivT m a
+catch :: PixivT m a -&gt; (e -&gt; PixivT m a) -&gt; PixivT m a
+$ccatch :: forall (m :: Type -&gt; Type) e a.
+(MonadCatch m, Exception e) =&gt;
+PixivT m a -&gt; (e -&gt; PixivT m a) -&gt; PixivT m a
+$cp1MonadCatch :: forall (m :: Type -&gt; Type). MonadCatch m =&gt; MonadThrow (PixivT m)
+</span><a href="#local-6989586621679848398"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadCatch</span></a></span></span><span class="hs-special">,</span><span>
+</span><span id="line-141"></span><span>      </span><span id="local-6989586621679848391"><span id="local-6989586621679848393"><span id="local-6989586621679848395"><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier hs-type">MonadReader</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">MVar</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span class="hs-special">)</span></span></span></span><span class="hs-special">,</span><span>
+</span><span id="line-142"></span><span>      </span><span id="local-6989586621679848386"><span id="local-6989586621679848388"><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier hs-type">MonadError</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-type">ClientError</span></a></span></span></span><span>
+</span><span id="line-143"></span><span>    </span><span class="hs-special">)</span><span>
+</span><span id="line-144"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(forall x. PixivT m a -&gt; Rep (PixivT m a) x)
+-&gt; (forall x. Rep (PixivT m a) x -&gt; PixivT m a)
+-&gt; Generic (PixivT m a)
+forall x. Rep (PixivT m a) x -&gt; PixivT m a
+forall x. PixivT m a -&gt; Rep (PixivT m a) x
+forall a.
+(forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
+forall (m :: Type -&gt; Type) a x. Rep (PixivT m a) x -&gt; PixivT m a
+forall (m :: Type -&gt; Type) a x. PixivT m a -&gt; Rep (PixivT m a) x
+$cto :: forall (m :: Type -&gt; Type) a x. Rep (PixivT m a) x -&gt; PixivT m a
+$cfrom :: forall (m :: Type -&gt; Type) a x. PixivT m a -&gt; Rep (PixivT m a) x
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-145"></span><span>
+</span><span id="line-146"></span><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-type">MonadTrans</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-147"></span><span>  </span><span id="local-6989586621679848382"><span class="annot"><span class="annottext">lift :: m a -&gt; PixivT m a
+</span><a href="#local-6989586621679848382"><span class="hs-identifier hs-var hs-var hs-var hs-var">lift</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ReaderT (MVar PixivState) (ClientT m) a -&gt; PixivT m a
+forall (m :: Type -&gt; Type) a.
+ReaderT (MVar PixivState) (ClientT m) a -&gt; PixivT m a
+</span><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-var">PixivT</span></a></span><span> </span><span class="annot"><span class="annottext">(ReaderT (MVar PixivState) (ClientT m) a -&gt; PixivT m a)
+-&gt; (m a -&gt; ReaderT (MVar PixivState) (ClientT m) a)
+-&gt; m a
+-&gt; PixivT m a
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">ClientT m a -&gt; ReaderT (MVar PixivState) (ClientT m) a
+forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
+(MonadTrans t, Monad m) =&gt;
+m a -&gt; t m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-var">lift</span></a></span><span> </span><span class="annot"><span class="annottext">(ClientT m a -&gt; ReaderT (MVar PixivState) (ClientT m) a)
+-&gt; (m a -&gt; ClientT m a)
+-&gt; m a
+-&gt; ReaderT (MVar PixivState) (ClientT m) a
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">m a -&gt; ClientT m a
+forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
+(MonadTrans t, Monad m) =&gt;
+m a -&gt; t m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-var">lift</span></a></span><span>
+</span><span id="line-148"></span><span>
+</span><span id="line-149"></span><span id="local-6989586621679848376"><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679848375"><span class="annot"><a href="#local-6989586621679848375"><span class="hs-keyword hs-type">newtype</span></a></span></span><span> </span><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///nix/store/pmrs94cz0n2z4fc7jvlzm6hd4qkxzzdc-transformers-base-0.4.5.2-doc/share/doc/transformers-base-0.4.5.2/html/src"><span class="hs-identifier hs-type">MonadBase</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">IO</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848375"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="../file:///nix/store/pmrs94cz0n2z4fc7jvlzm6hd4qkxzzdc-transformers-base-0.4.5.2-doc/share/doc/transformers-base-0.4.5.2/html/src"><span class="hs-identifier hs-type">MonadBase</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">IO</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848375"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span></span><span>
+</span><span id="line-150"></span><span>
+</span><span id="line-151"></span><span id="local-6989586621679848370"><span id="local-6989586621679848372"><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679848369"><span class="annot"><a href="#local-6989586621679848369"><span class="hs-keyword hs-type">newtype</span></a></span></span><span> </span><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///nix/store/x1h7znw5kbj4n7izfb4n551nca5pvbc5-monad-control-1.0.2.3-doc/share/doc/monad-control-1.0.2.3/html/src"><span class="hs-identifier hs-type">MonadBaseControl</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">IO</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848369"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="../file:///nix/store/x1h7znw5kbj4n7izfb4n551nca5pvbc5-monad-control-1.0.2.3-doc/share/doc/monad-control-1.0.2.3/html/src"><span class="hs-identifier hs-type">MonadBaseControl</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">IO</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848369"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span></span></span><span>
+</span><span id="line-152"></span><span>
+</span><span id="line-153"></span><span class="hs-comment">-- | Lifts a computation in 'ClientT' to 'PixivT'.</span><span>
+</span><span id="line-154"></span><span id="local-6989586621679848619"><span id="local-6989586621679848620"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#liftC"><span class="hs-identifier hs-type">liftC</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Monad</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848620"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848620"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848619"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848620"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848619"><span class="hs-identifier hs-type">a</span></a></span></span></span><span>
+</span><span id="line-155"></span><span id="liftC"><span class="annot"><span class="annottext">liftC :: ClientT m a -&gt; PixivT m a
+</span><a href="Web.Pixiv.Types.PixivT.html#liftC"><span class="hs-identifier hs-var hs-var">liftC</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ReaderT (MVar PixivState) (ClientT m) a -&gt; PixivT m a
+forall (m :: Type -&gt; Type) a.
+ReaderT (MVar PixivState) (ClientT m) a -&gt; PixivT m a
+</span><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-var">PixivT</span></a></span><span> </span><span class="annot"><span class="annottext">(ReaderT (MVar PixivState) (ClientT m) a -&gt; PixivT m a)
+-&gt; (ClientT m a -&gt; ReaderT (MVar PixivState) (ClientT m) a)
+-&gt; ClientT m a
+-&gt; PixivT m a
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">ClientT m a -&gt; ReaderT (MVar PixivState) (ClientT m) a
+forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
+(MonadTrans t, Monad m) =&gt;
+m a -&gt; t m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-var">lift</span></a></span><span>
+</span><span id="line-156"></span><span>
+</span><span id="line-157"></span><span id="local-6989586621679848368"><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">MonadIO</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848368"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-type">RunClient</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848368"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-158"></span><span>  </span><span id="local-6989586621679848364"><span class="annot"><span class="annottext">throwClientError :: ClientError -&gt; PixivT m a
+</span><a href="#local-6989586621679848364"><span class="hs-identifier hs-var hs-var hs-var hs-var">throwClientError</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ClientError -&gt; PixivT m a
+forall e (m :: Type -&gt; Type) a. MonadError e m =&gt; e -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier hs-var">throwError</span></a></span><span>
+</span><span id="line-159"></span><span>  </span><span id="local-6989586621679848363"><span class="annot"><span class="annottext">runRequestAcceptStatus :: Maybe [Status] -&gt; Request -&gt; PixivT m Response
+</span><a href="#local-6989586621679848363"><span class="hs-identifier hs-var hs-var hs-var hs-var">runRequestAcceptStatus</span></a></span></span><span> </span><span id="local-6989586621679848362"><span class="annot"><span class="annottext">Maybe [Status]
+</span><a href="#local-6989586621679848362"><span class="hs-identifier hs-var">status</span></a></span></span><span> </span><span id="local-6989586621679848361"><span class="annot"><span class="annottext">Request
+</span><a href="#local-6989586621679848361"><span class="hs-identifier hs-var">req</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-160"></span><span>    </span><span class="annot"><span class="annottext">ClientT m Response -&gt; PixivT m Response
+forall (m :: Type -&gt; Type) a. Monad m =&gt; ClientT m a -&gt; PixivT m a
+</span><a href="Web.Pixiv.Types.PixivT.html#liftC"><span class="hs-identifier hs-var">liftC</span></a></span><span> </span><span class="annot"><span class="annottext">(ClientT m Response -&gt; PixivT m Response)
+-&gt; ClientT m Response -&gt; PixivT m Response
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe [Status] -&gt; Request -&gt; ClientT m Response
+forall (m :: Type -&gt; Type).
+RunClient m =&gt;
+Maybe [Status] -&gt; Request -&gt; m Response
+</span><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-var">runRequestAcceptStatus</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe [Status]
+</span><a href="#local-6989586621679848362"><span class="hs-identifier hs-var">status</span></a></span><span> </span><span class="annot"><span class="annottext">Request
+</span><a href="#local-6989586621679848361"><span class="hs-identifier hs-var">req</span></a></span></span><span>
+</span><span id="line-161"></span><span>
+</span><span id="line-162"></span><span class="hs-comment">-- | The mtl-style class of pixiv monad.</span><span>
+</span><span id="line-163"></span><span class="hs-keyword">class</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-type">RunClient</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848615"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">MonadIO</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848615"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span id="MonadPixiv"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-var">MonadPixiv</span></a></span></span><span> </span><span id="local-6989586621679848615"><span class="annot"><a href="#local-6989586621679848615"><span class="hs-identifier hs-type">m</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-164"></span><span>  </span><span class="hs-comment">-- | Reads the stored 'PixivState', when used in a multithreaded setting, this should block</span><span>
+</span><span id="line-165"></span><span>  </span><span class="hs-comment">-- all other thread from reading the 'PixivState' until 'putPixivState' is called.</span><span>
+</span><span id="line-166"></span><span>  </span><span id="takePixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#takePixivState"><span class="hs-identifier hs-type">takePixivState</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="#local-6989586621679848615"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span>
+</span><span id="line-167"></span><span>
+</span><span id="line-168"></span><span>  </span><span class="hs-comment">-- | Writes a new 'PixivState'.</span><span>
+</span><span id="line-169"></span><span>  </span><span id="putPixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#putPixivState"><span class="hs-identifier hs-type">putPixivState</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848615"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><span id="line-170"></span><span>
+</span><span id="line-171"></span><span>  </span><span class="hs-comment">-- | Reads the stored 'PixivState', without blocking other threads which want to read this state.</span><span>
+</span><span id="line-172"></span><span>  </span><span class="hs-comment">--</span><span>
+</span><span id="line-173"></span><span>  </span><span class="hs-comment">-- Don't confuse with 'takePixivState', please refer to 'readMVar'.</span><span>
+</span><span id="line-174"></span><span>  </span><span id="readPixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#readPixivState"><span class="hs-identifier hs-type">readPixivState</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="#local-6989586621679848615"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span>
+</span><span id="line-175"></span><span>
+</span><span id="line-176"></span><span id="local-6989586621679848356"><span id="local-6989586621679848357"><span class="hs-keyword">instance</span><span>
+</span><span id="line-177"></span><span>  </span><span class="hs-pragma">{-# OVERLAPPABLE</span><span> </span><span class="hs-pragma">#-}</span><span>
+</span><span id="line-178"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848357"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-179"></span><span>    </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-type">MonadTrans</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848356"><span class="hs-identifier hs-type">f</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-180"></span><span>    </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">MonadIO</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679848356"><span class="hs-identifier hs-type">f</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848357"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-181"></span><span>    </span><span class="annot"><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-type">RunClient</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679848356"><span class="hs-identifier hs-type">f</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848357"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-182"></span><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-183"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679848356"><span class="hs-identifier hs-type">f</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848357"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-184"></span><span>  </span><span class="hs-keyword">where</span><span>
+</span><span id="line-185"></span><span>  </span><span id="local-6989586621679848349"><span class="annot"><span class="annottext">takePixivState :: f m PixivState
+</span><a href="#local-6989586621679848349"><span class="hs-identifier hs-var hs-var hs-var hs-var">takePixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m PixivState -&gt; f m PixivState
+forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
+(MonadTrans t, Monad m) =&gt;
+m a -&gt; t m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-var">lift</span></a></span><span> </span><span class="annot"><span class="annottext">m PixivState
+forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m PixivState
+</span><a href="Web.Pixiv.Types.PixivT.html#takePixivState"><span class="hs-identifier hs-var">takePixivState</span></a></span><span>
+</span><span id="line-186"></span><span>  </span><span id="local-6989586621679848348"><span class="annot"><span class="annottext">putPixivState :: PixivState -&gt; f m ()
+</span><a href="#local-6989586621679848348"><span class="hs-identifier hs-var hs-var hs-var hs-var">putPixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m () -&gt; f m ()
+forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
+(MonadTrans t, Monad m) =&gt;
+m a -&gt; t m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-var">lift</span></a></span><span> </span><span class="annot"><span class="annottext">(m () -&gt; f m ()) -&gt; (PixivState -&gt; m ()) -&gt; PixivState -&gt; f m ()
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">PixivState -&gt; m ()
+forall (m :: Type -&gt; Type). MonadPixiv m =&gt; PixivState -&gt; m ()
+</span><a href="Web.Pixiv.Types.PixivT.html#putPixivState"><span class="hs-identifier hs-var">putPixivState</span></a></span><span>
+</span><span id="line-187"></span><span>  </span><span id="local-6989586621679848347"><span class="annot"><span class="annottext">readPixivState :: f m PixivState
+</span><a href="#local-6989586621679848347"><span class="hs-identifier hs-var hs-var hs-var hs-var">readPixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m PixivState -&gt; f m PixivState
+forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
+(MonadTrans t, Monad m) =&gt;
+m a -&gt; t m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-var">lift</span></a></span><span> </span><span class="annot"><span class="annottext">m PixivState
+forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m PixivState
+</span><a href="Web.Pixiv.Types.PixivT.html#readPixivState"><span class="hs-identifier hs-var">readPixivState</span></a></span></span></span><span>
+</span><span id="line-188"></span><span>
+</span><span id="line-189"></span><span id="local-6989586621679848346"><span class="hs-keyword">instance</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">MonadIO</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848346"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848346"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-190"></span><span>  </span><span id="local-6989586621679848340"><span class="annot"><span class="annottext">takePixivState :: PixivT m PixivState
+</span><a href="#local-6989586621679848340"><span class="hs-identifier hs-var hs-var hs-var hs-var">takePixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
+forall r (m :: Type -&gt; Type). MonadReader r m =&gt; m r
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier hs-var">ask</span></a></span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
+-&gt; (MVar PixivState -&gt; PixivT m PixivState) -&gt; PixivT m PixivState
+forall (m :: Type -&gt; Type) a b. Monad m =&gt; m a -&gt; (a -&gt; m b) -&gt; m b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&gt;&gt;=</span></a></span><span> </span><span class="annot"><span class="annottext">IO PixivState -&gt; PixivT m PixivState
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">liftIO</span></a></span><span> </span><span class="annot"><span class="annottext">(IO PixivState -&gt; PixivT m PixivState)
+-&gt; (MVar PixivState -&gt; IO PixivState)
+-&gt; MVar PixivState
+-&gt; PixivT m PixivState
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">MVar PixivState -&gt; IO PixivState
+forall a. MVar a -&gt; IO a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">takeMVar</span></a></span><span>
+</span><span id="line-191"></span><span>  </span><span id="local-6989586621679848338"><span class="annot"><span class="annottext">putPixivState :: PixivState -&gt; PixivT m ()
+</span><a href="#local-6989586621679848338"><span class="hs-identifier hs-var hs-var hs-var hs-var">putPixivState</span></a></span></span><span> </span><span id="local-6989586621679848337"><span class="annot"><span class="annottext">PixivState
+</span><a href="#local-6989586621679848337"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-192"></span><span>    </span><span id="local-6989586621679848336"><span class="annot"><span class="annottext">MVar PixivState
+</span><a href="#local-6989586621679848336"><span class="hs-identifier hs-var">ref</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
+forall r (m :: Type -&gt; Type). MonadReader r m =&gt; m r
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier hs-var">ask</span></a></span><span>
+</span><span id="line-193"></span><span>    </span><span class="annot"><span class="annottext">IO () -&gt; PixivT m ()
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">liftIO</span></a></span><span> </span><span class="annot"><span class="annottext">(IO () -&gt; PixivT m ()) -&gt; IO () -&gt; PixivT m ()
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">MVar PixivState -&gt; PixivState -&gt; IO ()
+forall a. MVar a -&gt; a -&gt; IO ()
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">putMVar</span></a></span><span> </span><span class="annot"><span class="annottext">MVar PixivState
+</span><a href="#local-6989586621679848336"><span class="hs-identifier hs-var">ref</span></a></span><span> </span><span class="annot"><span class="annottext">PixivState
+</span><a href="#local-6989586621679848337"><span class="hs-identifier hs-var">s</span></a></span><span>
+</span><span id="line-194"></span><span>  </span><span id="local-6989586621679848334"><span class="annot"><span class="annottext">readPixivState :: PixivT m PixivState
+</span><a href="#local-6989586621679848334"><span class="hs-identifier hs-var hs-var hs-var hs-var">readPixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
+forall r (m :: Type -&gt; Type). MonadReader r m =&gt; m r
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/mtl-2.2.2/src"><span class="hs-identifier hs-var">ask</span></a></span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
+-&gt; (MVar PixivState -&gt; PixivT m PixivState) -&gt; PixivT m PixivState
+forall (m :: Type -&gt; Type) a b. Monad m =&gt; m a -&gt; (a -&gt; m b) -&gt; m b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&gt;&gt;=</span></a></span><span> </span><span class="annot"><span class="annottext">IO PixivState -&gt; PixivT m PixivState
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">liftIO</span></a></span><span> </span><span class="annot"><span class="annottext">(IO PixivState -&gt; PixivT m PixivState)
+-&gt; (MVar PixivState -&gt; IO PixivState)
+-&gt; MVar PixivState
+-&gt; PixivT m PixivState
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">MVar PixivState -&gt; IO PixivState
+forall a. MVar a -&gt; IO a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">readMVar</span></a></span></span><span>
+</span><span id="line-195"></span><span>
+</span><span id="line-196"></span><span class="hs-comment">-- | Interprets the 'PixivT' effect, with a supplied 'Manager'.</span><span>
+</span><span id="line-197"></span><span id="local-6989586621679848600"><span id="local-6989586621679848601"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#runPixivT"><span class="hs-identifier hs-type">runPixivT</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">MonadIO</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848601"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="../file:///nix/store/q154lh8gnk0296vcdn0362im65lndldy-http-client-0.6.4.1-doc/share/doc/http-client-0.6.4.1/html/src"><span class="hs-identifier hs-type">Manager</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848601"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848600"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848601"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Either</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-type">ClientError</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848600"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span></span><span>
+</span><span id="line-198"></span><span id="runPixivT"><span class="annot"><span class="annottext">runPixivT :: Manager -&gt; Credential -&gt; PixivT m a -&gt; m (Either ClientError a)
+</span><a href="Web.Pixiv.Types.PixivT.html#runPixivT"><span class="hs-identifier hs-var hs-var">runPixivT</span></a></span></span><span> </span><span id="local-6989586621679848332"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679848332"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span id="local-6989586621679848331"><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679848331"><span class="hs-identifier hs-var">credential</span></a></span></span><span> </span><span id="local-6989586621679848330"><span class="annot"><span class="annottext">PixivT m a
+</span><a href="#local-6989586621679848330"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-199"></span><span>  </span><span id="local-6989586621679848329"><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679848329"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO UTCTime -&gt; m UTCTime
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">liftIO</span></a></span><span> </span><span class="annot"><span class="annottext">IO UTCTime
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/time-1.9.3/src"><span class="hs-identifier hs-var">getCurrentTime</span></a></span><span>
+</span><span id="line-200"></span><span>  </span><span id="local-6989586621679848327"><span class="annot"><span class="annottext">TokenState
+</span><a href="#local-6989586621679848327"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO TokenState -&gt; m TokenState
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">liftIO</span></a></span><span> </span><span class="annot"><span class="annottext">(IO TokenState -&gt; m TokenState) -&gt; IO TokenState -&gt; m TokenState
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">Manager -&gt; Credential -&gt; UTCTime -&gt; IO TokenState
+</span><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier hs-var">computeTokenState</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679848332"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679848331"><span class="hs-identifier hs-var">credential</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679848329"><span class="hs-identifier hs-var">t</span></a></span><span>
+</span><span id="line-201"></span><span>  </span><span id="local-6989586621679848326"><span class="annot"><span class="annottext">ClientEnv
+</span><a href="#local-6989586621679848326"><span class="hs-identifier hs-var">clientEnv</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO ClientEnv -&gt; m ClientEnv
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">liftIO</span></a></span><span> </span><span class="annot"><span class="annottext">(IO ClientEnv -&gt; m ClientEnv) -&gt; IO ClientEnv -&gt; m ClientEnv
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">Manager -&gt; IO ClientEnv
+</span><a href="Web.Pixiv.Types.PixivT.html#mkDefaultClientEnv"><span class="hs-identifier hs-var">mkDefaultClientEnv</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679848332"><span class="hs-identifier hs-var">manager</span></a></span><span>
+</span><span id="line-202"></span><span>  </span><span id="local-6989586621679848325"><span class="annot"><span class="annottext">MVar PixivState
+</span><a href="#local-6989586621679848325"><span class="hs-identifier hs-var">ref</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO (MVar PixivState) -&gt; m (MVar PixivState)
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">liftIO</span></a></span><span> </span><span class="annot"><span class="annottext">(IO (MVar PixivState) -&gt; m (MVar PixivState))
+-&gt; (PixivState -&gt; IO (MVar PixivState))
+-&gt; PixivState
+-&gt; m (MVar PixivState)
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">.</span></a></span><span> </span><span class="annot"><span class="annottext">PixivState -&gt; IO (MVar PixivState)
+forall a. a -&gt; IO (MVar a)
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">newMVar</span></a></span><span> </span><span class="annot"><span class="annottext">(PixivState -&gt; m (MVar PixivState))
+-&gt; PixivState -&gt; m (MVar PixivState)
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">TokenState -&gt; Maybe Text -&gt; PixivState
+</span><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-var">PixivState</span></a></span><span> </span><span class="annot"><span class="annottext">TokenState
+</span><a href="#local-6989586621679848327"><span class="hs-identifier hs-var">s</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Text
+forall a. Maybe a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">Nothing</span></a></span><span>
+</span><span id="line-203"></span><span>  </span><span class="annot"><span class="annottext">PixivT m a
+</span><a href="#local-6989586621679848330"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><span id="line-204"></span><span>    </span><span class="annot"><span class="annottext">PixivT m a
+-&gt; (PixivT m a -&gt; ReaderT (MVar PixivState) (ClientT m) a)
+-&gt; ReaderT (MVar PixivState) (ClientT m) a
+forall a b. a -&gt; (a -&gt; b) -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&amp;</span></a></span><span> </span><span class="annot"><span class="annottext">PixivT m a -&gt; ReaderT (MVar PixivState) (ClientT m) a
+forall (m :: Type -&gt; Type) a.
+PixivT m a -&gt; ReaderT (MVar PixivState) (ClientT m) a
+</span><a href="Web.Pixiv.Types.PixivT.html#unPixivT"><span class="hs-identifier hs-var hs-var">unPixivT</span></a></span><span>
+</span><span id="line-205"></span><span>    </span><span class="annot"><span class="annottext">ReaderT (MVar PixivState) (ClientT m) a
+-&gt; (ReaderT (MVar PixivState) (ClientT m) a -&gt; ClientT m a)
+-&gt; ClientT m a
+forall a b. a -&gt; (a -&gt; b) -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&amp;</span></a></span><span> </span><span class="annot"><span class="annottext">(ReaderT (MVar PixivState) (ClientT m) a
+ -&gt; MVar PixivState -&gt; ClientT m a)
+-&gt; MVar PixivState
+-&gt; ReaderT (MVar PixivState) (ClientT m) a
+-&gt; ClientT m a
+forall a b c. (a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">flip</span></a></span><span> </span><span class="annot"><span class="annottext">ReaderT (MVar PixivState) (ClientT m) a
+-&gt; MVar PixivState -&gt; ClientT m a
+forall r (m :: Type -&gt; Type) a. ReaderT r m a -&gt; r -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/transformers-0.5.6.2/src"><span class="hs-identifier hs-var hs-var">runReaderT</span></a></span><span> </span><span class="annot"><span class="annottext">MVar PixivState
+</span><a href="#local-6989586621679848325"><span class="hs-identifier hs-var">ref</span></a></span><span>
+</span><span id="line-206"></span><span>    </span><span class="annot"><span class="annottext">ClientT m a
+-&gt; (ClientT m a -&gt; m (Either ClientError a))
+-&gt; m (Either ClientError a)
+forall a b. a -&gt; (a -&gt; b) -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&amp;</span></a></span><span> </span><span class="annot"><span class="annottext">ClientEnv -&gt; ClientT m a -&gt; m (Either ClientError a)
+forall (m :: Type -&gt; Type) a.
+ClientEnv -&gt; ClientT m a -&gt; m (Either ClientError a)
+</span><a href="Web.Pixiv.Types.PixivT.html#runClientT"><span class="hs-identifier hs-var">runClientT</span></a></span><span> </span><span class="annot"><span class="annottext">ClientEnv
+</span><a href="#local-6989586621679848326"><span class="hs-identifier hs-var">clientEnv</span></a></span><span>
+</span><span id="line-207"></span><span>
+</span><span id="line-208"></span><span class="hs-comment">-- | Like 'runPixivT', but creates a new 'Manager' everytime.</span><span>
+</span><span id="line-209"></span><span id="local-6989586621679848322"><span id="local-6989586621679848323"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#runPixivT%27"><span class="hs-identifier hs-type">runPixivT'</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">MonadIO</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848323"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848323"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848322"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848323"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Either</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/yd8056g13fvpgv2grmrn695jymgwvvp9-servant-client-core-0.18.2-doc/share/doc/servant-client-core-0.18.2/html/src"><span class="hs-identifier hs-type">ClientError</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848322"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span></span><span>
+</span><span id="line-210"></span><span id="runPixivT%27"><span class="annot"><span class="annottext">runPixivT' :: Credential -&gt; PixivT m a -&gt; m (Either ClientError a)
+</span><a href="Web.Pixiv.Types.PixivT.html#runPixivT%27"><span class="hs-identifier hs-var hs-var">runPixivT'</span></a></span></span><span> </span><span id="local-6989586621679848321"><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679848321"><span class="hs-identifier hs-var">credential</span></a></span></span><span> </span><span id="local-6989586621679848320"><span class="annot"><span class="annottext">PixivT m a
+</span><a href="#local-6989586621679848320"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-211"></span><span>  </span><span id="local-6989586621679848319"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679848319"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO Manager -&gt; m Manager
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">liftIO</span></a></span><span> </span><span class="annot"><span class="annottext">IO Manager
+forall (m :: Type -&gt; Type). MonadIO m =&gt; m Manager
+</span><a href="../file:///nix/store/bxw5vw9bb44j41pqfdpzgh7nzh1vjckc-http-client-tls-0.3.5.3-doc/share/doc/http-client-tls-0.3.5.3/html/src"><span class="hs-identifier hs-var">newTlsManager</span></a></span><span>
+</span><span id="line-212"></span><span>  </span><span class="annot"><span class="annottext">Manager -&gt; Credential -&gt; PixivT m a -&gt; m (Either ClientError a)
+forall (m :: Type -&gt; Type) a.
+MonadIO m =&gt;
+Manager -&gt; Credential -&gt; PixivT m a -&gt; m (Either ClientError a)
+</span><a href="Web.Pixiv.Types.PixivT.html#runPixivT"><span class="hs-identifier hs-var">runPixivT</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679848319"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679848321"><span class="hs-identifier hs-var">credential</span></a></span><span> </span><span class="annot"><span class="annottext">PixivT m a
+</span><a href="#local-6989586621679848320"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><span id="line-213"></span><span>
+</span><span id="line-214"></span><span class="hs-comment">-- | Computes the 'TokenState'.</span><span>
+</span><span id="line-215"></span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier hs-type">computeTokenState</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-216"></span><span>  </span><span class="annot"><a href="../file:///nix/store/q154lh8gnk0296vcdn0362im65lndldy-http-client-0.6.4.1-doc/share/doc/http-client-0.6.4.1/html/src"><span class="hs-identifier hs-type">Manager</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><span id="line-217"></span><span>  </span><span class="hs-comment">-- | Could be username with password or 'refreshToken'.</span><span>
+</span><span id="line-218"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><span id="line-219"></span><span>  </span><span class="hs-comment">-- | Current time.</span><span>
+</span><span id="line-220"></span><span>  </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/time-1.9.3/src"><span class="hs-identifier hs-type">UTCTime</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><span id="line-221"></span><span>  </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/ghc-prim-0.6.1/src"><span class="hs-identifier hs-type">IO</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span>
+</span><span id="line-222"></span><span id="computeTokenState"><span class="annot"><span class="annottext">computeTokenState :: Manager -&gt; Credential -&gt; UTCTime -&gt; IO TokenState
+</span><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier hs-var hs-var">computeTokenState</span></a></span></span><span> </span><span id="local-6989586621679848318"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679848318"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span id="local-6989586621679848317"><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679848317"><span class="hs-identifier hs-var">credential</span></a></span></span><span> </span><span id="local-6989586621679848316"><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679848316"><span class="hs-identifier hs-var">time</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-223"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-type">OAuth2Token</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679848312"><span id="local-6989586621679848313"><span id="local-6989586621679848314"><span class="annot"><span class="annottext">Int
+Token
+oa_refreshToken :: OAuth2Token -&gt; Token
+oa_expiresIn :: OAuth2Token -&gt; Int
+oa_accessToken :: OAuth2Token -&gt; Token
+oa_refreshToken :: Token
+oa_expiresIn :: Int
+oa_accessToken :: Token
+</span><a href="Web.Pixiv.Auth.html#oa_refreshToken"><span class="hs-glyph hs-var hs-var hs-var hs-var hs-var hs-var">..</span></a></span></span></span></span><span class="hs-special">}</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO OAuth2Token -&gt; IO OAuth2Token
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">liftIO</span></a></span><span> </span><span class="annot"><span class="annottext">(IO OAuth2Token -&gt; IO OAuth2Token)
+-&gt; IO OAuth2Token -&gt; IO OAuth2Token
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">Manager -&gt; Credential -&gt; IO OAuth2Token
+</span><a href="Web.Pixiv.Auth.html#auth%27"><span class="hs-identifier hs-var">auth'</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679848318"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679848317"><span class="hs-identifier hs-var">credential</span></a></span><span>
+</span><span id="line-224"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679848307"><span class="annot"><span class="annottext">offset :: Int
+</span><a href="#local-6989586621679848307"><span class="hs-identifier hs-var hs-var">offset</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679848313"><span class="hs-identifier hs-var">oa_expiresIn</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
+forall a. Integral a =&gt; a -&gt; a -&gt; a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">`div`</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><span class="hs-number">5</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
+forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">*</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><span class="hs-number">4</span></span><span>
+</span><span id="line-225"></span><span>      </span><span id="local-6989586621679848304"><span class="annot"><span class="annottext">diff :: NominalDiffTime
+</span><a href="#local-6989586621679848304"><span class="hs-identifier hs-var hs-var">diff</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Pico -&gt; NominalDiffTime
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/time-1.9.3/src"><span class="hs-identifier hs-var">secondsToNominalDiffTime</span></a></span><span> </span><span class="annot"><span class="annottext">(Pico -&gt; NominalDiffTime) -&gt; Pico -&gt; NominalDiffTime
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Pico
+forall a. Enum a =&gt; Int -&gt; a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">toEnum</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679848307"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><span id="line-226"></span><span>      </span><span id="local-6989586621679848301"><span class="annot"><span class="annottext">accessToken :: Token
+</span><a href="#local-6989586621679848301"><span class="hs-identifier hs-var hs-var">accessToken</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Token
+</span><a href="#local-6989586621679848314"><span class="hs-identifier hs-var">oa_accessToken</span></a></span><span>
+</span><span id="line-227"></span><span>      </span><span id="local-6989586621679848300"><span class="annot"><span class="annottext">refreshToken :: Token
+</span><a href="#local-6989586621679848300"><span class="hs-identifier hs-var hs-var">refreshToken</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Token
+</span><a href="#local-6989586621679848312"><span class="hs-identifier hs-var">oa_refreshToken</span></a></span><span>
+</span><span id="line-228"></span><span>      </span><span id="local-6989586621679848299"><span class="annot"><span class="annottext">expirationTime :: UTCTime
+</span><a href="#local-6989586621679848299"><span class="hs-identifier hs-var hs-var">expirationTime</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">NominalDiffTime -&gt; UTCTime -&gt; UTCTime
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/time-1.9.3/src"><span class="hs-identifier hs-var">addUTCTime</span></a></span><span> </span><span class="annot"><span class="annottext">NominalDiffTime
+</span><a href="#local-6989586621679848304"><span class="hs-identifier hs-var">diff</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679848316"><span class="hs-identifier hs-var">time</span></a></span><span>
+</span><span id="line-229"></span><span>  </span><span class="annot"><span class="annottext">TokenState -&gt; IO TokenState
+forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">pure</span></a></span><span> </span><span class="annot"><span class="annottext">TokenState :: Token -&gt; Token -&gt; UTCTime -&gt; Manager -&gt; TokenState
+</span><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">UTCTime
+Manager
+Token
+expirationTime :: UTCTime
+refreshToken :: Token
+accessToken :: Token
+manager :: Manager
+manager :: Manager
+expirationTime :: UTCTime
+refreshToken :: Token
+accessToken :: Token
+</span><a href="#local-6989586621679848299"><span class="hs-glyph hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">..</span></a></span><span class="hs-special">}</span><span>
+</span><span id="line-230"></span><span>
+</span><span id="line-231"></span><span class="hs-comment">-- | Retrieves the 'accessToken' from pixiv monad.</span><span>
+</span><span id="line-232"></span><span class="hs-comment">--</span><span>
+</span><span id="line-233"></span><span class="hs-comment">-- If the token is overdue, it will call 'computeTokenState' to refresh.</span><span>
+</span><span id="line-234"></span><span id="local-6989586621679848586"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccessToken"><span class="hs-identifier hs-type">getAccessToken</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848586"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848586"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span></span><span>
+</span><span id="line-235"></span><span id="getAccessToken"><span class="annot"><span class="annottext">getAccessToken :: m Token
+</span><a href="Web.Pixiv.Types.PixivT.html#getAccessToken"><span class="hs-identifier hs-var hs-var">getAccessToken</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-236"></span><span>  </span><span id="local-6989586621679848297"><span class="annot"><span class="annottext">s :: PixivState
+</span><a href="#local-6989586621679848297"><span class="hs-identifier hs-var">s</span></a></span></span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">tokenState :: PixivState -&gt; TokenState
+</span><a href="Web.Pixiv.Types.PixivT.html#tokenState"><span class="hs-identifier hs-var">tokenState</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679848293"><span id="local-6989586621679848294"><span id="local-6989586621679848295"><span id="local-6989586621679848296"><span class="annot"><span class="annottext">UTCTime
+Manager
+Token
+manager :: Manager
+expirationTime :: UTCTime
+refreshToken :: Token
+accessToken :: Token
+manager :: TokenState -&gt; Manager
+expirationTime :: TokenState -&gt; UTCTime
+refreshToken :: TokenState -&gt; Token
+accessToken :: TokenState -&gt; Token
+</span><a href="#local-6989586621679848293"><span class="hs-glyph hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">..</span></a></span></span></span></span></span><span class="hs-special">}</span><span class="hs-special">}</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m PixivState
+forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m PixivState
+</span><a href="Web.Pixiv.Types.PixivT.html#takePixivState"><span class="hs-identifier hs-var">takePixivState</span></a></span><span>
+</span><span id="line-237"></span><span>  </span><span id="local-6989586621679848292"><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679848292"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO UTCTime -&gt; m UTCTime
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">liftIO</span></a></span><span> </span><span class="annot"><span class="annottext">IO UTCTime
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/time-1.9.3/src"><span class="hs-identifier hs-var">getCurrentTime</span></a></span><span>
+</span><span id="line-238"></span><span>  </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679848292"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime -&gt; UTCTime -&gt; Bool
+forall a. Ord a =&gt; a -&gt; a -&gt; Bool
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/ghc-prim-0.6.1/src"><span class="hs-operator hs-var">&lt;</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679848294"><span class="hs-identifier hs-var">expirationTime</span></a></span><span>
+</span><span id="line-239"></span><span>    </span><span class="hs-keyword">then</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-240"></span><span>      </span><span class="annot"><span class="annottext">PixivState -&gt; m ()
+forall (m :: Type -&gt; Type). MonadPixiv m =&gt; PixivState -&gt; m ()
+</span><a href="Web.Pixiv.Types.PixivT.html#putPixivState"><span class="hs-identifier hs-var">putPixivState</span></a></span><span> </span><span class="annot"><span class="annottext">PixivState
+</span><a href="#local-6989586621679848297"><span class="hs-identifier hs-var">s</span></a></span><span>
+</span><span id="line-241"></span><span>      </span><span class="annot"><span class="annottext">Token -&gt; m Token
+forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">pure</span></a></span><span> </span><span class="annot"><span class="annottext">Token
+</span><a href="#local-6989586621679848296"><span class="hs-identifier hs-var">accessToken</span></a></span><span>
+</span><span id="line-242"></span><span>    </span><span class="hs-keyword">else</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-243"></span><span>      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679848290"><span class="annot"><span class="annottext">credential :: Credential
+</span><a href="#local-6989586621679848290"><span class="hs-identifier hs-var hs-var">credential</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Token -&gt; Credential
+</span><a href="Web.Pixiv.Auth.html#RefreshToken"><span class="hs-identifier hs-var">RefreshToken</span></a></span><span> </span><span class="annot"><span class="annottext">Token
+</span><a href="#local-6989586621679848295"><span class="hs-identifier hs-var">refreshToken</span></a></span><span>
+</span><span id="line-244"></span><span>      </span><span id="local-6989586621679848288"><span class="annot"><span class="annottext">TokenState
+</span><a href="#local-6989586621679848288"><span class="hs-identifier hs-var">ts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO TokenState -&gt; m TokenState
+forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">liftIO</span></a></span><span> </span><span class="annot"><span class="annottext">(IO TokenState -&gt; m TokenState) -&gt; IO TokenState -&gt; m TokenState
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">$</span></a></span><span> </span><span class="annot"><span class="annottext">Manager -&gt; Credential -&gt; UTCTime -&gt; IO TokenState
+</span><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier hs-var">computeTokenState</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679848293"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679848290"><span class="hs-identifier hs-var">credential</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679848292"><span class="hs-identifier hs-var">t</span></a></span><span>
+</span><span id="line-245"></span><span>      </span><span class="annot"><span class="annottext">PixivState -&gt; m ()
+forall (m :: Type -&gt; Type). MonadPixiv m =&gt; PixivState -&gt; m ()
+</span><a href="Web.Pixiv.Types.PixivT.html#putPixivState"><span class="hs-identifier hs-var">putPixivState</span></a></span><span> </span><span class="annot"><span class="annottext">PixivState
+</span><a href="#local-6989586621679848297"><span class="hs-identifier hs-var">s</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">tokenState :: TokenState
+</span><a href="Web.Pixiv.Types.PixivT.html#tokenState"><span class="hs-identifier hs-var">tokenState</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">TokenState
+</span><a href="#local-6989586621679848288"><span class="hs-identifier hs-var">ts</span></a></span><span class="hs-special">}</span><span>
+</span><span id="line-246"></span><span>      </span><span class="annot"><span class="annottext">Token -&gt; m Token
+forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-var">pure</span></a></span><span> </span><span class="annot"><span class="annottext">Token
+</span><a href="#local-6989586621679848296"><span class="hs-identifier hs-var">accessToken</span></a></span><span>
+</span><span id="line-247"></span><span>
+</span><span id="line-248"></span><span class="hs-comment">-- | Retrieves the 'acceptLanguage' from pixiv monad.</span><span>
+</span><span id="line-249"></span><span id="local-6989586621679848585"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccpetLanguage"><span class="hs-identifier hs-type">getAccpetLanguage</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848585"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848585"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Maybe</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/text-1.2.4.1/src"><span class="hs-identifier hs-type">Text</span></a></span><span class="hs-special">)</span></span><span>
+</span><span id="line-250"></span><span id="getAccpetLanguage"><span class="annot"><span class="annottext">getAccpetLanguage :: m (Maybe Text)
+</span><a href="Web.Pixiv.Types.PixivT.html#getAccpetLanguage"><span class="hs-identifier hs-var hs-var">getAccpetLanguage</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">PixivState -&gt; Maybe Text
+</span><a href="Web.Pixiv.Types.PixivT.html#acceptLanguage"><span class="hs-identifier hs-var hs-var">acceptLanguage</span></a></span><span> </span><span class="annot"><span class="annottext">(PixivState -&gt; Maybe Text) -&gt; m PixivState -&gt; m (Maybe Text)
+forall (f :: Type -&gt; Type) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&lt;$&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">m PixivState
+forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m PixivState
+</span><a href="Web.Pixiv.Types.PixivT.html#readPixivState"><span class="hs-identifier hs-var">readPixivState</span></a></span><span>
+</span><span id="line-251"></span><span>
+</span><span id="line-252"></span><span class="hs-comment">-- | Retrieves the 'accessToken' and 'acceptLanguage' in one go.</span><span>
+</span><span id="line-253"></span><span id="local-6989586621679848285"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-type">getAccessTokenWithAccpetLanguage</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848285"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848285"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-identifier hs-type">Maybe</span></a></span><span> </span><span class="annot"><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/text-1.2.4.1/src"><span class="hs-identifier hs-type">Text</span></a></span><span class="hs-special">)</span></span><span>
+</span><span id="line-254"></span><span id="getAccessTokenWithAccpetLanguage"><span class="annot"><span class="annottext">getAccessTokenWithAccpetLanguage :: m (Token, Maybe Text)
+</span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var hs-var">getAccessTokenWithAccpetLanguage</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="hs-special">,</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Token -&gt; Maybe Text -&gt; (Token, Maybe Text))
+-&gt; m Token -&gt; m (Maybe Text -&gt; (Token, Maybe Text))
+forall (f :: Type -&gt; Type) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&lt;$&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">m Token
+forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m Token
+</span><a href="Web.Pixiv.Types.PixivT.html#getAccessToken"><span class="hs-identifier hs-var">getAccessToken</span></a></span><span> </span><span class="annot"><span class="annottext">m (Maybe Text -&gt; (Token, Maybe Text))
+-&gt; m (Maybe Text) -&gt; m (Token, Maybe Text)
+forall (f :: Type -&gt; Type) a b.
+Applicative f =&gt;
+f (a -&gt; b) -&gt; f a -&gt; f b
+</span><a href="../file:///nix/store/glab9hp9viqgxqbl5k53g5sb2s1qcnnj-ghc-8.10.3-doc/share/doc/ghc/html/libraries/base-4.14.1.0/src"><span class="hs-operator hs-var">&lt;*&gt;</span></a></span><span> </span><span class="annot"><span class="annottext">m (Maybe Text)
+forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Maybe Text)
+</span><a href="Web.Pixiv.Types.PixivT.html#getAccpetLanguage"><span class="hs-identifier hs-var">getAccpetLanguage</span></a></span><span>
+</span><span id="line-255"></span></pre></body></html>
