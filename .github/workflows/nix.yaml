@@ -18,7 +18,7 @@ jobs:
       
       - name: Build and generate haddock
         run: |
-          nix shell --command cabal haddock --haddock-html-location='https://hackage.haskell.org/package/$pkg-$version/docs' --haddock-hyperlink-source --haddock-quickjump
+          nix shell --command cabal update && cabal haddock --haddock-html-location='https://hackage.haskell.org/package/$pkg-$version/docs' --haddock-hyperlink-source --haddock-quickjump
       
       - name: Deploy generated haddock to github pages
         uses: peaceiris/actions-gh-pages@v3
