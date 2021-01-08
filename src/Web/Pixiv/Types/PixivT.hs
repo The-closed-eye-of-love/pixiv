@@ -64,7 +64,9 @@ newtype ClientT m a = ClientT
       MonadThrow,
       MonadCatch,
       MonadReader ClientEnv,
-      MonadError ClientError
+      MonadError ClientError,
+      MonadBase b,
+      MonadBaseControl b
     )
 
 instance MonadTrans ClientT where
@@ -77,10 +79,6 @@ runClientT env m =
     & unClientT
     & flip runReaderT env
     & runExceptT
-
-deriving newtype instance MonadBase IO m => MonadBase IO (ClientT m)
-
-deriving newtype instance MonadBaseControl IO m => MonadBaseControl IO (ClientT m)
 
 instance MonadIO m => RunClient (ClientT m) where
   throwClientError = throwError
