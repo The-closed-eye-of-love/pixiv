@@ -13,6 +13,7 @@ module Web.Pixiv.Types.PixivT
   ( -- * ClientT monad transformer
     ClientT (..),
     runClientT,
+    mkDefaultClientEnv,
 
     -- * MonadPixiv class
     MonadPixiv (..),
