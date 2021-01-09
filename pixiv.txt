@@ -845,6 +845,10 @@ ClientT :: ReaderT ClientEnv (ExceptT ClientError m) a -> ClientT m a
 -- | Executes a computation in the client monad.
 runClientT :: ClientEnv -> ClientT m a -> m (Either ClientError a)
 
+-- | Given <a>Manager</a>, creates a <a>ClientEnv</a> using
+--   <tt>"<a>https://app-api.pixiv.net"</a></tt> as base url.
+mkDefaultClientEnv :: Manager -> IO ClientEnv
+
 -- | The mtl-style class of pixiv monad.
 class (RunClient m, MonadIO m) => MonadPixiv m
 
