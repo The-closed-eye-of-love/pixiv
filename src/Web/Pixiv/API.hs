@@ -6,7 +6,7 @@
 -- Functions to access pixiv api. They are supposed to be run in "Web.Pixiv.Types.PixivT".
 --
 -- You may notice that except 'getUserBookmarks', many of functions take a @page@ as input.
--- This is because each query contains 30 entries, i.e. you should pass @2@ if you want items ranged from 31 to 60.
+-- This is because each query contains 30 entries (except 'getSpotlightArticles''s , which containes 10), i.e. you should pass @2@ if you want items ranged from 31 to 60.
 module Web.Pixiv.API
   ( -- * Trending
     getTrendingTags,
@@ -33,6 +33,9 @@ module Web.Pixiv.API
     getUserFollower,
     getUserMypixiv,
     getUserBookmarks,
+
+    -- * Article
+    getSpotlightArticles,
   )
 where
 
@@ -43,6 +46,7 @@ import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Text.Read (decimal)
 import Servant.Client.Core
+import Web.Pixiv.API.Article
 import Web.Pixiv.API.Illust
 import Web.Pixiv.API.PixivEntry (pageToOffset)
 import Web.Pixiv.API.Search
@@ -105,7 +109,7 @@ getIllustComments ::
   -- | page
   Int ->
   m Comments
-getIllustComments illustId (pageToOffset -> offset) = do
+getIllustComments illustId (pageToOffset 30 -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   clientIn (Proxy @GetIllustComments) Proxy p illustId offset
 
@@ -117,7 +121,7 @@ getIllustRelated ::
   -- | page
   Int ->
   m [Illust]
-getIllustRelated illustId (pageToOffset -> offset) = do
+getIllustRelated illustId (pageToOffset 30 -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetIllustRelated) Proxy p illustId offset
   pure $ unNextUrl illusts
@@ -130,7 +134,7 @@ getIllustRanking ::
   -- | page
   Int ->
   m [Illust]
-getIllustRanking mode (pageToOffset -> offset) = do
+getIllustRanking mode (pageToOffset 30 -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetIllustRanking) Proxy p mode offset
   pure $ unNextUrl illusts
@@ -143,7 +147,7 @@ getIllustFollow ::
   -- | page
   Int ->
   m [Illust]
-getIllustFollow restrict (pageToOffset -> offset) = do
+getIllustFollow restrict (pageToOffset 30 -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetIllustFollow) Proxy p restrict offset
   pure $ unNextUrl illusts
@@ -154,7 +158,7 @@ getIllustNew ::
   -- | page
   Int ->
   m [Illust]
-getIllustNew (pageToOffset -> offset) = do
+getIllustNew (pageToOffset 30 -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetIllustNew) Proxy p offset
   pure $ unNextUrl illusts
@@ -188,7 +192,7 @@ searchIllust ::
   -- | page
   Int ->
   m [Illust]
-searchIllust searchTarget searchWord includeTranslatedTag sortingMethod duration (pageToOffset -> offset) = do
+searchIllust searchTarget searchWord includeTranslatedTag sortingMethod duration (pageToOffset 30 -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @SearchIllust) Proxy p searchTarget searchWord includeTranslatedTag sortingMethod duration offset
   pure $ unNextUrl illusts
@@ -203,7 +207,7 @@ searchUser ::
   -- | page
   Int ->
   m [UserPreview]
-searchUser searchWord sortingMethod (pageToOffset -> offset) = do
+searchUser searchWord sortingMethod (pageToOffset 30 -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   ups <- clientIn (Proxy @SearchUser) Proxy p searchWord sortingMethod offset
   pure $ unNextUrl ups
@@ -230,7 +234,7 @@ getUserIllusts ::
   -- | page
   Int ->
   m [Illust]
-getUserIllusts userId illustType (pageToOffset -> offset) = do
+getUserIllusts userId illustType (pageToOffset 30 -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetUserIllusts) Proxy p userId illustType offset
   pure $ unNextUrl illusts
@@ -245,7 +249,7 @@ getUserFollowing ::
   -- | page
   Int ->
   m [UserPreview]
-getUserFollowing userId restrict (pageToOffset -> offset) = do
+getUserFollowing userId restrict (pageToOffset 30 -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   ups <- clientIn (Proxy @GetUserFollowing) Proxy p userId restrict offset
   pure $ unNextUrl ups
@@ -258,7 +262,7 @@ getUserFollower ::
   -- | page
   Int ->
   m [UserPreview]
-getUserFollower userId (pageToOffset -> offset) = do
+getUserFollower userId (pageToOffset 30 -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   ups <- clientIn (Proxy @GetUserFollower) Proxy p userId offset
   pure $ unNextUrl ups
@@ -271,7 +275,7 @@ getUserMypixiv ::
   -- | page
   Int ->
   m [UserPreview]
-getUserMypixiv userId (pageToOffset -> offset) = do
+getUserMypixiv userId (pageToOffset 30 -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
   ups <- clientIn (Proxy @GetUserMypixiv) Proxy p userId offset
   pure $ unNextUrl ups
@@ -291,3 +295,18 @@ getUserBookmarks userId restrict maxBookmarkId = do
   p <- getAccessTokenWithAccpetLanguage
   illusts <- clientIn (Proxy @GetUserBookmarks) Proxy p userId restrict maxBookmarkId
   pure (unNextUrl illusts, getNextUrl illusts >>= ((^? _Right . _1) . decimal . T.takeWhileEnd (/= '=')))
+
+-----------------------------------------------------------------------------
+
+-- | Gets spotlight articles
+getSpotlightArticles ::
+  MonadPixiv m =>
+  -- | category
+  Maybe Text ->
+  -- | page
+  Int ->
+  m [SpotlightArticle]
+getSpotlightArticles category (pageToOffset 10 -> offset) = do
+  p <- getAccessTokenWithAccpetLanguage
+  articles <- clientIn (Proxy @GetSpotlightArticles) Proxy p category offset
+  pure $ unNextUrl articles

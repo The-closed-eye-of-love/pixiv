@@ -50,6 +50,10 @@ module Web.Pixiv.Types
     UgoiraMetadata (..),
     UgoiraMetadataWrapper (..),
 
+    -- * Article
+    SpotlightArticle (..),
+    SpotlightArticles (..),
+
     -- * Http
     RankMode (..),
     SearchTarget (..),
@@ -432,18 +436,52 @@ newtype UgoiraMetadataWrapper = UgoiraMetadataWrapper
 
 -----------------------------------------------------------------------------
 
+-- | Spotlight article
+data SpotlightArticle = SpotlightArticle
+  { _saId :: Int,
+    _title :: Text,
+    _pureTitle :: Text,
+    _thumbnail :: Text,
+    _articleUrl :: Text,
+    _publishDate :: UTCTime,
+    _category :: Text,
+    _subcategoryLabel :: Text
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' SpotlightArticle
+
+-- | Response of API which returns spotlight articles.
+data SpotlightArticles = SpotlightArticles
+  { _spotlightArticles :: [SpotlightArticle],
+    _nextUrl :: Maybe Text
+  }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via PixivJSON' SpotlightArticles
+
+type instance NextUrlLess SpotlightArticles = [SpotlightArticle]
+
+instance HasNextUrl SpotlightArticles where
+  unNextUrl SpotlightArticles {..} = _spotlightArticles
+  getNextUrl SpotlightArticles {..} = _nextUrl
+
+-----------------------------------------------------------------------------
+
 -- | Rank mode query parm.
 --
 -- See 'Web.Pixiv.API.getIllustRanking'
 data RankMode
   = Day
-  | Week
-  | Month
+  | DayR18
   | DayMale
+  | DayMaleR18
   | DayFemale
+  | DayFemaleR18
+  | Week
+  | WeekR18
+  | WeekR18G
+  | Month
   | WeekOriginal
   | WeekRookie
-  | DayR18
   | DayManga
   deriving stock (Show, Eq, Ord, Enum, Generic)
   deriving (ToHttpApiData) via PixivHttpApiData' RankMode

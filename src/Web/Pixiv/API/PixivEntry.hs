@@ -29,9 +29,9 @@ instance HasClient m api => HasClient m (PixivEntry :> api) where
 
 type OffsetParam = QueryParam "offset" Int
 
-pageToOffset :: Int -> Maybe Int
-pageToOffset x
-  | x > 1 = Just $ (x - 1) * 30
+pageToOffset :: Int -> Int -> Maybe Int
+pageToOffset perPage x
+  | x > 1 = Just $ (x - 1) * perPage
   | otherwise = Nothing
 
 type RestrictParam = QueryParam' '[Strict, Required] "restrict" Publicity
