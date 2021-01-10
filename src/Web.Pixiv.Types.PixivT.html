@@ -54,12 +54,12 @@
 </span><span id="line-54"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html"><span class="hs-identifier">Web.Pixiv.Auth</span></a></span><span>
 </span><span id="line-55"></span><span>
 </span><span id="line-56"></span><span class="hs-comment">-- | Transformer version of 'ClientM', changing the base 'IO' to @m@.</span><span>
-</span><span id="line-57"></span><span class="hs-keyword">newtype</span><span> </span><span id="ClientT"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-var">ClientT</span></a></span></span><span> </span><span id="local-6989586621679848731"><span class="annot"><a href="#local-6989586621679848731"><span class="hs-identifier hs-type">m</span></a></span></span><span> </span><span id="local-6989586621679848730"><span class="annot"><a href="#local-6989586621679848730"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="ClientT"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-var">ClientT</span></a></span></span><span>
+</span><span id="line-57"></span><span class="hs-keyword">newtype</span><span> </span><span id="ClientT"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-var">ClientT</span></a></span></span><span> </span><span id="local-6989586621679905929"><span class="annot"><a href="#local-6989586621679905929"><span class="hs-identifier hs-type">m</span></a></span></span><span> </span><span id="local-6989586621679905928"><span class="annot"><a href="#local-6989586621679905928"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="ClientT"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-var">ClientT</span></a></span></span><span>
 </span><span id="line-58"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="unClientT"><span class="annot"><span class="annottext">ClientT m a -&gt; ReaderT ClientEnv (ExceptT ClientError m) a
-</span><a href="Web.Pixiv.Types.PixivT.html#unClientT"><span class="hs-identifier hs-var hs-var">unClientT</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ReaderT</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientEnv</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">ExceptT</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientError</span></span><span> </span><span class="annot"><a href="#local-6989586621679848731"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><a href="#local-6989586621679848730"><span class="hs-identifier hs-type">a</span></a></span><span>
+</span><a href="Web.Pixiv.Types.PixivT.html#unClientT"><span class="hs-identifier hs-var hs-var">unClientT</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ReaderT</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientEnv</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">ExceptT</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientError</span></span><span> </span><span class="annot"><a href="#local-6989586621679905929"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><a href="#local-6989586621679905928"><span class="hs-identifier hs-type">a</span></a></span><span>
 </span><span id="line-59"></span><span>  </span><span class="hs-special">}</span><span>
-</span><span id="line-60"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679848570"><span id="local-6989586621679848571"><span class="annot"><a href="#local-6989586621679848570"><span class="hs-keyword hs-type hs-type">newtype</span></a></span></span></span><span>
-</span><span id="line-61"></span><span>    </span><span class="hs-special">(</span><span> </span><span id="local-6989586621679848566"><span id="local-6989586621679848568"><span class="annot"><span class="annottext">a -&gt; ClientT m b -&gt; ClientT m a
+</span><span id="line-60"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679905768"><span id="local-6989586621679905769"><span class="annot"><a href="#local-6989586621679905768"><span class="hs-keyword hs-type hs-type">newtype</span></a></span></span></span><span>
+</span><span id="line-61"></span><span>    </span><span class="hs-special">(</span><span> </span><span id="local-6989586621679905764"><span id="local-6989586621679905766"><span class="annot"><span class="annottext">a -&gt; ClientT m b -&gt; ClientT m a
 (a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b
 (forall a b. (a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b)
 -&gt; (forall a b. a -&gt; ClientT m b -&gt; ClientT m a)
@@ -84,7 +84,7 @@ $cfmap :: forall (m :: Type -&gt; Type) a b.
 Functor m =&gt;
 (a -&gt; b) -&gt; ClientT m a -&gt; ClientT m b
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Functor</span></span></span></span><span class="hs-special">,</span><span>
-</span><span id="line-62"></span><span>      </span><span id="local-6989586621679848554"><span id="local-6989586621679848556"><span id="local-6989586621679848558"><span id="local-6989586621679848560"><span id="local-6989586621679848562"><span class="annot"><span class="annottext">Functor (ClientT m)
+</span><span id="line-62"></span><span>      </span><span id="local-6989586621679905752"><span id="local-6989586621679905754"><span id="local-6989586621679905756"><span id="local-6989586621679905758"><span id="local-6989586621679905760"><span class="annot"><span class="annottext">Functor (ClientT m)
 a -&gt; ClientT m a
 Functor (ClientT m)
 -&gt; (forall a. a -&gt; ClientT m a)
@@ -146,7 +146,7 @@ pure :: a -&gt; ClientT m a
 $cpure :: forall (m :: Type -&gt; Type) a. Monad m =&gt; a -&gt; ClientT m a
 $cp1Applicative :: forall (m :: Type -&gt; Type). Monad m =&gt; Functor (ClientT m)
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Applicative</span></span></span></span></span></span></span><span class="hs-special">,</span><span>
-</span><span id="line-63"></span><span>      </span><span id="local-6989586621679848546"><span id="local-6989586621679848548"><span id="local-6989586621679848550"><span class="annot"><span class="annottext">Applicative (ClientT m)
+</span><span id="line-63"></span><span>      </span><span id="local-6989586621679905744"><span id="local-6989586621679905746"><span id="local-6989586621679905748"><span class="annot"><span class="annottext">Applicative (ClientT m)
 a -&gt; ClientT m a
 Applicative (ClientT m)
 -&gt; (forall a b. ClientT m a -&gt; (a -&gt; ClientT m b) -&gt; ClientT m b)
@@ -184,7 +184,7 @@ Monad m =&gt;
 ClientT m a -&gt; (a -&gt; ClientT m b) -&gt; ClientT m b
 $cp1Monad :: forall (m :: Type -&gt; Type). Monad m =&gt; Applicative (ClientT m)
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Monad</span></span></span></span></span><span class="hs-special">,</span><span>
-</span><span id="line-64"></span><span>      </span><span id="local-6989586621679848542"><span class="annot"><span class="annottext">Monad (ClientT m)
+</span><span id="line-64"></span><span>      </span><span id="local-6989586621679905740"><span class="annot"><span class="annottext">Monad (ClientT m)
 Monad (ClientT m)
 -&gt; (forall a. IO a -&gt; ClientT m a) -&gt; MonadIO (ClientT m)
 IO a -&gt; ClientT m a
@@ -197,7 +197,7 @@ liftIO :: IO a -&gt; ClientT m a
 $cliftIO :: forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; ClientT m a
 $cp1MonadIO :: forall (m :: Type -&gt; Type). MonadIO m =&gt; Monad (ClientT m)
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadIO</span></span></span><span class="hs-special">,</span><span>
-</span><span id="line-65"></span><span>      </span><span id="local-6989586621679848538"><span class="annot"><span class="annottext">Monad (ClientT m)
+</span><span id="line-65"></span><span>      </span><span id="local-6989586621679905736"><span class="annot"><span class="annottext">Monad (ClientT m)
 e -&gt; ClientT m a
 Monad (ClientT m)
 -&gt; (forall e a. Exception e =&gt; e -&gt; ClientT m a)
@@ -215,7 +215,7 @@ $cthrowM :: forall (m :: Type -&gt; Type) e a.
 e -&gt; ClientT m a
 $cp1MonadThrow :: forall (m :: Type -&gt; Type). MonadThrow m =&gt; Monad (ClientT m)
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadThrow</span></span></span><span class="hs-special">,</span><span>
-</span><span id="line-66"></span><span>      </span><span id="local-6989586621679848534"><span class="annot"><span class="annottext">MonadThrow (ClientT m)
+</span><span id="line-66"></span><span>      </span><span id="local-6989586621679905732"><span class="annot"><span class="annottext">MonadThrow (ClientT m)
 MonadThrow (ClientT m)
 -&gt; (forall e a.
     Exception e =&gt;
@@ -239,14 +239,14 @@ $ccatch :: forall (m :: Type -&gt; Type) e a.
 ClientT m a -&gt; (e -&gt; ClientT m a) -&gt; ClientT m a
 $cp1MonadCatch :: forall (m :: Type -&gt; Type). MonadCatch m =&gt; MonadThrow (ClientT m)
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadCatch</span></span></span><span class="hs-special">,</span><span>
-</span><span id="line-67"></span><span>      </span><span id="local-6989586621679848526"><span id="local-6989586621679848528"><span id="local-6989586621679848530"><span class="annot"><span class="hs-identifier hs-type">MonadReader</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientEnv</span></span></span></span></span><span class="hs-special">,</span><span>
-</span><span id="line-68"></span><span>      </span><span id="local-6989586621679848520"><span id="local-6989586621679848522"><span class="annot"><span class="hs-identifier hs-type">MonadError</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientError</span></span></span></span><span class="hs-special">,</span><span>
-</span><span id="line-69"></span><span>      </span><span id="local-6989586621679848513"><span class="annot"><span class="hs-identifier hs-type">MonadBase</span></span><span> </span><span class="annot"><a href="#local-6989586621679848571"><span class="hs-identifier hs-type">b</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-70"></span><span>      </span><span id="local-6989586621679848507"><span id="local-6989586621679848509"><span class="annot"><span class="hs-identifier hs-type">MonadBaseControl</span></span><span> </span><span class="annot"><a href="#local-6989586621679848570"><span class="hs-identifier hs-type">b</span></a></span></span></span><span>
+</span><span id="line-67"></span><span>      </span><span id="local-6989586621679905724"><span id="local-6989586621679905726"><span id="local-6989586621679905728"><span class="annot"><span class="hs-identifier hs-type">MonadReader</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientEnv</span></span></span></span></span><span class="hs-special">,</span><span>
+</span><span id="line-68"></span><span>      </span><span id="local-6989586621679905718"><span id="local-6989586621679905720"><span class="annot"><span class="hs-identifier hs-type">MonadError</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientError</span></span></span></span><span class="hs-special">,</span><span>
+</span><span id="line-69"></span><span>      </span><span id="local-6989586621679905711"><span class="annot"><span class="hs-identifier hs-type">MonadBase</span></span><span> </span><span class="annot"><a href="#local-6989586621679905769"><span class="hs-identifier hs-type">b</span></a></span></span><span class="hs-special">,</span><span>
+</span><span id="line-70"></span><span>      </span><span id="local-6989586621679905705"><span id="local-6989586621679905707"><span class="annot"><span class="hs-identifier hs-type">MonadBaseControl</span></span><span> </span><span class="annot"><a href="#local-6989586621679905768"><span class="hs-identifier hs-type">b</span></a></span></span></span><span>
 </span><span id="line-71"></span><span>    </span><span class="hs-special">)</span><span>
 </span><span id="line-72"></span><span>
 </span><span id="line-73"></span><span class="hs-keyword">instance</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadTrans</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-74"></span><span>  </span><span id="local-6989586621679848503"><span class="annot"><span class="annottext">lift :: m a -&gt; ClientT m a
+</span><span id="line-74"></span><span>  </span><span id="local-6989586621679905701"><span class="annot"><span class="annottext">lift :: m a -&gt; ClientT m a
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var">lift</span></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ReaderT ClientEnv (ExceptT ClientError m) a -&gt; ClientT m a
 forall (m :: Type -&gt; Type) a.
 ReaderT ClientEnv (ExceptT ClientError m) a -&gt; ClientT m a
@@ -273,13 +273,13 @@ m a -&gt; t m a
 </span><span class="hs-identifier hs-var">lift</span></span><span>
 </span><span id="line-75"></span><span>
 </span><span id="line-76"></span><span class="hs-comment">-- | Executes a computation in the client monad.</span><span>
-</span><span id="line-77"></span><span id="local-6989586621679848605"><span id="local-6989586621679848606"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#runClientT"><span class="hs-identifier hs-type">runClientT</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientEnv</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848606"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848605"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848606"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Either</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientError</span></span><span> </span><span class="annot"><a href="#local-6989586621679848605"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span></span><span>
+</span><span id="line-77"></span><span id="local-6989586621679905803"><span id="local-6989586621679905804"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#runClientT"><span class="hs-identifier hs-type">runClientT</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientEnv</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905804"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905803"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905804"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Either</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientError</span></span><span> </span><span class="annot"><a href="#local-6989586621679905803"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span></span><span>
 </span><span id="line-78"></span><span id="runClientT"><span class="annot"><span class="annottext">runClientT :: ClientEnv -&gt; ClientT m a -&gt; m (Either ClientError a)
-</span><a href="Web.Pixiv.Types.PixivT.html#runClientT"><span class="hs-identifier hs-var hs-var">runClientT</span></a></span></span><span> </span><span id="local-6989586621679848500"><span class="annot"><span class="annottext">ClientEnv
-</span><a href="#local-6989586621679848500"><span class="hs-identifier hs-var">env</span></a></span></span><span> </span><span id="local-6989586621679848499"><span class="annot"><span class="annottext">ClientT m a
-</span><a href="#local-6989586621679848499"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="Web.Pixiv.Types.PixivT.html#runClientT"><span class="hs-identifier hs-var hs-var">runClientT</span></a></span></span><span> </span><span id="local-6989586621679905698"><span class="annot"><span class="annottext">ClientEnv
+</span><a href="#local-6989586621679905698"><span class="hs-identifier hs-var">env</span></a></span></span><span> </span><span id="local-6989586621679905697"><span class="annot"><span class="annottext">ClientT m a
+</span><a href="#local-6989586621679905697"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-79"></span><span>  </span><span class="annot"><span class="annottext">ClientT m a
-</span><a href="#local-6989586621679848499"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><a href="#local-6989586621679905697"><span class="hs-identifier hs-var">m</span></a></span><span>
 </span><span id="line-80"></span><span>    </span><span class="annot"><span class="annottext">ClientT m a
 -&gt; (ClientT m a -&gt; ReaderT ClientEnv (ExceptT ClientError m) a)
 -&gt; ReaderT ClientEnv (ExceptT ClientError m) a
@@ -303,7 +303,7 @@ forall a b c. (a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c
 -&gt; ClientEnv -&gt; ExceptT ClientError m a
 forall r (m :: Type -&gt; Type) a. ReaderT r m a -&gt; r -&gt; m a
 </span><span class="hs-identifier hs-var hs-var">runReaderT</span></span><span> </span><span class="annot"><span class="annottext">ClientEnv
-</span><a href="#local-6989586621679848500"><span class="hs-identifier hs-var">env</span></a></span><span>
+</span><a href="#local-6989586621679905698"><span class="hs-identifier hs-var">env</span></a></span><span>
 </span><span id="line-82"></span><span>    </span><span class="annot"><span class="annottext">ExceptT ClientError m a
 -&gt; (ExceptT ClientError m a -&gt; m (Either ClientError a))
 -&gt; m (Either ClientError a)
@@ -312,26 +312,26 @@ forall a b. a -&gt; (a -&gt; b) -&gt; b
 forall e (m :: Type -&gt; Type) a. ExceptT e m a -&gt; m (Either e a)
 </span><span class="hs-identifier hs-var">runExceptT</span></span><span>
 </span><span id="line-83"></span><span>
-</span><span id="line-84"></span><span id="local-6989586621679848495"><span class="hs-keyword">instance</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679848495"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">RunClient</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848495"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-85"></span><span>  </span><span id="local-6989586621679848490"><span class="annot"><span class="annottext">throwClientError :: ClientError -&gt; ClientT m a
+</span><span id="line-84"></span><span id="local-6989586621679905693"><span class="hs-keyword">instance</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679905693"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">RunClient</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905693"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-85"></span><span>  </span><span id="local-6989586621679905688"><span class="annot"><span class="annottext">throwClientError :: ClientError -&gt; ClientT m a
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var">throwClientError</span></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ClientError -&gt; ClientT m a
 forall e (m :: Type -&gt; Type) a. MonadError e m =&gt; e -&gt; m a
 </span><span class="hs-identifier hs-var">throwError</span></span><span>
-</span><span id="line-86"></span><span>  </span><span id="local-6989586621679848487"><span class="annot"><span class="annottext">runRequestAcceptStatus :: Maybe [Status] -&gt; Request -&gt; ClientT m Response
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var">runRequestAcceptStatus</span></span></span><span> </span><span id="local-6989586621679848485"><span class="annot"><span class="annottext">Maybe [Status]
-</span><a href="#local-6989586621679848485"><span class="hs-identifier hs-var">status</span></a></span></span><span> </span><span id="local-6989586621679848484"><span class="annot"><span class="annottext">Request
-</span><a href="#local-6989586621679848484"><span class="hs-identifier hs-var">req</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-87"></span><span>    </span><span id="local-6989586621679848483"><span class="annot"><span class="annottext">ClientEnv
-</span><a href="#local-6989586621679848483"><span class="hs-identifier hs-var">env</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">ClientT m ClientEnv
+</span><span id="line-86"></span><span>  </span><span id="local-6989586621679905685"><span class="annot"><span class="annottext">runRequestAcceptStatus :: Maybe [Status] -&gt; Request -&gt; ClientT m Response
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var">runRequestAcceptStatus</span></span></span><span> </span><span id="local-6989586621679905683"><span class="annot"><span class="annottext">Maybe [Status]
+</span><a href="#local-6989586621679905683"><span class="hs-identifier hs-var">status</span></a></span></span><span> </span><span id="local-6989586621679905682"><span class="annot"><span class="annottext">Request
+</span><a href="#local-6989586621679905682"><span class="hs-identifier hs-var">req</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-87"></span><span>    </span><span id="local-6989586621679905681"><span class="annot"><span class="annottext">ClientEnv
+</span><a href="#local-6989586621679905681"><span class="hs-identifier hs-var">env</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">ClientT m ClientEnv
 forall r (m :: Type -&gt; Type). MonadReader r m =&gt; m r
 </span><span class="hs-identifier hs-var">ask</span></span><span>
-</span><span id="line-88"></span><span>    </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679848481"><span class="annot"><span class="annottext">m :: ClientM Response
-</span><a href="#local-6989586621679848481"><span class="hs-identifier hs-var hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Maybe [Status] -&gt; Request -&gt; ClientM Response
+</span><span id="line-88"></span><span>    </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679905679"><span class="annot"><span class="annottext">m :: ClientM Response
+</span><a href="#local-6989586621679905679"><span class="hs-identifier hs-var hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Maybe [Status] -&gt; Request -&gt; ClientM Response
 </span><span class="hs-identifier hs-var">performRequest</span></span><span> </span><span class="annot"><span class="annottext">Maybe [Status]
-</span><a href="#local-6989586621679848485"><span class="hs-identifier hs-var">status</span></a></span><span> </span><span class="annot"><span class="annottext">Request
-</span><a href="#local-6989586621679848484"><span class="hs-identifier hs-var">req</span></a></span><span>
-</span><span id="line-89"></span><span>    </span><span id="local-6989586621679848479"><span class="annot"><span class="annottext">Either ClientError Response
-</span><a href="#local-6989586621679848479"><span class="hs-identifier hs-var">res</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO (Either ClientError Response)
+</span><a href="#local-6989586621679905683"><span class="hs-identifier hs-var">status</span></a></span><span> </span><span class="annot"><span class="annottext">Request
+</span><a href="#local-6989586621679905682"><span class="hs-identifier hs-var">req</span></a></span><span>
+</span><span id="line-89"></span><span>    </span><span id="local-6989586621679905677"><span class="annot"><span class="annottext">Either ClientError Response
+</span><a href="#local-6989586621679905677"><span class="hs-identifier hs-var">res</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO (Either ClientError Response)
 -&gt; ClientT m (Either ClientError Response)
 forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">(IO (Either ClientError Response)
@@ -342,20 +342,20 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">ClientM Response -&gt; ClientEnv -&gt; IO (Either ClientError Response)
 forall a. ClientM a -&gt; ClientEnv -&gt; IO (Either ClientError a)
 </span><span class="hs-identifier hs-var">runClientM</span></span><span> </span><span class="annot"><span class="annottext">ClientM Response
-</span><a href="#local-6989586621679848481"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="annot"><span class="annottext">ClientEnv
-</span><a href="#local-6989586621679848483"><span class="hs-identifier hs-var">env</span></a></span><span>
+</span><a href="#local-6989586621679905679"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="annot"><span class="annottext">ClientEnv
+</span><a href="#local-6989586621679905681"><span class="hs-identifier hs-var">env</span></a></span><span>
 </span><span id="line-90"></span><span>    </span><span class="annot"><span class="annottext">Either ClientError Response -&gt; ClientT m Response
 forall e (m :: Type -&gt; Type) a. MonadError e m =&gt; Either e a -&gt; m a
 </span><span class="hs-identifier hs-var">liftEither</span></span><span> </span><span class="annot"><span class="annottext">Either ClientError Response
-</span><a href="#local-6989586621679848479"><span class="hs-identifier hs-var">res</span></a></span></span><span>
+</span><a href="#local-6989586621679905677"><span class="hs-identifier hs-var">res</span></a></span></span><span>
 </span><span id="line-91"></span><span>
 </span><span id="line-92"></span><span class="hs-comment">-- | Given 'Manager', creates a 'ClientEnv' using @&quot;https://app-api.pixiv.net&quot;@ as base url.</span><span>
 </span><span id="line-93"></span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#mkDefaultClientEnv"><span class="hs-identifier hs-type">mkDefaultClientEnv</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientEnv</span></span><span>
 </span><span id="line-94"></span><span id="mkDefaultClientEnv"><span class="annot"><span class="annottext">mkDefaultClientEnv :: Manager -&gt; IO ClientEnv
-</span><a href="Web.Pixiv.Types.PixivT.html#mkDefaultClientEnv"><span class="hs-identifier hs-var hs-var">mkDefaultClientEnv</span></a></span></span><span> </span><span id="local-6989586621679848475"><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679848475"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-95"></span><span>  </span><span id="local-6989586621679848474"><span class="annot"><span class="annottext">BaseUrl
-</span><a href="#local-6989586621679848474"><span class="hs-identifier hs-var">baseUrl</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">String -&gt; IO BaseUrl
+</span><a href="Web.Pixiv.Types.PixivT.html#mkDefaultClientEnv"><span class="hs-identifier hs-var hs-var">mkDefaultClientEnv</span></a></span></span><span> </span><span id="local-6989586621679905673"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679905673"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-95"></span><span>  </span><span id="local-6989586621679905672"><span class="annot"><span class="annottext">BaseUrl
+</span><a href="#local-6989586621679905672"><span class="hs-identifier hs-var">baseUrl</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">String -&gt; IO BaseUrl
 forall (m :: Type -&gt; Type). MonadThrow m =&gt; String -&gt; m BaseUrl
 </span><span class="hs-identifier hs-var">parseBaseUrl</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;https://app-api.pixiv.net&quot;</span></span><span>
@@ -365,11 +365,11 @@ forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Manager -&gt; BaseUrl -&gt; ClientEnv
 </span><span class="hs-identifier hs-var">mkClientEnv</span></span><span> </span><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679848475"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">BaseUrl
-</span><a href="#local-6989586621679848474"><span class="hs-identifier hs-var">baseUrl</span></a></span><span>
+</span><a href="#local-6989586621679905673"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">BaseUrl
+</span><a href="#local-6989586621679905672"><span class="hs-identifier hs-var">baseUrl</span></a></span><span>
 </span><span id="line-97"></span><span>
 </span><span id="line-98"></span><span class="hs-comment">-- | Pixiv auth state.</span><span>
-</span><span id="line-99"></span><span id="local-6989586621679848470"><span id="local-6989586621679848471"></span></span><span class="hs-keyword">data</span><span> </span><span id="TokenState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-var">TokenState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="TokenState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-var">TokenState</span></a></span></span><span>
+</span><span id="line-99"></span><span id="local-6989586621679905668"><span id="local-6989586621679905669"></span></span><span class="hs-keyword">data</span><span> </span><span id="TokenState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-var">TokenState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="TokenState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-var">TokenState</span></a></span></span><span>
 </span><span id="line-100"></span><span>  </span><span class="hs-special">{</span><span> </span><span class="hs-comment">-- | Token to access pixiv api.</span><span>
 </span><span id="line-101"></span><span>    </span><span id="accessToken"><span class="annot"><span class="annottext">TokenState -&gt; Token
 </span><a href="Web.Pixiv.Types.PixivT.html#accessToken"><span class="hs-identifier hs-var hs-var">accessToken</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span class="hs-special">,</span><span>
@@ -392,10 +392,10 @@ $cto :: forall x. Rep TokenState x -&gt; TokenState
 $cfrom :: forall x. TokenState -&gt; Rep TokenState x
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></span><span class="hs-special">)</span><span>
 </span><span id="line-109"></span><span>
-</span><span id="line-110"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679848457"><span id="local-6989586621679848459"><span class="annot"><span class="hs-identifier hs-type">Show</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-111"></span><span>  </span><span id="local-6989586621679848455"><span class="annot"><span class="annottext">showsPrec :: Int -&gt; TokenState -&gt; ShowS
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var">showsPrec</span></span></span><span> </span><span id="local-6989586621679848453"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679848453"><span class="hs-identifier hs-var">d</span></a></span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679848449"><span id="local-6989586621679848450"><span id="local-6989586621679848451"><span id="local-6989586621679848452"><span class="annot"><span class="annottext">UTCTime
+</span><span id="line-110"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679905655"><span id="local-6989586621679905657"><span class="annot"><span class="hs-identifier hs-type">Show</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-111"></span><span>  </span><span id="local-6989586621679905653"><span class="annot"><span class="annottext">showsPrec :: Int -&gt; TokenState -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var">showsPrec</span></span></span><span> </span><span id="local-6989586621679905651"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679905651"><span class="hs-identifier hs-var">d</span></a></span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679905647"><span id="local-6989586621679905648"><span id="local-6989586621679905649"><span id="local-6989586621679905650"><span class="annot"><span class="annottext">UTCTime
 Manager
 Token
 manager :: Manager
@@ -406,10 +406,10 @@ manager :: TokenState -&gt; Manager
 expirationTime :: TokenState -&gt; UTCTime
 refreshToken :: TokenState -&gt; Token
 accessToken :: TokenState -&gt; Token
-</span><a href="#local-6989586621679848449"><span class="hs-glyph hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">..</span></a></span></span></span></span></span><span class="hs-special">}</span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="#local-6989586621679905647"><span class="hs-glyph hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">..</span></a></span></span></span></span></span><span class="hs-special">}</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-112"></span><span>    </span><span class="annot"><span class="annottext">Bool -&gt; ShowS -&gt; ShowS
 </span><span class="hs-identifier hs-var">showParen</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679848453"><span class="hs-identifier hs-var">d</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Bool
+</span><a href="#local-6989586621679905651"><span class="hs-identifier hs-var">d</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Bool
 forall a. Ord a =&gt; a -&gt; a -&gt; Bool
 </span><span class="hs-operator hs-var">&gt;=</span></span><span> </span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">11</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(ShowS -&gt; ShowS) -&gt; ShowS -&gt; ShowS
@@ -428,7 +428,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">Token -&gt; ShowS
 forall a. Show a =&gt; a -&gt; ShowS
 </span><span class="hs-identifier hs-var">shows</span></span><span> </span><span class="annot"><span class="annottext">Token
-</span><a href="#local-6989586621679848452"><span class="hs-identifier hs-var">accessToken</span></a></span><span>
+</span><a href="#local-6989586621679905650"><span class="hs-identifier hs-var">accessToken</span></a></span><span>
 </span><span id="line-116"></span><span>        </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
 forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">ShowS
@@ -443,7 +443,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">Token -&gt; ShowS
 forall a. Show a =&gt; a -&gt; ShowS
 </span><span class="hs-identifier hs-var">shows</span></span><span> </span><span class="annot"><span class="annottext">Token
-</span><a href="#local-6989586621679848451"><span class="hs-identifier hs-var">refreshToken</span></a></span><span>
+</span><a href="#local-6989586621679905649"><span class="hs-identifier hs-var">refreshToken</span></a></span><span>
 </span><span id="line-119"></span><span>        </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
 forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">ShowS
@@ -458,7 +458,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">UTCTime -&gt; ShowS
 forall a. Show a =&gt; a -&gt; ShowS
 </span><span class="hs-identifier hs-var">shows</span></span><span> </span><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679848450"><span class="hs-identifier hs-var">expirationTime</span></a></span><span>
+</span><a href="#local-6989586621679905648"><span class="hs-identifier hs-var">expirationTime</span></a></span><span>
 </span><span id="line-122"></span><span>        </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
 forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; ShowS
@@ -466,7 +466,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-string">&quot;}&quot;</span></span><span>
 </span><span id="line-123"></span><span>
 </span><span id="line-124"></span><span class="hs-comment">-- | State stored in 'MonadPixiv'.</span><span>
-</span><span id="line-125"></span><span id="local-6989586621679848444"><span id="local-6989586621679848445"></span></span><span class="hs-keyword">data</span><span> </span><span id="PixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-var">PixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="PixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-var">PixivState</span></a></span></span><span>
+</span><span id="line-125"></span><span id="local-6989586621679905642"><span id="local-6989586621679905643"></span></span><span class="hs-keyword">data</span><span> </span><span id="PixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-var">PixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="PixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-var">PixivState</span></a></span></span><span>
 </span><span id="line-126"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="tokenState"><span class="annot"><span class="annottext">PixivState -&gt; TokenState
 </span><a href="Web.Pixiv.Types.PixivT.html#tokenState"><span class="hs-identifier hs-var hs-var">tokenState</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span class="hs-special">,</span><span>
 </span><span id="line-127"></span><span>    </span><span id="acceptLanguage"><span class="annot"><span class="annottext">PixivState -&gt; Maybe Text
@@ -480,7 +480,7 @@ forall a.
 (forall x. a -&gt; Rep a x) -&gt; (forall x. Rep a x -&gt; a) -&gt; Generic a
 $cto :: forall x. Rep PixivState x -&gt; PixivState
 $cfrom :: forall x. PixivState -&gt; Rep PixivState x
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679848433"><span id="local-6989586621679848435"><span id="local-6989586621679848437"><span class="annot"><span class="annottext">Int -&gt; PixivState -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679905631"><span id="local-6989586621679905633"><span id="local-6989586621679905635"><span class="annot"><span class="annottext">Int -&gt; PixivState -&gt; ShowS
 [PixivState] -&gt; ShowS
 PixivState -&gt; String
 (Int -&gt; PixivState -&gt; ShowS)
@@ -498,12 +498,12 @@ $cshowsPrec :: Int -&gt; PixivState -&gt; ShowS
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
 </span><span id="line-130"></span><span>
 </span><span id="line-131"></span><span class="hs-comment">-- | A thread safe implementation of 'MonadPixiv'.</span><span>
-</span><span id="line-132"></span><span id="local-6989586621679848431"><span id="local-6989586621679848432"></span></span><span class="hs-keyword">newtype</span><span> </span><span id="PixivT"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-var">PixivT</span></a></span></span><span> </span><span id="local-6989586621679848631"><span class="annot"><a href="#local-6989586621679848631"><span class="hs-identifier hs-type">m</span></a></span></span><span> </span><span id="local-6989586621679848630"><span class="annot"><a href="#local-6989586621679848630"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="PixivT"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-var">PixivT</span></a></span></span><span>
+</span><span id="line-132"></span><span id="local-6989586621679905629"><span id="local-6989586621679905630"></span></span><span class="hs-keyword">newtype</span><span> </span><span id="PixivT"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-var">PixivT</span></a></span></span><span> </span><span id="local-6989586621679905829"><span class="annot"><a href="#local-6989586621679905829"><span class="hs-identifier hs-type">m</span></a></span></span><span> </span><span id="local-6989586621679905828"><span class="annot"><a href="#local-6989586621679905828"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="PixivT"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-var">PixivT</span></a></span></span><span>
 </span><span id="line-133"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="unPixivT"><span class="annot"><span class="annottext">PixivT m a -&gt; ReaderT (MVar PixivState) (ClientT m) a
-</span><a href="Web.Pixiv.Types.PixivT.html#unPixivT"><span class="hs-identifier hs-var hs-var">unPixivT</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ReaderT</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">MVar</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848631"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><a href="#local-6989586621679848630"><span class="hs-identifier hs-type">a</span></a></span><span>
+</span><a href="Web.Pixiv.Types.PixivT.html#unPixivT"><span class="hs-identifier hs-var hs-var">unPixivT</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ReaderT</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">MVar</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905829"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><a href="#local-6989586621679905828"><span class="hs-identifier hs-type">a</span></a></span><span>
 </span><span id="line-134"></span><span>  </span><span class="hs-special">}</span><span>
 </span><span id="line-135"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">newtype</span></span><span>
-</span><span id="line-136"></span><span>    </span><span class="hs-special">(</span><span> </span><span id="local-6989586621679848425"><span id="local-6989586621679848427"><span class="annot"><span class="annottext">a -&gt; PixivT m b -&gt; PixivT m a
+</span><span id="line-136"></span><span>    </span><span class="hs-special">(</span><span> </span><span id="local-6989586621679905623"><span id="local-6989586621679905625"><span class="annot"><span class="annottext">a -&gt; PixivT m b -&gt; PixivT m a
 (a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b
 (forall a b. (a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b)
 -&gt; (forall a b. a -&gt; PixivT m b -&gt; PixivT m a)
@@ -528,7 +528,7 @@ $cfmap :: forall (m :: Type -&gt; Type) a b.
 Functor m =&gt;
 (a -&gt; b) -&gt; PixivT m a -&gt; PixivT m b
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Functor</span></span></span></span><span class="hs-special">,</span><span>
-</span><span id="line-137"></span><span>      </span><span id="local-6989586621679848414"><span id="local-6989586621679848416"><span id="local-6989586621679848418"><span id="local-6989586621679848420"><span id="local-6989586621679848422"><span class="annot"><span class="annottext">Functor (PixivT m)
+</span><span id="line-137"></span><span>      </span><span id="local-6989586621679905612"><span id="local-6989586621679905614"><span id="local-6989586621679905616"><span id="local-6989586621679905618"><span id="local-6989586621679905620"><span class="annot"><span class="annottext">Functor (PixivT m)
 a -&gt; PixivT m a
 Functor (PixivT m)
 -&gt; (forall a. a -&gt; PixivT m a)
@@ -590,7 +590,7 @@ pure :: a -&gt; PixivT m a
 $cpure :: forall (m :: Type -&gt; Type) a. Monad m =&gt; a -&gt; PixivT m a
 $cp1Applicative :: forall (m :: Type -&gt; Type). Monad m =&gt; Functor (PixivT m)
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Applicative</span></span></span></span></span></span></span><span class="hs-special">,</span><span>
-</span><span id="line-138"></span><span>      </span><span id="local-6989586621679848407"><span id="local-6989586621679848409"><span id="local-6989586621679848411"><span class="annot"><span class="annottext">Applicative (PixivT m)
+</span><span id="line-138"></span><span>      </span><span id="local-6989586621679905605"><span id="local-6989586621679905607"><span id="local-6989586621679905609"><span class="annot"><span class="annottext">Applicative (PixivT m)
 a -&gt; PixivT m a
 Applicative (PixivT m)
 -&gt; (forall a b. PixivT m a -&gt; (a -&gt; PixivT m b) -&gt; PixivT m b)
@@ -628,7 +628,7 @@ Monad m =&gt;
 PixivT m a -&gt; (a -&gt; PixivT m b) -&gt; PixivT m b
 $cp1Monad :: forall (m :: Type -&gt; Type). Monad m =&gt; Applicative (PixivT m)
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Monad</span></span></span></span></span><span class="hs-special">,</span><span>
-</span><span id="line-139"></span><span>      </span><span id="local-6989586621679848404"><span class="annot"><span class="annottext">Monad (PixivT m)
+</span><span id="line-139"></span><span>      </span><span id="local-6989586621679905602"><span class="annot"><span class="annottext">Monad (PixivT m)
 Monad (PixivT m)
 -&gt; (forall a. IO a -&gt; PixivT m a) -&gt; MonadIO (PixivT m)
 IO a -&gt; PixivT m a
@@ -640,8 +640,8 @@ forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; PixivT m a
 liftIO :: IO a -&gt; PixivT m a
 $cliftIO :: forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; PixivT m a
 $cp1MonadIO :: forall (m :: Type -&gt; Type). MonadIO m =&gt; Monad (PixivT m)
-</span><a href="#local-6989586621679848404"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadIO</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-140"></span><span>      </span><span id="local-6989586621679848401"><span class="annot"><span class="annottext">Monad (PixivT m)
+</span><a href="#local-6989586621679905602"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadIO</span></a></span></span><span class="hs-special">,</span><span>
+</span><span id="line-140"></span><span>      </span><span id="local-6989586621679905599"><span class="annot"><span class="annottext">Monad (PixivT m)
 e -&gt; PixivT m a
 Monad (PixivT m)
 -&gt; (forall e a. Exception e =&gt; e -&gt; PixivT m a)
@@ -658,8 +658,8 @@ $cthrowM :: forall (m :: Type -&gt; Type) e a.
 (MonadThrow m, Exception e) =&gt;
 e -&gt; PixivT m a
 $cp1MonadThrow :: forall (m :: Type -&gt; Type). MonadThrow m =&gt; Monad (PixivT m)
-</span><a href="#local-6989586621679848401"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadThrow</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-141"></span><span>      </span><span id="local-6989586621679848398"><span class="annot"><span class="annottext">MonadThrow (PixivT m)
+</span><a href="#local-6989586621679905599"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadThrow</span></a></span></span><span class="hs-special">,</span><span>
+</span><span id="line-141"></span><span>      </span><span id="local-6989586621679905596"><span class="annot"><span class="annottext">MonadThrow (PixivT m)
 MonadThrow (PixivT m)
 -&gt; (forall e a.
     Exception e =&gt;
@@ -682,9 +682,9 @@ $ccatch :: forall (m :: Type -&gt; Type) e a.
 (MonadCatch m, Exception e) =&gt;
 PixivT m a -&gt; (e -&gt; PixivT m a) -&gt; PixivT m a
 $cp1MonadCatch :: forall (m :: Type -&gt; Type). MonadCatch m =&gt; MonadThrow (PixivT m)
-</span><a href="#local-6989586621679848398"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadCatch</span></a></span></span><span class="hs-special">,</span><span>
-</span><span id="line-142"></span><span>      </span><span id="local-6989586621679848391"><span id="local-6989586621679848393"><span id="local-6989586621679848395"><span class="annot"><span class="hs-identifier hs-type">MonadReader</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">MVar</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span class="hs-special">)</span></span></span></span><span class="hs-special">,</span><span>
-</span><span id="line-143"></span><span>      </span><span id="local-6989586621679848386"><span id="local-6989586621679848388"><span class="annot"><span class="hs-identifier hs-type">MonadError</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientError</span></span></span></span><span>
+</span><a href="#local-6989586621679905596"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var">MonadCatch</span></a></span></span><span class="hs-special">,</span><span>
+</span><span id="line-142"></span><span>      </span><span id="local-6989586621679905589"><span id="local-6989586621679905591"><span id="local-6989586621679905593"><span class="annot"><span class="hs-identifier hs-type">MonadReader</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">MVar</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span class="hs-special">)</span></span></span></span><span class="hs-special">,</span><span>
+</span><span id="line-143"></span><span>      </span><span id="local-6989586621679905584"><span id="local-6989586621679905586"><span class="annot"><span class="hs-identifier hs-type">MonadError</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientError</span></span></span></span><span>
 </span><span id="line-144"></span><span>    </span><span class="hs-special">)</span><span>
 </span><span id="line-145"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(forall x. PixivT m a -&gt; Rep (PixivT m a) x)
 -&gt; (forall x. Rep (PixivT m a) x -&gt; PixivT m a)
@@ -700,8 +700,8 @@ $cfrom :: forall (m :: Type -&gt; Type) a x. PixivT m a -&gt; Rep (PixivT m a) x
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></span><span class="hs-special">)</span><span>
 </span><span id="line-146"></span><span>
 </span><span id="line-147"></span><span class="hs-keyword">instance</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadTrans</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-148"></span><span>  </span><span id="local-6989586621679848382"><span class="annot"><span class="annottext">lift :: m a -&gt; PixivT m a
-</span><a href="#local-6989586621679848382"><span class="hs-identifier hs-var hs-var hs-var hs-var">lift</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ReaderT (MVar PixivState) (ClientT m) a -&gt; PixivT m a
+</span><span id="line-148"></span><span>  </span><span id="local-6989586621679905580"><span class="annot"><span class="annottext">lift :: m a -&gt; PixivT m a
+</span><a href="#local-6989586621679905580"><span class="hs-identifier hs-var hs-var hs-var hs-var">lift</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ReaderT (MVar PixivState) (ClientT m) a -&gt; PixivT m a
 forall (m :: Type -&gt; Type) a.
 ReaderT (MVar PixivState) (ClientT m) a -&gt; PixivT m a
 </span><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-var">PixivT</span></a></span><span> </span><span class="annot"><span class="annottext">(ReaderT (MVar PixivState) (ClientT m) a -&gt; PixivT m a)
@@ -724,12 +724,12 @@ forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
 m a -&gt; t m a
 </span><span class="hs-identifier hs-var">lift</span></span><span>
 </span><span id="line-149"></span><span>
-</span><span id="line-150"></span><span id="local-6989586621679848376"><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679848375"><span class="annot"><a href="#local-6989586621679848375"><span class="hs-keyword hs-type">newtype</span></a></span></span><span> </span><span class="hs-keyword">instance</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadBase</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><a href="#local-6989586621679848375"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadBase</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848375"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span></span><span>
+</span><span id="line-150"></span><span id="local-6989586621679905574"><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679905573"><span class="annot"><a href="#local-6989586621679905573"><span class="hs-keyword hs-type">newtype</span></a></span></span><span> </span><span class="hs-keyword">instance</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadBase</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><a href="#local-6989586621679905573"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadBase</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905573"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span></span><span>
 </span><span id="line-151"></span><span>
-</span><span id="line-152"></span><span id="local-6989586621679848370"><span id="local-6989586621679848372"><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679848369"><span class="annot"><a href="#local-6989586621679848369"><span class="hs-keyword hs-type">newtype</span></a></span></span><span> </span><span class="hs-keyword">instance</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadBaseControl</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><a href="#local-6989586621679848369"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadBaseControl</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848369"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span></span></span><span>
+</span><span id="line-152"></span><span id="local-6989586621679905568"><span id="local-6989586621679905570"><span class="hs-keyword">deriving</span><span> </span><span id="local-6989586621679905567"><span class="annot"><a href="#local-6989586621679905567"><span class="hs-keyword hs-type">newtype</span></a></span></span><span> </span><span class="hs-keyword">instance</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadBaseControl</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><a href="#local-6989586621679905567"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadBaseControl</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905567"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span></span></span><span>
 </span><span id="line-153"></span><span>
 </span><span id="line-154"></span><span class="hs-comment">-- | Lifts a computation in 'ClientT' to 'PixivT'.</span><span>
-</span><span id="line-155"></span><span id="local-6989586621679848619"><span id="local-6989586621679848620"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#liftC"><span class="hs-identifier hs-type">liftC</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Monad</span></span><span> </span><span class="annot"><a href="#local-6989586621679848620"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848620"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848619"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848620"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848619"><span class="hs-identifier hs-type">a</span></a></span></span></span><span>
+</span><span id="line-155"></span><span id="local-6989586621679905817"><span id="local-6989586621679905818"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#liftC"><span class="hs-identifier hs-type">liftC</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Monad</span></span><span> </span><span class="annot"><a href="#local-6989586621679905818"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#ClientT"><span class="hs-identifier hs-type">ClientT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905818"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905817"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905818"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905817"><span class="hs-identifier hs-type">a</span></a></span></span></span><span>
 </span><span id="line-156"></span><span id="liftC"><span class="annot"><span class="annottext">liftC :: ClientT m a -&gt; PixivT m a
 </span><a href="Web.Pixiv.Types.PixivT.html#liftC"><span class="hs-identifier hs-var hs-var">liftC</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ReaderT (MVar PixivState) (ClientT m) a -&gt; PixivT m a
 forall (m :: Type -&gt; Type) a.
@@ -745,15 +745,15 @@ forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
 m a -&gt; t m a
 </span><span class="hs-identifier hs-var">lift</span></span><span>
 </span><span id="line-157"></span><span>
-</span><span id="line-158"></span><span id="local-6989586621679848368"><span class="hs-keyword">instance</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679848368"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">RunClient</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848368"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-159"></span><span>  </span><span id="local-6989586621679848364"><span class="annot"><span class="annottext">throwClientError :: ClientError -&gt; PixivT m a
-</span><a href="#local-6989586621679848364"><span class="hs-identifier hs-var hs-var hs-var hs-var">throwClientError</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ClientError -&gt; PixivT m a
+</span><span id="line-158"></span><span id="local-6989586621679905566"><span class="hs-keyword">instance</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679905566"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">RunClient</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905566"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-159"></span><span>  </span><span id="local-6989586621679905562"><span class="annot"><span class="annottext">throwClientError :: ClientError -&gt; PixivT m a
+</span><a href="#local-6989586621679905562"><span class="hs-identifier hs-var hs-var hs-var hs-var">throwClientError</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ClientError -&gt; PixivT m a
 forall e (m :: Type -&gt; Type) a. MonadError e m =&gt; e -&gt; m a
 </span><span class="hs-identifier hs-var">throwError</span></span><span>
-</span><span id="line-160"></span><span>  </span><span id="local-6989586621679848363"><span class="annot"><span class="annottext">runRequestAcceptStatus :: Maybe [Status] -&gt; Request -&gt; PixivT m Response
-</span><a href="#local-6989586621679848363"><span class="hs-identifier hs-var hs-var hs-var hs-var">runRequestAcceptStatus</span></a></span></span><span> </span><span id="local-6989586621679848362"><span class="annot"><span class="annottext">Maybe [Status]
-</span><a href="#local-6989586621679848362"><span class="hs-identifier hs-var">status</span></a></span></span><span> </span><span id="local-6989586621679848361"><span class="annot"><span class="annottext">Request
-</span><a href="#local-6989586621679848361"><span class="hs-identifier hs-var">req</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-160"></span><span>  </span><span id="local-6989586621679905561"><span class="annot"><span class="annottext">runRequestAcceptStatus :: Maybe [Status] -&gt; Request -&gt; PixivT m Response
+</span><a href="#local-6989586621679905561"><span class="hs-identifier hs-var hs-var hs-var hs-var">runRequestAcceptStatus</span></a></span></span><span> </span><span id="local-6989586621679905560"><span class="annot"><span class="annottext">Maybe [Status]
+</span><a href="#local-6989586621679905560"><span class="hs-identifier hs-var">status</span></a></span></span><span> </span><span id="local-6989586621679905559"><span class="annot"><span class="annottext">Request
+</span><a href="#local-6989586621679905559"><span class="hs-identifier hs-var">req</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-161"></span><span>    </span><span class="annot"><span class="annottext">ClientT m Response -&gt; PixivT m Response
 forall (m :: Type -&gt; Type) a. Monad m =&gt; ClientT m a -&gt; PixivT m a
 </span><a href="Web.Pixiv.Types.PixivT.html#liftC"><span class="hs-identifier hs-var">liftC</span></a></span><span> </span><span class="annot"><span class="annottext">(ClientT m Response -&gt; PixivT m Response)
@@ -764,42 +764,42 @@ forall (m :: Type -&gt; Type).
 RunClient m =&gt;
 Maybe [Status] -&gt; Request -&gt; m Response
 </span><span class="hs-identifier hs-var">runRequestAcceptStatus</span></span><span> </span><span class="annot"><span class="annottext">Maybe [Status]
-</span><a href="#local-6989586621679848362"><span class="hs-identifier hs-var">status</span></a></span><span> </span><span class="annot"><span class="annottext">Request
-</span><a href="#local-6989586621679848361"><span class="hs-identifier hs-var">req</span></a></span></span><span>
+</span><a href="#local-6989586621679905560"><span class="hs-identifier hs-var">status</span></a></span><span> </span><span class="annot"><span class="annottext">Request
+</span><a href="#local-6989586621679905559"><span class="hs-identifier hs-var">req</span></a></span></span><span>
 </span><span id="line-162"></span><span>
 </span><span id="line-163"></span><span class="hs-comment">-- | The mtl-style class of pixiv monad.</span><span>
-</span><span id="line-164"></span><span class="hs-keyword">class</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">RunClient</span></span><span> </span><span class="annot"><a href="#local-6989586621679848615"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679848615"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span id="MonadPixiv"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-var">MonadPixiv</span></a></span></span><span> </span><span id="local-6989586621679848615"><span class="annot"><a href="#local-6989586621679848615"><span class="hs-identifier hs-type">m</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-164"></span><span class="hs-keyword">class</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">RunClient</span></span><span> </span><span class="annot"><a href="#local-6989586621679905813"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679905813"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span id="MonadPixiv"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-var">MonadPixiv</span></a></span></span><span> </span><span id="local-6989586621679905813"><span class="annot"><a href="#local-6989586621679905813"><span class="hs-identifier hs-type">m</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
 </span><span id="line-165"></span><span>  </span><span class="hs-comment">-- | Reads the stored 'PixivState', when used in a multithreaded setting, this should block</span><span>
 </span><span id="line-166"></span><span>  </span><span class="hs-comment">-- all other thread from reading the 'PixivState' until 'putPixivState' is called.</span><span>
-</span><span id="line-167"></span><span>  </span><span id="takePixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#takePixivState"><span class="hs-identifier hs-type">takePixivState</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="#local-6989586621679848615"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span>
+</span><span id="line-167"></span><span>  </span><span id="takePixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#takePixivState"><span class="hs-identifier hs-type">takePixivState</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="#local-6989586621679905813"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span>
 </span><span id="line-168"></span><span>
 </span><span id="line-169"></span><span>  </span><span class="hs-comment">-- | Writes a new 'PixivState'.</span><span>
-</span><span id="line-170"></span><span>  </span><span id="putPixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#putPixivState"><span class="hs-identifier hs-type">putPixivState</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848615"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><span id="line-170"></span><span>  </span><span id="putPixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#putPixivState"><span class="hs-identifier hs-type">putPixivState</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905813"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
 </span><span id="line-171"></span><span>
 </span><span id="line-172"></span><span>  </span><span class="hs-comment">-- | Reads the stored 'PixivState', without blocking other threads which want to read this state.</span><span>
 </span><span id="line-173"></span><span>  </span><span class="hs-comment">--</span><span>
 </span><span id="line-174"></span><span>  </span><span class="hs-comment">-- Don't confuse with 'takePixivState', please refer to 'readMVar'.</span><span>
-</span><span id="line-175"></span><span>  </span><span id="readPixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#readPixivState"><span class="hs-identifier hs-type">readPixivState</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="#local-6989586621679848615"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span>
+</span><span id="line-175"></span><span>  </span><span id="readPixivState"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#readPixivState"><span class="hs-identifier hs-type">readPixivState</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="#local-6989586621679905813"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span>
 </span><span id="line-176"></span><span>
-</span><span id="line-177"></span><span id="local-6989586621679848356"><span id="local-6989586621679848357"><span class="hs-keyword">instance</span><span>
+</span><span id="line-177"></span><span id="local-6989586621679905554"><span id="local-6989586621679905555"><span class="hs-keyword">instance</span><span>
 </span><span id="line-178"></span><span>  </span><span class="hs-pragma">{-# OVERLAPPABLE</span><span> </span><span class="hs-pragma">#-}</span><span>
-</span><span id="line-179"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848357"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-180"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">MonadTrans</span></span><span> </span><span class="annot"><a href="#local-6989586621679848356"><span class="hs-identifier hs-type">f</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-181"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679848356"><span class="hs-identifier hs-type">f</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848357"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span>
-</span><span id="line-182"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">RunClient</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679848356"><span class="hs-identifier hs-type">f</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848357"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-179"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905555"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-180"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">MonadTrans</span></span><span> </span><span class="annot"><a href="#local-6989586621679905554"><span class="hs-identifier hs-type">f</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-181"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679905554"><span class="hs-identifier hs-type">f</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905555"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-182"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">RunClient</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679905554"><span class="hs-identifier hs-type">f</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905555"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-183"></span><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=&gt;</span><span>
-</span><span id="line-184"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679848356"><span class="hs-identifier hs-type">f</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848357"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-184"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679905554"><span class="hs-identifier hs-type">f</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905555"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-185"></span><span>  </span><span class="hs-keyword">where</span><span>
-</span><span id="line-186"></span><span>  </span><span id="local-6989586621679848349"><span class="annot"><span class="annottext">takePixivState :: f m PixivState
-</span><a href="#local-6989586621679848349"><span class="hs-identifier hs-var hs-var hs-var hs-var">takePixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m PixivState -&gt; f m PixivState
+</span><span id="line-186"></span><span>  </span><span id="local-6989586621679905547"><span class="annot"><span class="annottext">takePixivState :: f m PixivState
+</span><a href="#local-6989586621679905547"><span class="hs-identifier hs-var hs-var hs-var hs-var">takePixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m PixivState -&gt; f m PixivState
 forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
 (MonadTrans t, Monad m) =&gt;
 m a -&gt; t m a
 </span><span class="hs-identifier hs-var">lift</span></span><span> </span><span class="annot"><span class="annottext">m PixivState
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m PixivState
 </span><a href="Web.Pixiv.Types.PixivT.html#takePixivState"><span class="hs-identifier hs-var">takePixivState</span></a></span><span>
-</span><span id="line-187"></span><span>  </span><span id="local-6989586621679848348"><span class="annot"><span class="annottext">putPixivState :: PixivState -&gt; f m ()
-</span><a href="#local-6989586621679848348"><span class="hs-identifier hs-var hs-var hs-var hs-var">putPixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m () -&gt; f m ()
+</span><span id="line-187"></span><span>  </span><span id="local-6989586621679905546"><span class="annot"><span class="annottext">putPixivState :: PixivState -&gt; f m ()
+</span><a href="#local-6989586621679905546"><span class="hs-identifier hs-var hs-var hs-var hs-var">putPixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m () -&gt; f m ()
 forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
 (MonadTrans t, Monad m) =&gt;
 m a -&gt; t m a
@@ -808,8 +808,8 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">PixivState -&gt; m ()
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; PixivState -&gt; m ()
 </span><a href="Web.Pixiv.Types.PixivT.html#putPixivState"><span class="hs-identifier hs-var">putPixivState</span></a></span><span>
-</span><span id="line-188"></span><span>  </span><span id="local-6989586621679848347"><span class="annot"><span class="annottext">readPixivState :: f m PixivState
-</span><a href="#local-6989586621679848347"><span class="hs-identifier hs-var hs-var hs-var hs-var">readPixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m PixivState -&gt; f m PixivState
+</span><span id="line-188"></span><span>  </span><span id="local-6989586621679905545"><span class="annot"><span class="annottext">readPixivState :: f m PixivState
+</span><a href="#local-6989586621679905545"><span class="hs-identifier hs-var hs-var hs-var hs-var">readPixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m PixivState -&gt; f m PixivState
 forall (t :: (Type -&gt; Type) -&gt; Type -&gt; Type) (m :: Type -&gt; Type) a.
 (MonadTrans t, Monad m) =&gt;
 m a -&gt; t m a
@@ -817,9 +817,9 @@ m a -&gt; t m a
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m PixivState
 </span><a href="Web.Pixiv.Types.PixivT.html#readPixivState"><span class="hs-identifier hs-var">readPixivState</span></a></span></span></span><span>
 </span><span id="line-189"></span><span>
-</span><span id="line-190"></span><span id="local-6989586621679848346"><span class="hs-keyword">instance</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679848346"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848346"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-191"></span><span>  </span><span id="local-6989586621679848340"><span class="annot"><span class="annottext">takePixivState :: PixivT m PixivState
-</span><a href="#local-6989586621679848340"><span class="hs-identifier hs-var hs-var hs-var hs-var">takePixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
+</span><span id="line-190"></span><span id="local-6989586621679905544"><span class="hs-keyword">instance</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679905544"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905544"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-191"></span><span>  </span><span id="local-6989586621679905538"><span class="annot"><span class="annottext">takePixivState :: PixivT m PixivState
+</span><a href="#local-6989586621679905538"><span class="hs-identifier hs-var hs-var hs-var hs-var">takePixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
 forall r (m :: Type -&gt; Type). MonadReader r m =&gt; m r
 </span><span class="hs-identifier hs-var">ask</span></span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
 -&gt; (MVar PixivState -&gt; PixivT m PixivState) -&gt; PixivT m PixivState
@@ -834,11 +834,11 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">MVar PixivState -&gt; IO PixivState
 forall a. MVar a -&gt; IO a
 </span><span class="hs-identifier hs-var">takeMVar</span></span><span>
-</span><span id="line-192"></span><span>  </span><span id="local-6989586621679848338"><span class="annot"><span class="annottext">putPixivState :: PixivState -&gt; PixivT m ()
-</span><a href="#local-6989586621679848338"><span class="hs-identifier hs-var hs-var hs-var hs-var">putPixivState</span></a></span></span><span> </span><span id="local-6989586621679848337"><span class="annot"><span class="annottext">PixivState
-</span><a href="#local-6989586621679848337"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-193"></span><span>    </span><span id="local-6989586621679848336"><span class="annot"><span class="annottext">MVar PixivState
-</span><a href="#local-6989586621679848336"><span class="hs-identifier hs-var">ref</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
+</span><span id="line-192"></span><span>  </span><span id="local-6989586621679905536"><span class="annot"><span class="annottext">putPixivState :: PixivState -&gt; PixivT m ()
+</span><a href="#local-6989586621679905536"><span class="hs-identifier hs-var hs-var hs-var hs-var">putPixivState</span></a></span></span><span> </span><span id="local-6989586621679905535"><span class="annot"><span class="annottext">PixivState
+</span><a href="#local-6989586621679905535"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-193"></span><span>    </span><span id="local-6989586621679905534"><span class="annot"><span class="annottext">MVar PixivState
+</span><a href="#local-6989586621679905534"><span class="hs-identifier hs-var">ref</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
 forall r (m :: Type -&gt; Type). MonadReader r m =&gt; m r
 </span><span class="hs-identifier hs-var">ask</span></span><span>
 </span><span id="line-194"></span><span>    </span><span class="annot"><span class="annottext">IO () -&gt; PixivT m ()
@@ -848,10 +848,10 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">MVar PixivState -&gt; PixivState -&gt; IO ()
 forall a. MVar a -&gt; a -&gt; IO ()
 </span><span class="hs-identifier hs-var">putMVar</span></span><span> </span><span class="annot"><span class="annottext">MVar PixivState
-</span><a href="#local-6989586621679848336"><span class="hs-identifier hs-var">ref</span></a></span><span> </span><span class="annot"><span class="annottext">PixivState
-</span><a href="#local-6989586621679848337"><span class="hs-identifier hs-var">s</span></a></span><span>
-</span><span id="line-195"></span><span>  </span><span id="local-6989586621679848334"><span class="annot"><span class="annottext">readPixivState :: PixivT m PixivState
-</span><a href="#local-6989586621679848334"><span class="hs-identifier hs-var hs-var hs-var hs-var">readPixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
+</span><a href="#local-6989586621679905534"><span class="hs-identifier hs-var">ref</span></a></span><span> </span><span class="annot"><span class="annottext">PixivState
+</span><a href="#local-6989586621679905535"><span class="hs-identifier hs-var">s</span></a></span><span>
+</span><span id="line-195"></span><span>  </span><span id="local-6989586621679905532"><span class="annot"><span class="annottext">readPixivState :: PixivT m PixivState
+</span><a href="#local-6989586621679905532"><span class="hs-identifier hs-var hs-var hs-var hs-var">readPixivState</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
 forall r (m :: Type -&gt; Type). MonadReader r m =&gt; m r
 </span><span class="hs-identifier hs-var">ask</span></span><span> </span><span class="annot"><span class="annottext">PixivT m (MVar PixivState)
 -&gt; (MVar PixivState -&gt; PixivT m PixivState) -&gt; PixivT m PixivState
@@ -868,37 +868,37 @@ forall a. MVar a -&gt; IO a
 </span><span class="hs-identifier hs-var">readMVar</span></span></span><span>
 </span><span id="line-196"></span><span>
 </span><span id="line-197"></span><span class="hs-comment">-- | Interprets the 'PixivT' effect, with a supplied 'Manager'.</span><span>
-</span><span id="line-198"></span><span id="local-6989586621679848600"><span id="local-6989586621679848601"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#runPixivT"><span class="hs-identifier hs-type">runPixivT</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679848601"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848601"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848600"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848601"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Either</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientError</span></span><span> </span><span class="annot"><a href="#local-6989586621679848600"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span></span><span>
+</span><span id="line-198"></span><span id="local-6989586621679905798"><span id="local-6989586621679905799"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#runPixivT"><span class="hs-identifier hs-type">runPixivT</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679905799"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905799"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905798"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905799"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Either</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientError</span></span><span> </span><span class="annot"><a href="#local-6989586621679905798"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span></span><span>
 </span><span id="line-199"></span><span id="runPixivT"><span class="annot"><span class="annottext">runPixivT :: Manager -&gt; Credential -&gt; PixivT m a -&gt; m (Either ClientError a)
-</span><a href="Web.Pixiv.Types.PixivT.html#runPixivT"><span class="hs-identifier hs-var hs-var">runPixivT</span></a></span></span><span> </span><span id="local-6989586621679848332"><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679848332"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span id="local-6989586621679848331"><span class="annot"><span class="annottext">Credential
-</span><a href="#local-6989586621679848331"><span class="hs-identifier hs-var">credential</span></a></span></span><span> </span><span id="local-6989586621679848330"><span class="annot"><span class="annottext">PixivT m a
-</span><a href="#local-6989586621679848330"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-200"></span><span>  </span><span id="local-6989586621679848329"><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679848329"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO UTCTime -&gt; m UTCTime
+</span><a href="Web.Pixiv.Types.PixivT.html#runPixivT"><span class="hs-identifier hs-var hs-var">runPixivT</span></a></span></span><span> </span><span id="local-6989586621679905530"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679905530"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span id="local-6989586621679905529"><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679905529"><span class="hs-identifier hs-var">credential</span></a></span></span><span> </span><span id="local-6989586621679905528"><span class="annot"><span class="annottext">PixivT m a
+</span><a href="#local-6989586621679905528"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-200"></span><span>  </span><span id="local-6989586621679905527"><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679905527"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO UTCTime -&gt; m UTCTime
 forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">IO UTCTime
 </span><span class="hs-identifier hs-var">getCurrentTime</span></span><span>
-</span><span id="line-201"></span><span>  </span><span id="local-6989586621679848327"><span class="annot"><span class="annottext">TokenState
-</span><a href="#local-6989586621679848327"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO TokenState -&gt; m TokenState
+</span><span id="line-201"></span><span>  </span><span id="local-6989586621679905525"><span class="annot"><span class="annottext">TokenState
+</span><a href="#local-6989586621679905525"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO TokenState -&gt; m TokenState
 forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">(IO TokenState -&gt; m TokenState) -&gt; IO TokenState -&gt; m TokenState
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Manager -&gt; Credential -&gt; UTCTime -&gt; IO TokenState
 </span><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier hs-var">computeTokenState</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679848332"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
-</span><a href="#local-6989586621679848331"><span class="hs-identifier hs-var">credential</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679848329"><span class="hs-identifier hs-var">t</span></a></span><span>
-</span><span id="line-202"></span><span>  </span><span id="local-6989586621679848326"><span class="annot"><span class="annottext">ClientEnv
-</span><a href="#local-6989586621679848326"><span class="hs-identifier hs-var">clientEnv</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO ClientEnv -&gt; m ClientEnv
+</span><a href="#local-6989586621679905530"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679905529"><span class="hs-identifier hs-var">credential</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679905527"><span class="hs-identifier hs-var">t</span></a></span><span>
+</span><span id="line-202"></span><span>  </span><span id="local-6989586621679905524"><span class="annot"><span class="annottext">ClientEnv
+</span><a href="#local-6989586621679905524"><span class="hs-identifier hs-var">clientEnv</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO ClientEnv -&gt; m ClientEnv
 forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">(IO ClientEnv -&gt; m ClientEnv) -&gt; IO ClientEnv -&gt; m ClientEnv
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Manager -&gt; IO ClientEnv
 </span><a href="Web.Pixiv.Types.PixivT.html#mkDefaultClientEnv"><span class="hs-identifier hs-var">mkDefaultClientEnv</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679848332"><span class="hs-identifier hs-var">manager</span></a></span><span>
-</span><span id="line-203"></span><span>  </span><span id="local-6989586621679848325"><span class="annot"><span class="annottext">MVar PixivState
-</span><a href="#local-6989586621679848325"><span class="hs-identifier hs-var">ref</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO (MVar PixivState) -&gt; m (MVar PixivState)
+</span><a href="#local-6989586621679905530"><span class="hs-identifier hs-var">manager</span></a></span><span>
+</span><span id="line-203"></span><span>  </span><span id="local-6989586621679905523"><span class="annot"><span class="annottext">MVar PixivState
+</span><a href="#local-6989586621679905523"><span class="hs-identifier hs-var">ref</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO (MVar PixivState) -&gt; m (MVar PixivState)
 forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">(IO (MVar PixivState) -&gt; m (MVar PixivState))
 -&gt; (PixivState -&gt; IO (MVar PixivState))
@@ -912,11 +912,11 @@ forall a. a -&gt; IO (MVar a)
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">TokenState -&gt; Maybe Text -&gt; PixivState
 </span><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-var">PixivState</span></a></span><span> </span><span class="annot"><span class="annottext">TokenState
-</span><a href="#local-6989586621679848327"><span class="hs-identifier hs-var">s</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Text
+</span><a href="#local-6989586621679905525"><span class="hs-identifier hs-var">s</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Text
 forall a. Maybe a
 </span><span class="hs-identifier hs-var">Nothing</span></span><span>
 </span><span id="line-204"></span><span>  </span><span class="annot"><span class="annottext">PixivT m a
-</span><a href="#local-6989586621679848330"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><a href="#local-6989586621679905528"><span class="hs-identifier hs-var">m</span></a></span><span>
 </span><span id="line-205"></span><span>    </span><span class="annot"><span class="annottext">PixivT m a
 -&gt; (PixivT m a -&gt; ReaderT (MVar PixivState) (ClientT m) a)
 -&gt; ReaderT (MVar PixivState) (ClientT m) a
@@ -939,7 +939,7 @@ forall a b c. (a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c
 -&gt; MVar PixivState -&gt; ClientT m a
 forall r (m :: Type -&gt; Type) a. ReaderT r m a -&gt; r -&gt; m a
 </span><span class="hs-identifier hs-var hs-var">runReaderT</span></span><span> </span><span class="annot"><span class="annottext">MVar PixivState
-</span><a href="#local-6989586621679848325"><span class="hs-identifier hs-var">ref</span></a></span><span>
+</span><a href="#local-6989586621679905523"><span class="hs-identifier hs-var">ref</span></a></span><span>
 </span><span id="line-207"></span><span>    </span><span class="annot"><span class="annottext">ClientT m a
 -&gt; (ClientT m a -&gt; m (Either ClientError a))
 -&gt; m (Either ClientError a)
@@ -948,16 +948,16 @@ forall a b. a -&gt; (a -&gt; b) -&gt; b
 forall (m :: Type -&gt; Type) a.
 ClientEnv -&gt; ClientT m a -&gt; m (Either ClientError a)
 </span><a href="Web.Pixiv.Types.PixivT.html#runClientT"><span class="hs-identifier hs-var">runClientT</span></a></span><span> </span><span class="annot"><span class="annottext">ClientEnv
-</span><a href="#local-6989586621679848326"><span class="hs-identifier hs-var">clientEnv</span></a></span><span>
+</span><a href="#local-6989586621679905524"><span class="hs-identifier hs-var">clientEnv</span></a></span><span>
 </span><span id="line-208"></span><span>
 </span><span id="line-209"></span><span class="hs-comment">-- | Like 'runPixivT', but creates a new 'Manager' everytime.</span><span>
-</span><span id="line-210"></span><span id="local-6989586621679848322"><span id="local-6989586621679848323"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#runPixivT%27"><span class="hs-identifier hs-type">runPixivT'</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679848323"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848323"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848322"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848323"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Either</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientError</span></span><span> </span><span class="annot"><a href="#local-6989586621679848322"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span></span><span>
+</span><span id="line-210"></span><span id="local-6989586621679905520"><span id="local-6989586621679905521"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#runPixivT%27"><span class="hs-identifier hs-type">runPixivT'</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679905521"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905521"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905520"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905521"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Either</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientError</span></span><span> </span><span class="annot"><a href="#local-6989586621679905520"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span></span><span>
 </span><span id="line-211"></span><span id="runPixivT%27"><span class="annot"><span class="annottext">runPixivT' :: Credential -&gt; PixivT m a -&gt; m (Either ClientError a)
-</span><a href="Web.Pixiv.Types.PixivT.html#runPixivT%27"><span class="hs-identifier hs-var hs-var">runPixivT'</span></a></span></span><span> </span><span id="local-6989586621679848321"><span class="annot"><span class="annottext">Credential
-</span><a href="#local-6989586621679848321"><span class="hs-identifier hs-var">credential</span></a></span></span><span> </span><span id="local-6989586621679848320"><span class="annot"><span class="annottext">PixivT m a
-</span><a href="#local-6989586621679848320"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-212"></span><span>  </span><span id="local-6989586621679848319"><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679848319"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO Manager -&gt; m Manager
+</span><a href="Web.Pixiv.Types.PixivT.html#runPixivT%27"><span class="hs-identifier hs-var hs-var">runPixivT'</span></a></span></span><span> </span><span id="local-6989586621679905519"><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679905519"><span class="hs-identifier hs-var">credential</span></a></span></span><span> </span><span id="local-6989586621679905518"><span class="annot"><span class="annottext">PixivT m a
+</span><a href="#local-6989586621679905518"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-212"></span><span>  </span><span id="local-6989586621679905517"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679905517"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO Manager -&gt; m Manager
 forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">IO Manager
 forall (m :: Type -&gt; Type). MonadIO m =&gt; m Manager
@@ -967,9 +967,9 @@ forall (m :: Type -&gt; Type) a.
 MonadIO m =&gt;
 Manager -&gt; Credential -&gt; PixivT m a -&gt; m (Either ClientError a)
 </span><a href="Web.Pixiv.Types.PixivT.html#runPixivT"><span class="hs-identifier hs-var">runPixivT</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679848319"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
-</span><a href="#local-6989586621679848321"><span class="hs-identifier hs-var">credential</span></a></span><span> </span><span class="annot"><span class="annottext">PixivT m a
-</span><a href="#local-6989586621679848320"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><a href="#local-6989586621679905517"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679905519"><span class="hs-identifier hs-var">credential</span></a></span><span> </span><span class="annot"><span class="annottext">PixivT m a
+</span><a href="#local-6989586621679905518"><span class="hs-identifier hs-var">m</span></a></span><span>
 </span><span id="line-214"></span><span>
 </span><span id="line-215"></span><span class="hs-comment">-- | Computes the 'TokenState'.</span><span>
 </span><span id="line-216"></span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier hs-type">computeTokenState</span></a></span><span> </span><span class="hs-glyph">::</span><span>
@@ -980,11 +980,11 @@ Manager -&gt; Credential -&gt; PixivT m a -&gt; m (Either ClientError a)
 </span><span id="line-221"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">UTCTime</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-222"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span>
 </span><span id="line-223"></span><span id="computeTokenState"><span class="annot"><span class="annottext">computeTokenState :: Manager -&gt; Credential -&gt; UTCTime -&gt; IO TokenState
-</span><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier hs-var hs-var">computeTokenState</span></a></span></span><span> </span><span id="local-6989586621679848318"><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679848318"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span id="local-6989586621679848317"><span class="annot"><span class="annottext">Credential
-</span><a href="#local-6989586621679848317"><span class="hs-identifier hs-var">credential</span></a></span></span><span> </span><span id="local-6989586621679848316"><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679848316"><span class="hs-identifier hs-var">time</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-224"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-type">OAuth2Token</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679848312"><span id="local-6989586621679848313"><span id="local-6989586621679848314"><span class="annot"><span class="annottext">Int
+</span><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier hs-var hs-var">computeTokenState</span></a></span></span><span> </span><span id="local-6989586621679905516"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679905516"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span id="local-6989586621679905515"><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679905515"><span class="hs-identifier hs-var">credential</span></a></span></span><span> </span><span id="local-6989586621679905514"><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679905514"><span class="hs-identifier hs-var">time</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-224"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-type">OAuth2Token</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679905510"><span id="local-6989586621679905511"><span id="local-6989586621679905512"><span class="annot"><span class="annottext">Int
 Token
 oa_refreshToken :: OAuth2Token -&gt; Token
 oa_expiresIn :: OAuth2Token -&gt; Int
@@ -999,36 +999,36 @@ forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Manager -&gt; Credential -&gt; IO OAuth2Token
 </span><a href="Web.Pixiv.Auth.html#auth%27"><span class="hs-identifier hs-var">auth'</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679848318"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
-</span><a href="#local-6989586621679848317"><span class="hs-identifier hs-var">credential</span></a></span><span>
-</span><span id="line-225"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679848307"><span class="annot"><span class="annottext">offset :: Int
-</span><a href="#local-6989586621679848307"><span class="hs-identifier hs-var hs-var">offset</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679848313"><span class="hs-identifier hs-var">oa_expiresIn</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
+</span><a href="#local-6989586621679905516"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679905515"><span class="hs-identifier hs-var">credential</span></a></span><span>
+</span><span id="line-225"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679905505"><span class="annot"><span class="annottext">offset :: Int
+</span><a href="#local-6989586621679905505"><span class="hs-identifier hs-var hs-var">offset</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679905511"><span class="hs-identifier hs-var">oa_expiresIn</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
 forall a. Integral a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">`div`</span></span><span> </span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">5</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
 forall a. Num a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">*</span></span><span> </span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">4</span></span><span>
-</span><span id="line-226"></span><span>      </span><span id="local-6989586621679848304"><span class="annot"><span class="annottext">diff :: NominalDiffTime
-</span><a href="#local-6989586621679848304"><span class="hs-identifier hs-var hs-var">diff</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Pico -&gt; NominalDiffTime
+</span><span id="line-226"></span><span>      </span><span id="local-6989586621679905502"><span class="annot"><span class="annottext">diff :: NominalDiffTime
+</span><a href="#local-6989586621679905502"><span class="hs-identifier hs-var hs-var">diff</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Pico -&gt; NominalDiffTime
 </span><span class="hs-identifier hs-var">secondsToNominalDiffTime</span></span><span> </span><span class="annot"><span class="annottext">(Pico -&gt; NominalDiffTime) -&gt; Pico -&gt; NominalDiffTime
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Pico
 forall a. Enum a =&gt; Int -&gt; a
 </span><span class="hs-identifier hs-var">toEnum</span></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679848307"><span class="hs-identifier hs-var">offset</span></a></span><span>
-</span><span id="line-227"></span><span>      </span><span id="local-6989586621679848301"><span class="annot"><span class="annottext">accessToken :: Token
-</span><a href="#local-6989586621679848301"><span class="hs-identifier hs-var hs-var">accessToken</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Token
-</span><a href="#local-6989586621679848314"><span class="hs-identifier hs-var">oa_accessToken</span></a></span><span>
-</span><span id="line-228"></span><span>      </span><span id="local-6989586621679848300"><span class="annot"><span class="annottext">refreshToken :: Token
-</span><a href="#local-6989586621679848300"><span class="hs-identifier hs-var hs-var">refreshToken</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Token
-</span><a href="#local-6989586621679848312"><span class="hs-identifier hs-var">oa_refreshToken</span></a></span><span>
-</span><span id="line-229"></span><span>      </span><span id="local-6989586621679848299"><span class="annot"><span class="annottext">expirationTime :: UTCTime
-</span><a href="#local-6989586621679848299"><span class="hs-identifier hs-var hs-var">expirationTime</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">NominalDiffTime -&gt; UTCTime -&gt; UTCTime
+</span><a href="#local-6989586621679905505"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><span id="line-227"></span><span>      </span><span id="local-6989586621679905499"><span class="annot"><span class="annottext">accessToken :: Token
+</span><a href="#local-6989586621679905499"><span class="hs-identifier hs-var hs-var">accessToken</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Token
+</span><a href="#local-6989586621679905512"><span class="hs-identifier hs-var">oa_accessToken</span></a></span><span>
+</span><span id="line-228"></span><span>      </span><span id="local-6989586621679905498"><span class="annot"><span class="annottext">refreshToken :: Token
+</span><a href="#local-6989586621679905498"><span class="hs-identifier hs-var hs-var">refreshToken</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Token
+</span><a href="#local-6989586621679905510"><span class="hs-identifier hs-var">oa_refreshToken</span></a></span><span>
+</span><span id="line-229"></span><span>      </span><span id="local-6989586621679905497"><span class="annot"><span class="annottext">expirationTime :: UTCTime
+</span><a href="#local-6989586621679905497"><span class="hs-identifier hs-var hs-var">expirationTime</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">NominalDiffTime -&gt; UTCTime -&gt; UTCTime
 </span><span class="hs-identifier hs-var">addUTCTime</span></span><span> </span><span class="annot"><span class="annottext">NominalDiffTime
-</span><a href="#local-6989586621679848304"><span class="hs-identifier hs-var">diff</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679848316"><span class="hs-identifier hs-var">time</span></a></span><span>
+</span><a href="#local-6989586621679905502"><span class="hs-identifier hs-var">diff</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679905514"><span class="hs-identifier hs-var">time</span></a></span><span>
 </span><span id="line-230"></span><span>  </span><span class="annot"><span class="annottext">TokenState -&gt; IO TokenState
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">TokenState :: Token -&gt; Token -&gt; UTCTime -&gt; Manager -&gt; TokenState
@@ -1043,17 +1043,17 @@ manager :: Manager
 expirationTime :: UTCTime
 refreshToken :: Token
 accessToken :: Token
-</span><a href="#local-6989586621679848299"><span class="hs-glyph hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">..</span></a></span><span class="hs-special">}</span><span>
+</span><a href="#local-6989586621679905497"><span class="hs-glyph hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">..</span></a></span><span class="hs-special">}</span><span>
 </span><span id="line-231"></span><span>
 </span><span id="line-232"></span><span class="hs-comment">-- | Retrieves the 'accessToken' from pixiv monad.</span><span>
 </span><span id="line-233"></span><span class="hs-comment">--</span><span>
 </span><span id="line-234"></span><span class="hs-comment">-- If the token is overdue, it will call 'computeTokenState' to refresh.</span><span>
-</span><span id="line-235"></span><span id="local-6989586621679848586"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccessToken"><span class="hs-identifier hs-type">getAccessToken</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848586"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848586"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span></span><span>
+</span><span id="line-235"></span><span id="local-6989586621679905784"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccessToken"><span class="hs-identifier hs-type">getAccessToken</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905784"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905784"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span></span><span>
 </span><span id="line-236"></span><span id="getAccessToken"><span class="annot"><span class="annottext">getAccessToken :: m Token
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessToken"><span class="hs-identifier hs-var hs-var">getAccessToken</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-237"></span><span>  </span><span id="local-6989586621679848297"><span class="annot"><span class="annottext">s :: PixivState
-</span><a href="#local-6989586621679848297"><span class="hs-identifier hs-var">s</span></a></span></span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">tokenState :: PixivState -&gt; TokenState
-</span><a href="Web.Pixiv.Types.PixivT.html#tokenState"><span class="hs-identifier hs-var">tokenState</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679848293"><span id="local-6989586621679848294"><span id="local-6989586621679848295"><span id="local-6989586621679848296"><span class="annot"><span class="annottext">UTCTime
+</span><span id="line-237"></span><span>  </span><span id="local-6989586621679905495"><span class="annot"><span class="annottext">s :: PixivState
+</span><a href="#local-6989586621679905495"><span class="hs-identifier hs-var">s</span></a></span></span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">tokenState :: PixivState -&gt; TokenState
+</span><a href="Web.Pixiv.Types.PixivT.html#tokenState"><span class="hs-identifier hs-var">tokenState</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679905491"><span id="local-6989586621679905492"><span id="local-6989586621679905493"><span id="local-6989586621679905494"><span class="annot"><span class="annottext">UTCTime
 Manager
 Token
 manager :: Manager
@@ -1064,56 +1064,56 @@ manager :: TokenState -&gt; Manager
 expirationTime :: TokenState -&gt; UTCTime
 refreshToken :: TokenState -&gt; Token
 accessToken :: TokenState -&gt; Token
-</span><a href="#local-6989586621679848293"><span class="hs-glyph hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">..</span></a></span></span></span></span></span><span class="hs-special">}</span><span class="hs-special">}</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m PixivState
+</span><a href="#local-6989586621679905491"><span class="hs-glyph hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">..</span></a></span></span></span></span></span><span class="hs-special">}</span><span class="hs-special">}</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m PixivState
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m PixivState
 </span><a href="Web.Pixiv.Types.PixivT.html#takePixivState"><span class="hs-identifier hs-var">takePixivState</span></a></span><span>
-</span><span id="line-238"></span><span>  </span><span id="local-6989586621679848292"><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679848292"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO UTCTime -&gt; m UTCTime
+</span><span id="line-238"></span><span>  </span><span id="local-6989586621679905490"><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679905490"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO UTCTime -&gt; m UTCTime
 forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">IO UTCTime
 </span><span class="hs-identifier hs-var">getCurrentTime</span></span><span>
 </span><span id="line-239"></span><span>  </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679848292"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime -&gt; UTCTime -&gt; Bool
+</span><a href="#local-6989586621679905490"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime -&gt; UTCTime -&gt; Bool
 forall a. Ord a =&gt; a -&gt; a -&gt; Bool
 </span><span class="hs-operator hs-var">&lt;</span></span><span> </span><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679848294"><span class="hs-identifier hs-var">expirationTime</span></a></span><span>
+</span><a href="#local-6989586621679905492"><span class="hs-identifier hs-var">expirationTime</span></a></span><span>
 </span><span id="line-240"></span><span>    </span><span class="hs-keyword">then</span><span> </span><span class="hs-keyword">do</span><span>
 </span><span id="line-241"></span><span>      </span><span class="annot"><span class="annottext">PixivState -&gt; m ()
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; PixivState -&gt; m ()
 </span><a href="Web.Pixiv.Types.PixivT.html#putPixivState"><span class="hs-identifier hs-var">putPixivState</span></a></span><span> </span><span class="annot"><span class="annottext">PixivState
-</span><a href="#local-6989586621679848297"><span class="hs-identifier hs-var">s</span></a></span><span>
+</span><a href="#local-6989586621679905495"><span class="hs-identifier hs-var">s</span></a></span><span>
 </span><span id="line-242"></span><span>      </span><span class="annot"><span class="annottext">Token -&gt; m Token
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">Token
-</span><a href="#local-6989586621679848296"><span class="hs-identifier hs-var">accessToken</span></a></span><span>
+</span><a href="#local-6989586621679905494"><span class="hs-identifier hs-var">accessToken</span></a></span><span>
 </span><span id="line-243"></span><span>    </span><span class="hs-keyword">else</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-244"></span><span>      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679848290"><span class="annot"><span class="annottext">credential :: Credential
-</span><a href="#local-6989586621679848290"><span class="hs-identifier hs-var hs-var">credential</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Token -&gt; Credential
+</span><span id="line-244"></span><span>      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679905488"><span class="annot"><span class="annottext">credential :: Credential
+</span><a href="#local-6989586621679905488"><span class="hs-identifier hs-var hs-var">credential</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Token -&gt; Credential
 </span><a href="Web.Pixiv.Auth.html#RefreshToken"><span class="hs-identifier hs-var">RefreshToken</span></a></span><span> </span><span class="annot"><span class="annottext">Token
-</span><a href="#local-6989586621679848295"><span class="hs-identifier hs-var">refreshToken</span></a></span><span>
-</span><span id="line-245"></span><span>      </span><span id="local-6989586621679848288"><span class="annot"><span class="annottext">TokenState
-</span><a href="#local-6989586621679848288"><span class="hs-identifier hs-var">ts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO TokenState -&gt; m TokenState
+</span><a href="#local-6989586621679905493"><span class="hs-identifier hs-var">refreshToken</span></a></span><span>
+</span><span id="line-245"></span><span>      </span><span id="local-6989586621679905486"><span class="annot"><span class="annottext">TokenState
+</span><a href="#local-6989586621679905486"><span class="hs-identifier hs-var">ts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO TokenState -&gt; m TokenState
 forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">(IO TokenState -&gt; m TokenState) -&gt; IO TokenState -&gt; m TokenState
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Manager -&gt; Credential -&gt; UTCTime -&gt; IO TokenState
 </span><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier hs-var">computeTokenState</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679848293"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
-</span><a href="#local-6989586621679848290"><span class="hs-identifier hs-var">credential</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679848292"><span class="hs-identifier hs-var">t</span></a></span><span>
+</span><a href="#local-6989586621679905491"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
+</span><a href="#local-6989586621679905488"><span class="hs-identifier hs-var">credential</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679905490"><span class="hs-identifier hs-var">t</span></a></span><span>
 </span><span id="line-246"></span><span>      </span><span class="annot"><span class="annottext">PixivState -&gt; m ()
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; PixivState -&gt; m ()
 </span><a href="Web.Pixiv.Types.PixivT.html#putPixivState"><span class="hs-identifier hs-var">putPixivState</span></a></span><span> </span><span class="annot"><span class="annottext">PixivState
-</span><a href="#local-6989586621679848297"><span class="hs-identifier hs-var">s</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">tokenState :: TokenState
+</span><a href="#local-6989586621679905495"><span class="hs-identifier hs-var">s</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">tokenState :: TokenState
 </span><a href="Web.Pixiv.Types.PixivT.html#tokenState"><span class="hs-identifier hs-var">tokenState</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">TokenState
-</span><a href="#local-6989586621679848288"><span class="hs-identifier hs-var">ts</span></a></span><span class="hs-special">}</span><span>
+</span><a href="#local-6989586621679905486"><span class="hs-identifier hs-var">ts</span></a></span><span class="hs-special">}</span><span>
 </span><span id="line-247"></span><span>      </span><span class="annot"><span class="annottext">Token -&gt; m Token
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">Token
-</span><a href="#local-6989586621679848296"><span class="hs-identifier hs-var">accessToken</span></a></span><span>
+</span><a href="#local-6989586621679905494"><span class="hs-identifier hs-var">accessToken</span></a></span><span>
 </span><span id="line-248"></span><span>
 </span><span id="line-249"></span><span class="hs-comment">-- | Retrieves the 'acceptLanguage' from pixiv monad.</span><span>
-</span><span id="line-250"></span><span id="local-6989586621679848585"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccpetLanguage"><span class="hs-identifier hs-type">getAccpetLanguage</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848585"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848585"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">)</span></span><span>
+</span><span id="line-250"></span><span id="local-6989586621679905783"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccpetLanguage"><span class="hs-identifier hs-type">getAccpetLanguage</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905783"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905783"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">)</span></span><span>
 </span><span id="line-251"></span><span id="getAccpetLanguage"><span class="annot"><span class="annottext">getAccpetLanguage :: m (Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccpetLanguage"><span class="hs-identifier hs-var hs-var">getAccpetLanguage</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">PixivState -&gt; Maybe Text
 </span><a href="Web.Pixiv.Types.PixivT.html#acceptLanguage"><span class="hs-identifier hs-var hs-var">acceptLanguage</span></a></span><span> </span><span class="annot"><span class="annottext">(PixivState -&gt; Maybe Text) -&gt; m PixivState -&gt; m (Maybe Text)
@@ -1123,7 +1123,7 @@ forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m PixivState
 </span><a href="Web.Pixiv.Types.PixivT.html#readPixivState"><span class="hs-identifier hs-var">readPixivState</span></a></span><span>
 </span><span id="line-252"></span><span>
 </span><span id="line-253"></span><span class="hs-comment">-- | Retrieves the 'accessToken' and 'acceptLanguage' in one go.</span><span>
-</span><span id="line-254"></span><span id="local-6989586621679848285"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-type">getAccessTokenWithAccpetLanguage</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679848285"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679848285"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">)</span></span><span>
+</span><span id="line-254"></span><span id="local-6989586621679905483"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-type">getAccessTokenWithAccpetLanguage</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905483"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905483"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">)</span></span><span>
 </span><span id="line-255"></span><span id="getAccessTokenWithAccpetLanguage"><span class="annot"><span class="annottext">getAccessTokenWithAccpetLanguage :: m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var hs-var">getAccessTokenWithAccpetLanguage</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="hs-special">,</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Token -&gt; Maybe Text -&gt; (Token, Maybe Text))
 -&gt; m Token -&gt; m (Maybe Text -&gt; (Token, Maybe Text))

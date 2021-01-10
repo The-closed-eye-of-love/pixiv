@@ -360,18 +360,40 @@ newtype UgoiraMetadataWrapper
 UgoiraMetadataWrapper :: UgoiraMetadata -> UgoiraMetadataWrapper
 [$sel:_ugoiraMetadata:UgoiraMetadataWrapper] :: UgoiraMetadataWrapper -> UgoiraMetadata
 
+-- | Spotlight article
+data SpotlightArticle
+SpotlightArticle :: Int -> Text -> Text -> Text -> Text -> UTCTime -> Text -> Text -> SpotlightArticle
+[$sel:_saId:SpotlightArticle] :: SpotlightArticle -> Int
+[$sel:_title:SpotlightArticle] :: SpotlightArticle -> Text
+[$sel:_pureTitle:SpotlightArticle] :: SpotlightArticle -> Text
+[$sel:_thumbnail:SpotlightArticle] :: SpotlightArticle -> Text
+[$sel:_articleUrl:SpotlightArticle] :: SpotlightArticle -> Text
+[$sel:_publishDate:SpotlightArticle] :: SpotlightArticle -> UTCTime
+[$sel:_category:SpotlightArticle] :: SpotlightArticle -> Text
+[$sel:_subcategoryLabel:SpotlightArticle] :: SpotlightArticle -> Text
+
+-- | Response of API which returns spotlight articles.
+data SpotlightArticles
+SpotlightArticles :: [SpotlightArticle] -> Maybe Text -> SpotlightArticles
+[$sel:_spotlightArticles:SpotlightArticles] :: SpotlightArticles -> [SpotlightArticle]
+[$sel:_nextUrl:SpotlightArticles] :: SpotlightArticles -> Maybe Text
+
 -- | Rank mode query parm.
 --   
 --   See <a>getIllustRanking</a>
 data RankMode
 Day :: RankMode
-Week :: RankMode
-Month :: RankMode
+DayR18 :: RankMode
 DayMale :: RankMode
+DayMaleR18 :: RankMode
 DayFemale :: RankMode
+DayFemaleR18 :: RankMode
+Week :: RankMode
+WeekR18 :: RankMode
+WeekR18G :: RankMode
+Month :: RankMode
 WeekOriginal :: RankMode
 WeekRookie :: RankMode
-DayR18 :: RankMode
 DayManga :: RankMode
 
 -- | Search target query parm.
@@ -523,6 +545,16 @@ instance Data.Aeson.Types.FromJSON.FromJSON Web.Pixiv.Types.UgoiraMetadataWrappe
 instance GHC.Generics.Generic Web.Pixiv.Types.UgoiraMetadataWrapper
 instance GHC.Show.Show Web.Pixiv.Types.UgoiraMetadataWrapper
 instance GHC.Classes.Eq Web.Pixiv.Types.UgoiraMetadataWrapper
+instance Data.Aeson.Types.ToJSON.ToJSON Web.Pixiv.Types.SpotlightArticle
+instance Data.Aeson.Types.FromJSON.FromJSON Web.Pixiv.Types.SpotlightArticle
+instance GHC.Generics.Generic Web.Pixiv.Types.SpotlightArticle
+instance GHC.Show.Show Web.Pixiv.Types.SpotlightArticle
+instance GHC.Classes.Eq Web.Pixiv.Types.SpotlightArticle
+instance Data.Aeson.Types.ToJSON.ToJSON Web.Pixiv.Types.SpotlightArticles
+instance Data.Aeson.Types.FromJSON.FromJSON Web.Pixiv.Types.SpotlightArticles
+instance GHC.Generics.Generic Web.Pixiv.Types.SpotlightArticles
+instance GHC.Show.Show Web.Pixiv.Types.SpotlightArticles
+instance GHC.Classes.Eq Web.Pixiv.Types.SpotlightArticles
 instance Web.Internal.HttpApiData.ToHttpApiData Web.Pixiv.Types.RankMode
 instance GHC.Generics.Generic Web.Pixiv.Types.RankMode
 instance GHC.Enum.Enum Web.Pixiv.Types.RankMode
@@ -546,6 +578,7 @@ instance GHC.Enum.Enum Web.Pixiv.Types.SearchTarget
 instance GHC.Classes.Ord Web.Pixiv.Types.SearchTarget
 instance GHC.Classes.Eq Web.Pixiv.Types.SearchTarget
 instance GHC.Show.Show Web.Pixiv.Types.SearchTarget
+instance Web.Pixiv.Types.HasNextUrl Web.Pixiv.Types.SpotlightArticles
 instance Web.Pixiv.Types.HasNextUrl Web.Pixiv.Types.Comments
 instance Web.Pixiv.Types.HasNextUrl Web.Pixiv.Types.UserPreviews
 instance Web.Pixiv.Types.HasNextUrl Web.Pixiv.Types.Illusts
@@ -952,8 +985,9 @@ instance Control.Monad.IO.Class.MonadIO m => Servant.Client.Core.RunClient.RunCl
 --   
 --   You may notice that except <a>getUserBookmarks</a>, many of functions
 --   take a <tt>page</tt> as input. This is because each query contains 30
---   entries, i.e. you should pass <tt>2</tt> if you want items ranged from
---   31 to 60.
+--   entries (except <tt>getSpotlightArticles'</tt>s , which containes 10),
+--   i.e. you should pass <tt>2</tt> if you want items ranged from 31 to
+--   60.
 module Web.Pixiv.API
 
 -- | Gets trending tags.
@@ -1010,6 +1044,9 @@ getUserMypixiv :: MonadPixiv m => Int -> Int -> m [UserPreview]
 -- | Gets illustrations collected by a specific user. Returns the a list of
 --   illustrations and result and an integer for paging.
 getUserBookmarks :: MonadPixiv m => Int -> Publicity -> Maybe Int -> m ([Illust], Maybe Int)
+
+-- | Gets spotlight articles
+getSpotlightArticles :: MonadPixiv m => Maybe Text -> Int -> m [SpotlightArticle]
 
 
 -- | Example usage:
