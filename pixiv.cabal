@@ -108,6 +108,7 @@ library
 
   other-modules:
     Data.Generically
+    Web.Pixiv.API.Article
     Web.Pixiv.API.Illust
     Web.Pixiv.API.PixivEntry
     Web.Pixiv.API.Search
