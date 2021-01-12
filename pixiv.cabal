@@ -26,11 +26,11 @@ tested-with:
 
 common common-attrs
   build-depends:
-    , aeson
-    , base             >=4.10 && <5
-    , bytestring
-    , http-client
-    , http-client-tls
+    , aeson            ^>=1.5.4
+    , base             >=4.10    && <5
+    , bytestring       ^>=0.10.12
+    , http-client      ^>=0.6.4
+    , http-client-tls  ^>=0.3.5
 
   default-language:   Haskell2010
   ghc-options:
@@ -76,25 +76,25 @@ common common-attrs
 library
   import:          common-attrs
   build-depends:
-    , base16-bytestring
-    , cryptohash-md5
-    , deriving-aeson
-    , directory
-    , exceptions
-    , filepath
-    , lens
-    , monad-control
-    , mtl
-    , process
-    , servant
-    , servant-client
-    , servant-client-core
-    , temporary
-    , text
-    , time
-    , transformers
-    , transformers-base
-    , zip-archive
+    , base16-bytestring    ^>=0.1.1
+    , cryptohash-md5       ^>=0.11.100
+    , deriving-aeson       ^>=0.2.6
+    , directory            ^>=1.3.6
+    , exceptions           ^>=0.10.4
+    , filepath             ^>=1.4.2
+    , lens                 ^>=4.19.2
+    , monad-control        ^>=1.0.2
+    , mtl                  ^>=2.2.2
+    , process              ^>=1.6.9
+    , servant              ^>=0.18.2
+    , servant-client       ^>=0.18.2
+    , servant-client-core  ^>=0.18.2
+    , temporary            ^>=1.3
+    , text                 ^>=1.2.4
+    , time                 ^>=1.9.3
+    , transformers         ^>=0.5.6
+    , transformers-base    ^>=0.4.5
+    , zip-archive          ^>=0.4.1
 
   exposed-modules:
     Web.Pixiv
@@ -126,4 +126,4 @@ test-suite pixiv-test
 
 source-repository head
   type:     git
-  location: https://github.com/poscat0x04/pixiv
+  location: https://github.com/The-closed-eye-of-love/pixiv
