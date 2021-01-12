@@ -6,7 +6,7 @@
 </span><span id="line-6"></span><span class="hs-comment">-- Functions to access pixiv api. They are supposed to be run in &quot;Web.Pixiv.Types.PixivT&quot;.</span><span>
 </span><span id="line-7"></span><span class="hs-comment">--</span><span>
 </span><span id="line-8"></span><span class="hs-comment">-- You may notice that except 'getUserBookmarks', many of functions take a @page@ as input.</span><span>
-</span><span id="line-9"></span><span class="hs-comment">-- This is because each query contains 30 entries (except 'getSpotlightArticles''s , which containes 10), i.e. you should pass @2@ if you want items ranged from 31 to 60.</span><span>
+</span><span id="line-9"></span><span class="hs-comment">-- This is because each query contains 30 entries (except 'Web.Pixiv.API.getSpotlightArticles''s , which containes 10), i.e. you should pass @2@ if you want items ranged from 31 to 60.</span><span>
 </span><span id="line-10"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Web.Pixiv.API</span><span>
 </span><span id="line-11"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-comment">-- * Trending</span></span><span>
 </span><span id="line-12"></span><span>    </span><span class="annot"><a href="Web.Pixiv.API.html#getTrendingTags"><span class="hs-identifier">getTrendingTags</span></a></span><span class="hs-special">,</span><span>

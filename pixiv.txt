@@ -8,28 +8,47 @@
 @package pixiv
 @version 0.1.0
 
+
+-- | Authentication pixiv API. Users should not use logics in this module
+--   directly, since <a>Web.Pixiv.Types.PixivT</a> takes over token
+--   management, providing user friendly operations.
 module Web.Pixiv.Auth
+
+-- | A wrapped <a>Text</a> represents a token.
 newtype Token
 Token :: Text -> Token
 [unToken] :: Token -> Text
+
+-- | Authentication credentials for pixiv API.
+--   
+--   Normally, users are supposed to create value of this data type using
+--   <a>Password</a> constructor, then pass it to <a>runPixivT</a>.
 data Credential
 Password :: ByteString -> ByteString -> Credential
 [username] :: Credential -> ByteString
 [password] :: Credential -> ByteString
 RefreshToken :: Token -> Credential
-[refreshToken] :: Credential -> Token
+[cr_refreshToken] :: Credential -> Token
+
+-- | Successful result.
 data OAuth2Token
 OAuth2Token :: Token -> Int -> Token -> OAuth2Token
 [oa_accessToken] :: OAuth2Token -> Token
 [oa_expiresIn] :: OAuth2Token -> Int
 [oa_refreshToken] :: OAuth2Token -> Token
+
+-- | Failed result.
 data OAuth2Error
 OAuth2Error :: Errors -> Text -> OAuth2Error
 [oa_error] :: OAuth2Error -> Errors
 [oa_message] :: OAuth2Error -> Text
+
+-- | Authentication result.
 data OAuth2Result
 AuthSuccess :: OAuth2Token -> OAuth2Result
 AuthFailure :: OAuth2Error -> OAuth2Result
+
+-- | Authentication failure reasions.
 data Errors
 InvalidRequest :: Errors
 InvalidClient :: Errors
@@ -37,10 +56,12 @@ InvalidGrant :: Errors
 UnauthorizedClient :: Errors
 UnsupportedGrantType :: Errors
 InvalidScope :: Errors
+
+-- | Given a credential, performs a authentication request.
 auth :: Manager -> Credential -> IO OAuth2Result
 
 -- | Like <a>auth</a>, but immediately throws <a>OAuth2Error</a> if auth
---   failed
+--   failed.
 auth' :: Manager -> Credential -> IO OAuth2Token
 instance Data.Aeson.Types.ToJSON.ToJSON Web.Pixiv.Auth.Token
 instance Data.Aeson.Types.FromJSON.FromJSON Web.Pixiv.Auth.Token
@@ -360,7 +381,7 @@ newtype UgoiraMetadataWrapper
 UgoiraMetadataWrapper :: UgoiraMetadata -> UgoiraMetadataWrapper
 [$sel:_ugoiraMetadata:UgoiraMetadataWrapper] :: UgoiraMetadataWrapper -> UgoiraMetadata
 
--- | Spotlight article
+-- | Spotlight article.
 data SpotlightArticle
 SpotlightArticle :: Int -> Text -> Text -> Text -> Text -> UTCTime -> Text -> Text -> SpotlightArticle
 [$sel:_saId:SpotlightArticle] :: SpotlightArticle -> Int
@@ -879,7 +900,7 @@ ClientT :: ReaderT ClientEnv (ExceptT ClientError m) a -> ClientT m a
 runClientT :: ClientEnv -> ClientT m a -> m (Either ClientError a)
 
 -- | Given <a>Manager</a>, creates a <a>ClientEnv</a> using
---   <tt>"<a>https://app-api.pixiv.net"</a></tt> as base url.
+--   <a>https://app-api.pixiv.net</a> as base url.
 mkDefaultClientEnv :: Manager -> IO ClientEnv
 
 -- | The mtl-style class of pixiv monad.
@@ -937,6 +958,8 @@ TokenState :: Token -> Token -> UTCTime -> Manager -> TokenState
 [manager] :: TokenState -> Manager
 
 -- | Computes the <a>TokenState</a>.
+--   
+--   This function calls <a>auth'</a> to perform authentication.
 computeTokenState :: Manager -> Credential -> UTCTime -> IO TokenState
 
 -- | Retrieves the <a>accessToken</a> from pixiv monad.
@@ -985,7 +1008,7 @@ instance Control.Monad.IO.Class.MonadIO m => Servant.Client.Core.RunClient.RunCl
 --   
 --   You may notice that except <a>getUserBookmarks</a>, many of functions
 --   take a <tt>page</tt> as input. This is because each query contains 30
---   entries (except <tt>getSpotlightArticles'</tt>s , which containes 10),
+--   entries (except <a>getSpotlightArticles'</a>s , which containes 10),
 --   i.e. you should pass <tt>2</tt> if you want items ranged from 31 to
 --   60.
 module Web.Pixiv.API
@@ -1066,6 +1089,11 @@ getSpotlightArticles :: MonadPixiv m => Maybe Text -> Int -> m [SpotlightArticle
 --   
 --   More information is available on <a>README</a>.
 module Web.Pixiv
+
+-- | Authentication credentials for pixiv API.
+--   
+--   Normally, users are supposed to create value of this data type using
+--   <a>Password</a> constructor, then pass it to <a>runPixivT</a>.
 data Credential
 Password :: ByteString -> ByteString -> Credential
 

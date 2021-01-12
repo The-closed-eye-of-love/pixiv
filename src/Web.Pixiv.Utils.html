@@ -231,24 +231,29 @@ forall s a. s -&gt; Getting a s a -&gt; a
 forall s a. HasUgoiraFile s a =&gt; Lens' s a
 </span><a href="Web.Pixiv.Types.Lens.html#ugoiraFile"><span class="hs-identifier hs-var">ugoiraFile</span></a></span><span class="hs-special">,</span><span>
 </span><span id="line-73"></span><span>            </span><span class="annot"><span class="annottext">Text
-</span><span class="hs-string">&quot;duration &quot;</span></span><span> </span><span class="annot"><span class="annottext">Text -&gt; Text -&gt; Text
+</span><span class="hs-string">&quot;duration &quot;</span></span><span>
+</span><span id="line-74"></span><span>              </span><span class="annot"><span class="annottext">Text -&gt; Text -&gt; Text
 forall a. Semigroup a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">&lt;&gt;</span></span><span> </span><span class="annot"><span class="annottext">FilePath -&gt; Text
-</span><span class="hs-identifier hs-var">T.pack</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">UgoiraFrame
+</span><span class="hs-identifier hs-var">T.pack</span></span><span>
+</span><span id="line-75"></span><span>                </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="annottext">UgoiraFrame
 </span><a href="#local-6989586621679906537"><span class="hs-identifier hs-var">frame</span></a></span><span> </span><span class="annot"><span class="annottext">UgoiraFrame -&gt; Getting Int UgoiraFrame Int -&gt; Int
 forall s a. s -&gt; Getting a s a -&gt; a
 </span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting Int UgoiraFrame Int
 forall s a. HasUgoiraDelay s a =&gt; Lens' s a
-</span><a href="Web.Pixiv.Types.Lens.html#ugoiraDelay"><span class="hs-identifier hs-var">ugoiraDelay</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; (Int -&gt; Double) -&gt; Double
+</span><a href="Web.Pixiv.Types.Lens.html#ugoiraDelay"><span class="hs-identifier hs-var">ugoiraDelay</span></a></span><span>
+</span><span id="line-76"></span><span>                    </span><span class="annot"><span class="annottext">Int -&gt; (Int -&gt; Double) -&gt; Double
 forall a b. a -&gt; (a -&gt; b) -&gt; b
 </span><span class="hs-operator hs-var">&amp;</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Double
 forall a b. (Integral a, Num b) =&gt; a -&gt; b
-</span><span class="hs-identifier hs-var">fromIntegral</span></span><span> </span><span class="annot"><span class="annottext">Double -&gt; (Double -&gt; Double) -&gt; Double
+</span><span class="hs-identifier hs-var">fromIntegral</span></span><span>
+</span><span id="line-77"></span><span>                    </span><span class="annot"><span class="annottext">Double -&gt; (Double -&gt; Double) -&gt; Double
 forall a b. a -&gt; (a -&gt; b) -&gt; b
 </span><span class="hs-operator hs-var">&amp;</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Double -&gt; Double -&gt; Double
 forall a. Fractional a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">/</span></span><span> </span><span class="annot"><span class="annottext">Double
-</span><span class="hs-number">1000</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Double -&gt; (Double -&gt; FilePath) -&gt; FilePath
+</span><span class="hs-number">1000</span></span><span class="hs-special">)</span><span>
+</span><span id="line-78"></span><span>                    </span><span class="annot"><span class="annottext">Double -&gt; (Double -&gt; FilePath) -&gt; FilePath
 forall a b. a -&gt; (a -&gt; b) -&gt; b
 </span><span class="hs-operator hs-var">&amp;</span></span><span> </span><span class="annot"><span class="annottext">(Double -&gt; FilePath -&gt; FilePath) -&gt; FilePath -&gt; Double -&gt; FilePath
 forall a b c. (a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c
@@ -257,9 +262,10 @@ forall a. RealFloat a =&gt; Maybe Int -&gt; a -&gt; FilePath -&gt; FilePath
 </span><span class="hs-identifier hs-var">showFFloat</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span> </span><span class="annot"><span class="annottext">Maybe Int
 forall a. Maybe a
 </span><span class="hs-identifier hs-var">Nothing</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">FilePath
-</span><span class="hs-string">&quot;&quot;</span></span><span class="hs-special">)</span><span>
-</span><span id="line-74"></span><span>          </span><span class="hs-special">]</span><span>
-</span><span id="line-75"></span><span>        </span><span class="hs-glyph">|</span><span> </span><span id="local-6989586621679906537"><span class="annot"><span class="annottext">UgoiraFrame
+</span><span class="hs-string">&quot;&quot;</span></span><span>
+</span><span id="line-79"></span><span>                </span><span class="hs-special">)</span><span>
+</span><span id="line-80"></span><span>          </span><span class="hs-special">]</span><span>
+</span><span id="line-81"></span><span>        </span><span class="hs-glyph">|</span><span> </span><span id="local-6989586621679906537"><span class="annot"><span class="annottext">UgoiraFrame
 </span><a href="#local-6989586621679906537"><span class="hs-identifier hs-var">frame</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">UgoiraMetadata
 </span><a href="#local-6989586621679906539"><span class="hs-identifier hs-var">meta</span></a></span><span> </span><span class="annot"><span class="annottext">UgoiraMetadata
 -&gt; Getting [UgoiraFrame] UgoiraMetadata [UgoiraFrame]
@@ -268,5 +274,5 @@ forall s a. s -&gt; Getting a s a -&gt; a
 </span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting [UgoiraFrame] UgoiraMetadata [UgoiraFrame]
 forall s a. HasFrames s a =&gt; Lens' s a
 </span><a href="Web.Pixiv.Types.Lens.html#frames"><span class="hs-identifier hs-var">frames</span></a></span><span>
-</span><span id="line-76"></span><span>      </span><span class="hs-special">]</span><span>
-</span><span id="line-77"></span></pre></body></html>
+</span><span id="line-82"></span><span>      </span><span class="hs-special">]</span><span>
+</span><span id="line-83"></span></pre></body></html>

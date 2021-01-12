@@ -349,7 +349,7 @@ forall e (m :: Type -&gt; Type) a. MonadError e m =&gt; Either e a -&gt; m a
 </span><span class="hs-identifier hs-var">liftEither</span></span><span> </span><span class="annot"><span class="annottext">Either ClientError Response
 </span><a href="#local-6989586621679905677"><span class="hs-identifier hs-var">res</span></a></span></span><span>
 </span><span id="line-91"></span><span>
-</span><span id="line-92"></span><span class="hs-comment">-- | Given 'Manager', creates a 'ClientEnv' using @&quot;https://app-api.pixiv.net&quot;@ as base url.</span><span>
+</span><span id="line-92"></span><span class="hs-comment">-- | Given 'Manager', creates a 'ClientEnv' using &lt;https://app-api.pixiv.net&gt; as base url.</span><span>
 </span><span id="line-93"></span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#mkDefaultClientEnv"><span class="hs-identifier hs-type">mkDefaultClientEnv</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">ClientEnv</span></span><span>
 </span><span id="line-94"></span><span id="mkDefaultClientEnv"><span class="annot"><span class="annottext">mkDefaultClientEnv :: Manager -&gt; IO ClientEnv
 </span><a href="Web.Pixiv.Types.PixivT.html#mkDefaultClientEnv"><span class="hs-identifier hs-var hs-var">mkDefaultClientEnv</span></a></span></span><span> </span><span id="local-6989586621679905673"><span class="annot"><span class="annottext">Manager
@@ -972,19 +972,21 @@ Manager -&gt; Credential -&gt; PixivT m a -&gt; m (Either ClientError a)
 </span><a href="#local-6989586621679905518"><span class="hs-identifier hs-var">m</span></a></span><span>
 </span><span id="line-214"></span><span>
 </span><span id="line-215"></span><span class="hs-comment">-- | Computes the 'TokenState'.</span><span>
-</span><span id="line-216"></span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier hs-type">computeTokenState</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-217"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-218"></span><span>  </span><span class="hs-comment">-- | Could be username with password or 'refreshToken'.</span><span>
-</span><span id="line-219"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-220"></span><span>  </span><span class="hs-comment">-- | Current time.</span><span>
-</span><span id="line-221"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">UTCTime</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-222"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span>
-</span><span id="line-223"></span><span id="computeTokenState"><span class="annot"><span class="annottext">computeTokenState :: Manager -&gt; Credential -&gt; UTCTime -&gt; IO TokenState
+</span><span id="line-216"></span><span class="hs-comment">--</span><span>
+</span><span id="line-217"></span><span class="hs-comment">-- This function calls 'auth'' to perform authentication.</span><span>
+</span><span id="line-218"></span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier hs-type">computeTokenState</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-219"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><span id="line-220"></span><span>  </span><span class="hs-comment">-- | Could be username with password or 'refreshToken'.</span><span>
+</span><span id="line-221"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><span id="line-222"></span><span>  </span><span class="hs-comment">-- | Current time.</span><span>
+</span><span id="line-223"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">UTCTime</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><span id="line-224"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span>
+</span><span id="line-225"></span><span id="computeTokenState"><span class="annot"><span class="annottext">computeTokenState :: Manager -&gt; Credential -&gt; UTCTime -&gt; IO TokenState
 </span><a href="Web.Pixiv.Types.PixivT.html#computeTokenState"><span class="hs-identifier hs-var hs-var">computeTokenState</span></a></span></span><span> </span><span id="local-6989586621679905516"><span class="annot"><span class="annottext">Manager
 </span><a href="#local-6989586621679905516"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span id="local-6989586621679905515"><span class="annot"><span class="annottext">Credential
 </span><a href="#local-6989586621679905515"><span class="hs-identifier hs-var">credential</span></a></span></span><span> </span><span id="local-6989586621679905514"><span class="annot"><span class="annottext">UTCTime
 </span><a href="#local-6989586621679905514"><span class="hs-identifier hs-var">time</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-224"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-type">OAuth2Token</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679905510"><span id="local-6989586621679905511"><span id="local-6989586621679905512"><span class="annot"><span class="annottext">Int
+</span><span id="line-226"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-type">OAuth2Token</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679905510"><span id="local-6989586621679905511"><span id="local-6989586621679905512"><span class="annot"><span class="annottext">Int
 Token
 oa_refreshToken :: OAuth2Token -&gt; Token
 oa_expiresIn :: OAuth2Token -&gt; Int
@@ -1001,7 +1003,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="Web.Pixiv.Auth.html#auth%27"><span class="hs-identifier hs-var">auth'</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
 </span><a href="#local-6989586621679905516"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
 </span><a href="#local-6989586621679905515"><span class="hs-identifier hs-var">credential</span></a></span><span>
-</span><span id="line-225"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679905505"><span class="annot"><span class="annottext">offset :: Int
+</span><span id="line-227"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679905505"><span class="annot"><span class="annottext">offset :: Int
 </span><a href="#local-6989586621679905505"><span class="hs-identifier hs-var hs-var">offset</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int
 </span><a href="#local-6989586621679905511"><span class="hs-identifier hs-var">oa_expiresIn</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Int
 forall a. Integral a =&gt; a -&gt; a -&gt; a
@@ -1010,7 +1012,7 @@ forall a. Integral a =&gt; a -&gt; a -&gt; a
 forall a. Num a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">*</span></span><span> </span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">4</span></span><span>
-</span><span id="line-226"></span><span>      </span><span id="local-6989586621679905502"><span class="annot"><span class="annottext">diff :: NominalDiffTime
+</span><span id="line-228"></span><span>      </span><span id="local-6989586621679905502"><span class="annot"><span class="annottext">diff :: NominalDiffTime
 </span><a href="#local-6989586621679905502"><span class="hs-identifier hs-var hs-var">diff</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Pico -&gt; NominalDiffTime
 </span><span class="hs-identifier hs-var">secondsToNominalDiffTime</span></span><span> </span><span class="annot"><span class="annottext">(Pico -&gt; NominalDiffTime) -&gt; Pico -&gt; NominalDiffTime
 forall a b. (a -&gt; b) -&gt; a -&gt; b
@@ -1018,18 +1020,18 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 forall a. Enum a =&gt; Int -&gt; a
 </span><span class="hs-identifier hs-var">toEnum</span></span><span> </span><span class="annot"><span class="annottext">Int
 </span><a href="#local-6989586621679905505"><span class="hs-identifier hs-var">offset</span></a></span><span>
-</span><span id="line-227"></span><span>      </span><span id="local-6989586621679905499"><span class="annot"><span class="annottext">accessToken :: Token
+</span><span id="line-229"></span><span>      </span><span id="local-6989586621679905499"><span class="annot"><span class="annottext">accessToken :: Token
 </span><a href="#local-6989586621679905499"><span class="hs-identifier hs-var hs-var">accessToken</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Token
 </span><a href="#local-6989586621679905512"><span class="hs-identifier hs-var">oa_accessToken</span></a></span><span>
-</span><span id="line-228"></span><span>      </span><span id="local-6989586621679905498"><span class="annot"><span class="annottext">refreshToken :: Token
+</span><span id="line-230"></span><span>      </span><span id="local-6989586621679905498"><span class="annot"><span class="annottext">refreshToken :: Token
 </span><a href="#local-6989586621679905498"><span class="hs-identifier hs-var hs-var">refreshToken</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Token
 </span><a href="#local-6989586621679905510"><span class="hs-identifier hs-var">oa_refreshToken</span></a></span><span>
-</span><span id="line-229"></span><span>      </span><span id="local-6989586621679905497"><span class="annot"><span class="annottext">expirationTime :: UTCTime
+</span><span id="line-231"></span><span>      </span><span id="local-6989586621679905497"><span class="annot"><span class="annottext">expirationTime :: UTCTime
 </span><a href="#local-6989586621679905497"><span class="hs-identifier hs-var hs-var">expirationTime</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">NominalDiffTime -&gt; UTCTime -&gt; UTCTime
 </span><span class="hs-identifier hs-var">addUTCTime</span></span><span> </span><span class="annot"><span class="annottext">NominalDiffTime
 </span><a href="#local-6989586621679905502"><span class="hs-identifier hs-var">diff</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
 </span><a href="#local-6989586621679905514"><span class="hs-identifier hs-var">time</span></a></span><span>
-</span><span id="line-230"></span><span>  </span><span class="annot"><span class="annottext">TokenState -&gt; IO TokenState
+</span><span id="line-232"></span><span>  </span><span class="annot"><span class="annottext">TokenState -&gt; IO TokenState
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">TokenState :: Token -&gt; Token -&gt; UTCTime -&gt; Manager -&gt; TokenState
 </span><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">UTCTime
@@ -1044,14 +1046,14 @@ expirationTime :: UTCTime
 refreshToken :: Token
 accessToken :: Token
 </span><a href="#local-6989586621679905497"><span class="hs-glyph hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">..</span></a></span><span class="hs-special">}</span><span>
-</span><span id="line-231"></span><span>
-</span><span id="line-232"></span><span class="hs-comment">-- | Retrieves the 'accessToken' from pixiv monad.</span><span>
-</span><span id="line-233"></span><span class="hs-comment">--</span><span>
-</span><span id="line-234"></span><span class="hs-comment">-- If the token is overdue, it will call 'computeTokenState' to refresh.</span><span>
-</span><span id="line-235"></span><span id="local-6989586621679905784"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccessToken"><span class="hs-identifier hs-type">getAccessToken</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905784"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905784"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span></span><span>
-</span><span id="line-236"></span><span id="getAccessToken"><span class="annot"><span class="annottext">getAccessToken :: m Token
+</span><span id="line-233"></span><span>
+</span><span id="line-234"></span><span class="hs-comment">-- | Retrieves the 'accessToken' from pixiv monad.</span><span>
+</span><span id="line-235"></span><span class="hs-comment">--</span><span>
+</span><span id="line-236"></span><span class="hs-comment">-- If the token is overdue, it will call 'computeTokenState' to refresh.</span><span>
+</span><span id="line-237"></span><span id="local-6989586621679905784"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccessToken"><span class="hs-identifier hs-type">getAccessToken</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905784"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905784"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span></span><span>
+</span><span id="line-238"></span><span id="getAccessToken"><span class="annot"><span class="annottext">getAccessToken :: m Token
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessToken"><span class="hs-identifier hs-var hs-var">getAccessToken</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-237"></span><span>  </span><span id="local-6989586621679905495"><span class="annot"><span class="annottext">s :: PixivState
+</span><span id="line-239"></span><span>  </span><span id="local-6989586621679905495"><span class="annot"><span class="annottext">s :: PixivState
 </span><a href="#local-6989586621679905495"><span class="hs-identifier hs-var">s</span></a></span></span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">tokenState :: PixivState -&gt; TokenState
 </span><a href="Web.Pixiv.Types.PixivT.html#tokenState"><span class="hs-identifier hs-var">tokenState</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679905491"><span id="local-6989586621679905492"><span id="local-6989586621679905493"><span id="local-6989586621679905494"><span class="annot"><span class="annottext">UTCTime
 Manager
@@ -1067,31 +1069,31 @@ accessToken :: TokenState -&gt; Token
 </span><a href="#local-6989586621679905491"><span class="hs-glyph hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">..</span></a></span></span></span></span></span><span class="hs-special">}</span><span class="hs-special">}</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m PixivState
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m PixivState
 </span><a href="Web.Pixiv.Types.PixivT.html#takePixivState"><span class="hs-identifier hs-var">takePixivState</span></a></span><span>
-</span><span id="line-238"></span><span>  </span><span id="local-6989586621679905490"><span class="annot"><span class="annottext">UTCTime
+</span><span id="line-240"></span><span>  </span><span id="local-6989586621679905490"><span class="annot"><span class="annottext">UTCTime
 </span><a href="#local-6989586621679905490"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO UTCTime -&gt; m UTCTime
 forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">IO UTCTime
 </span><span class="hs-identifier hs-var">getCurrentTime</span></span><span>
-</span><span id="line-239"></span><span>  </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">UTCTime
+</span><span id="line-241"></span><span>  </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">UTCTime
 </span><a href="#local-6989586621679905490"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime -&gt; UTCTime -&gt; Bool
 forall a. Ord a =&gt; a -&gt; a -&gt; Bool
 </span><span class="hs-operator hs-var">&lt;</span></span><span> </span><span class="annot"><span class="annottext">UTCTime
 </span><a href="#local-6989586621679905492"><span class="hs-identifier hs-var">expirationTime</span></a></span><span>
-</span><span id="line-240"></span><span>    </span><span class="hs-keyword">then</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-241"></span><span>      </span><span class="annot"><span class="annottext">PixivState -&gt; m ()
+</span><span id="line-242"></span><span>    </span><span class="hs-keyword">then</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-243"></span><span>      </span><span class="annot"><span class="annottext">PixivState -&gt; m ()
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; PixivState -&gt; m ()
 </span><a href="Web.Pixiv.Types.PixivT.html#putPixivState"><span class="hs-identifier hs-var">putPixivState</span></a></span><span> </span><span class="annot"><span class="annottext">PixivState
 </span><a href="#local-6989586621679905495"><span class="hs-identifier hs-var">s</span></a></span><span>
-</span><span id="line-242"></span><span>      </span><span class="annot"><span class="annottext">Token -&gt; m Token
+</span><span id="line-244"></span><span>      </span><span class="annot"><span class="annottext">Token -&gt; m Token
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">Token
 </span><a href="#local-6989586621679905494"><span class="hs-identifier hs-var">accessToken</span></a></span><span>
-</span><span id="line-243"></span><span>    </span><span class="hs-keyword">else</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-244"></span><span>      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679905488"><span class="annot"><span class="annottext">credential :: Credential
+</span><span id="line-245"></span><span>    </span><span class="hs-keyword">else</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-246"></span><span>      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679905488"><span class="annot"><span class="annottext">credential :: Credential
 </span><a href="#local-6989586621679905488"><span class="hs-identifier hs-var hs-var">credential</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Token -&gt; Credential
 </span><a href="Web.Pixiv.Auth.html#RefreshToken"><span class="hs-identifier hs-var">RefreshToken</span></a></span><span> </span><span class="annot"><span class="annottext">Token
 </span><a href="#local-6989586621679905493"><span class="hs-identifier hs-var">refreshToken</span></a></span><span>
-</span><span id="line-245"></span><span>      </span><span id="local-6989586621679905486"><span class="annot"><span class="annottext">TokenState
+</span><span id="line-247"></span><span>      </span><span id="local-6989586621679905486"><span class="annot"><span class="annottext">TokenState
 </span><a href="#local-6989586621679905486"><span class="hs-identifier hs-var">ts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO TokenState -&gt; m TokenState
 forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">(IO TokenState -&gt; m TokenState) -&gt; IO TokenState -&gt; m TokenState
@@ -1101,30 +1103,30 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="#local-6989586621679905491"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
 </span><a href="#local-6989586621679905488"><span class="hs-identifier hs-var">credential</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
 </span><a href="#local-6989586621679905490"><span class="hs-identifier hs-var">t</span></a></span><span>
-</span><span id="line-246"></span><span>      </span><span class="annot"><span class="annottext">PixivState -&gt; m ()
+</span><span id="line-248"></span><span>      </span><span class="annot"><span class="annottext">PixivState -&gt; m ()
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; PixivState -&gt; m ()
 </span><a href="Web.Pixiv.Types.PixivT.html#putPixivState"><span class="hs-identifier hs-var">putPixivState</span></a></span><span> </span><span class="annot"><span class="annottext">PixivState
 </span><a href="#local-6989586621679905495"><span class="hs-identifier hs-var">s</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">tokenState :: TokenState
 </span><a href="Web.Pixiv.Types.PixivT.html#tokenState"><span class="hs-identifier hs-var">tokenState</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">TokenState
 </span><a href="#local-6989586621679905486"><span class="hs-identifier hs-var">ts</span></a></span><span class="hs-special">}</span><span>
-</span><span id="line-247"></span><span>      </span><span class="annot"><span class="annottext">Token -&gt; m Token
+</span><span id="line-249"></span><span>      </span><span class="annot"><span class="annottext">Token -&gt; m Token
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">Token
 </span><a href="#local-6989586621679905494"><span class="hs-identifier hs-var">accessToken</span></a></span><span>
-</span><span id="line-248"></span><span>
-</span><span id="line-249"></span><span class="hs-comment">-- | Retrieves the 'acceptLanguage' from pixiv monad.</span><span>
-</span><span id="line-250"></span><span id="local-6989586621679905783"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccpetLanguage"><span class="hs-identifier hs-type">getAccpetLanguage</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905783"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905783"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">)</span></span><span>
-</span><span id="line-251"></span><span id="getAccpetLanguage"><span class="annot"><span class="annottext">getAccpetLanguage :: m (Maybe Text)
+</span><span id="line-250"></span><span>
+</span><span id="line-251"></span><span class="hs-comment">-- | Retrieves the 'acceptLanguage' from pixiv monad.</span><span>
+</span><span id="line-252"></span><span id="local-6989586621679905783"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccpetLanguage"><span class="hs-identifier hs-type">getAccpetLanguage</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905783"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905783"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">)</span></span><span>
+</span><span id="line-253"></span><span id="getAccpetLanguage"><span class="annot"><span class="annottext">getAccpetLanguage :: m (Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccpetLanguage"><span class="hs-identifier hs-var hs-var">getAccpetLanguage</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">PixivState -&gt; Maybe Text
 </span><a href="Web.Pixiv.Types.PixivT.html#acceptLanguage"><span class="hs-identifier hs-var hs-var">acceptLanguage</span></a></span><span> </span><span class="annot"><span class="annottext">(PixivState -&gt; Maybe Text) -&gt; m PixivState -&gt; m (Maybe Text)
 forall (f :: Type -&gt; Type) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><span class="hs-operator hs-var">&lt;$&gt;</span></span><span> </span><span class="annot"><span class="annottext">m PixivState
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m PixivState
 </span><a href="Web.Pixiv.Types.PixivT.html#readPixivState"><span class="hs-identifier hs-var">readPixivState</span></a></span><span>
-</span><span id="line-252"></span><span>
-</span><span id="line-253"></span><span class="hs-comment">-- | Retrieves the 'accessToken' and 'acceptLanguage' in one go.</span><span>
-</span><span id="line-254"></span><span id="local-6989586621679905483"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-type">getAccessTokenWithAccpetLanguage</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905483"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905483"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">)</span></span><span>
-</span><span id="line-255"></span><span id="getAccessTokenWithAccpetLanguage"><span class="annot"><span class="annottext">getAccessTokenWithAccpetLanguage :: m (Token, Maybe Text)
+</span><span id="line-254"></span><span>
+</span><span id="line-255"></span><span class="hs-comment">-- | Retrieves the 'accessToken' and 'acceptLanguage' in one go.</span><span>
+</span><span id="line-256"></span><span id="local-6989586621679905483"><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-type">getAccessTokenWithAccpetLanguage</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679905483"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679905483"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">)</span></span><span>
+</span><span id="line-257"></span><span id="getAccessTokenWithAccpetLanguage"><span class="annot"><span class="annottext">getAccessTokenWithAccpetLanguage :: m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var hs-var">getAccessTokenWithAccpetLanguage</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="hs-special">,</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Token -&gt; Maybe Text -&gt; (Token, Maybe Text))
 -&gt; m Token -&gt; m (Maybe Text -&gt; (Token, Maybe Text))
 forall (f :: Type -&gt; Type) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
@@ -1138,4 +1140,4 @@ f (a -&gt; b) -&gt; f a -&gt; f b
 </span><span class="hs-operator hs-var">&lt;*&gt;</span></span><span> </span><span class="annot"><span class="annottext">m (Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccpetLanguage"><span class="hs-identifier hs-var">getAccpetLanguage</span></a></span><span>
-</span><span id="line-256"></span></pre></body></html>
+</span><span id="line-258"></span></pre></body></html>

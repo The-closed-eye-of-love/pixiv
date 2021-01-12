@@ -1,48 +1,56 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Web.Pixiv.Auth</span><span>
-</span><span id="line-2"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier">Token</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
-</span><span id="line-3"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier">Credential</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
-</span><span id="line-4"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier">OAuth2Token</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
-</span><span id="line-5"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Error"><span class="hs-identifier">OAuth2Error</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
-</span><span id="line-6"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Result"><span class="hs-identifier">OAuth2Result</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
-</span><span id="line-7"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#Errors"><span class="hs-identifier">Errors</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
-</span><span id="line-8"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#auth"><span class="hs-identifier">auth</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-9"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#auth%27"><span class="hs-identifier">auth'</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-10"></span><span>  </span><span class="hs-special">)</span><span>
-</span><span id="line-11"></span><span class="hs-keyword">where</span><span>
-</span><span id="line-12"></span><span>
-</span><span id="line-13"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Control.Applicative</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-operator">(&lt;|&gt;)</span></span><span class="hs-special">)</span><span>
-</span><span id="line-14"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Control.Exception.Base</span></span><span>
-</span><span id="line-15"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Crypto.Hash.MD5</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">hash</span></span><span class="hs-special">)</span><span>
-</span><span id="line-16"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Aeson</span></span><span>
-</span><span id="line-17"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Data.Aeson</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">A</span></span><span>
-</span><span id="line-18"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.ByteString</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">ByteString</span></span><span class="hs-special">)</span><span>
-</span><span id="line-19"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Data.ByteString.Base16</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">B16</span></span><span>
-</span><span id="line-20"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Data.ByteString.Char8</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">C</span></span><span>
-</span><span id="line-21"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="Data.Generically.html"><span class="hs-identifier">Data.Generically</span></a></span><span>
-</span><span id="line-22"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Text</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Text</span></span><span class="hs-special">)</span><span>
-</span><span id="line-23"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Text.Encoding</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">encodeUtf8</span></span><span class="hs-special">)</span><span>
-</span><span id="line-24"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Time</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">defaultTimeLocale</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">formatTime</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">getCurrentTime</span></span><span class="hs-special">)</span><span>
-</span><span id="line-25"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Network.HTTP.Client</span></span><span>
-</span><span id="line-26"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Network.HTTP.Client.MultipartFormData</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">PartM</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">formDataBody</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">partBS</span></span><span class="hs-special">)</span><span>
-</span><span id="line-27"></span><span>
-</span><span id="line-28"></span><span class="annot"><a href="Web.Pixiv.Auth.html#clientId"><span class="hs-identifier hs-type">clientId</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ByteString</span></span><span>
-</span><span id="line-29"></span><span id="clientId"><span class="annot"><span class="annottext">clientId :: ByteString
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-comment">-- | Copyright: (c) 2021 The closed eye of love</span><span>
+</span><span id="line-2"></span><span class="hs-comment">-- SPDX-License-Identifier: BSD-3-Clause</span><span>
+</span><span id="line-3"></span><span class="hs-comment">-- Maintainer: Poscat &lt;poscat@mail.poscat.moe&gt;, berberman &lt;berberman@yandex.com&gt;</span><span>
+</span><span id="line-4"></span><span class="hs-comment">-- Stability: alpha</span><span>
+</span><span id="line-5"></span><span class="hs-comment">-- Portability: portable</span><span>
+</span><span id="line-6"></span><span class="hs-comment">-- Authentication pixiv API. Users should not use logics in this module directly,</span><span>
+</span><span id="line-7"></span><span class="hs-comment">-- since &quot;Web.Pixiv.Types.PixivT&quot; takes over token management, providing user friendly operations.</span><span>
+</span><span id="line-8"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Web.Pixiv.Auth</span><span>
+</span><span id="line-9"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier">Token</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-10"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier">Credential</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-11"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier">OAuth2Token</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-12"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Error"><span class="hs-identifier">OAuth2Error</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-13"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Result"><span class="hs-identifier">OAuth2Result</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-14"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#Errors"><span class="hs-identifier">Errors</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-15"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#auth"><span class="hs-identifier">auth</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-16"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#auth%27"><span class="hs-identifier">auth'</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-17"></span><span>  </span><span class="hs-special">)</span><span>
+</span><span id="line-18"></span><span class="hs-keyword">where</span><span>
+</span><span id="line-19"></span><span>
+</span><span id="line-20"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Control.Applicative</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-operator">(&lt;|&gt;)</span></span><span class="hs-special">)</span><span>
+</span><span id="line-21"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Control.Exception.Base</span></span><span>
+</span><span id="line-22"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Crypto.Hash.MD5</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">hash</span></span><span class="hs-special">)</span><span>
+</span><span id="line-23"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Aeson</span></span><span>
+</span><span id="line-24"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Data.Aeson</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">A</span></span><span>
+</span><span id="line-25"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.ByteString</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">ByteString</span></span><span class="hs-special">)</span><span>
+</span><span id="line-26"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Data.ByteString.Base16</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">B16</span></span><span>
+</span><span id="line-27"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Data.ByteString.Char8</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">C</span></span><span>
+</span><span id="line-28"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="Data.Generically.html"><span class="hs-identifier">Data.Generically</span></a></span><span>
+</span><span id="line-29"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Text</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Text</span></span><span class="hs-special">)</span><span>
+</span><span id="line-30"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Text.Encoding</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">encodeUtf8</span></span><span class="hs-special">)</span><span>
+</span><span id="line-31"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Time</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">defaultTimeLocale</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">formatTime</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">getCurrentTime</span></span><span class="hs-special">)</span><span>
+</span><span id="line-32"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Network.HTTP.Client</span></span><span>
+</span><span id="line-33"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Network.HTTP.Client.MultipartFormData</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">PartM</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">formDataBody</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">partBS</span></span><span class="hs-special">)</span><span>
+</span><span id="line-34"></span><span>
+</span><span id="line-35"></span><span class="annot"><a href="Web.Pixiv.Auth.html#clientId"><span class="hs-identifier hs-type">clientId</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ByteString</span></span><span>
+</span><span id="line-36"></span><span id="clientId"><span class="annot"><span class="annottext">clientId :: ByteString
 </span><a href="Web.Pixiv.Auth.html#clientId"><span class="hs-identifier hs-var hs-var">clientId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><span class="hs-string">&quot;MOBrBDS8blbauoSck0ZfDbtuzpyT&quot;</span></span><span>
-</span><span id="line-30"></span><span>
-</span><span id="line-31"></span><span class="annot"><a href="Web.Pixiv.Auth.html#clientSecret"><span class="hs-identifier hs-type">clientSecret</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ByteString</span></span><span>
-</span><span id="line-32"></span><span id="clientSecret"><span class="annot"><span class="annottext">clientSecret :: ByteString
+</span><span id="line-37"></span><span>
+</span><span id="line-38"></span><span class="annot"><a href="Web.Pixiv.Auth.html#clientSecret"><span class="hs-identifier hs-type">clientSecret</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ByteString</span></span><span>
+</span><span id="line-39"></span><span id="clientSecret"><span class="annot"><span class="annottext">clientSecret :: ByteString
 </span><a href="Web.Pixiv.Auth.html#clientSecret"><span class="hs-identifier hs-var hs-var">clientSecret</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><span class="hs-string">&quot;lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj&quot;</span></span><span>
-</span><span id="line-33"></span><span>
-</span><span id="line-34"></span><span class="annot"><a href="Web.Pixiv.Auth.html#hashSecret"><span class="hs-identifier hs-type">hashSecret</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ByteString</span></span><span>
-</span><span id="line-35"></span><span id="hashSecret"><span class="annot"><span class="annottext">hashSecret :: ByteString
+</span><span id="line-40"></span><span>
+</span><span id="line-41"></span><span class="annot"><a href="Web.Pixiv.Auth.html#hashSecret"><span class="hs-identifier hs-type">hashSecret</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ByteString</span></span><span>
+</span><span id="line-42"></span><span id="hashSecret"><span class="annot"><span class="annottext">hashSecret :: ByteString
 </span><a href="Web.Pixiv.Auth.html#hashSecret"><span class="hs-identifier hs-var hs-var">hashSecret</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><span class="hs-string">&quot;28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0bae2c&quot;</span></span><span>
-</span><span id="line-36"></span><span>
-</span><span id="line-37"></span><span id="local-6989586621679903206"><span id="local-6989586621679903207"></span></span><span class="hs-keyword">newtype</span><span> </span><span id="Token"><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-var">Token</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Token"><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-var">Token</span></a></span></span><span> </span><span class="hs-special">{</span><span id="unToken"><span class="annot"><span class="annottext">Token -&gt; Text
+</span><span id="line-43"></span><span>
+</span><span id="line-44"></span><span class="hs-comment">-- | A wrapped 'Text' represents a token.</span><span>
+</span><span id="line-45"></span><span id="local-6989586621679903206"><span id="local-6989586621679903207"></span></span><span class="hs-keyword">newtype</span><span> </span><span id="Token"><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-var">Token</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Token"><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-var">Token</span></a></span></span><span> </span><span class="hs-special">{</span><span id="unToken"><span class="annot"><span class="annottext">Token -&gt; Text
 </span><a href="Web.Pixiv.Auth.html#unToken"><span class="hs-identifier hs-var hs-var">unToken</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">}</span><span>
-</span><span id="line-38"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903198"><span id="local-6989586621679903200"><span id="local-6989586621679903202"><span class="annot"><span class="annottext">Int -&gt; Token -&gt; ShowS
+</span><span id="line-46"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903198"><span id="local-6989586621679903200"><span id="local-6989586621679903202"><span class="annot"><span class="annottext">Int -&gt; Token -&gt; ShowS
 [Token] -&gt; ShowS
 Token -&gt; String
 (Int -&gt; Token -&gt; ShowS)
@@ -71,7 +79,7 @@ forall a.
 $cto :: forall x. Rep Token x -&gt; Token
 $cfrom :: forall x. Token -&gt; Rep Token x
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></span><span class="hs-special">)</span><span>
-</span><span id="line-39"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903185"><span id="local-6989586621679903187"><span class="annot"><span class="annottext">Value -&gt; Parser [Token]
+</span><span id="line-47"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903185"><span id="local-6989586621679903187"><span class="annot"><span class="annottext">Value -&gt; Parser [Token]
 Value -&gt; Parser Token
 (Value -&gt; Parser Token)
 -&gt; (Value -&gt; Parser [Token]) -&gt; FromJSON Token
@@ -105,19 +113,23 @@ $ctoEncoding :: Token -&gt; Encoding
 toJSON :: Token -&gt; Value
 $ctoJSON :: Token -&gt; Value
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></span></span></span></span></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">via</span><span> </span><span class="annot"><span class="hs-identifier hs-type">CustomJSON</span></span><span> </span><span class="hs-special">'</span><span class="hs-special">[</span><span class="annot"><span class="hs-identifier hs-type">UnwrapUnaryRecords</span></span><span class="hs-special">]</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span>
-</span><span id="line-40"></span><span>
-</span><span id="line-41"></span><span class="hs-keyword">data</span><span> </span><span id="Credential"><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-var">Credential</span></a></span></span><span>
-</span><span id="line-42"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="Password"><span class="annot"><a href="Web.Pixiv.Auth.html#Password"><span class="hs-identifier hs-var">Password</span></a></span></span><span>
-</span><span id="line-43"></span><span>      </span><span class="hs-special">{</span><span> </span><span id="username"><span class="annot"><span class="annottext">Credential -&gt; ByteString
+</span><span id="line-48"></span><span>
+</span><span id="line-49"></span><span class="hs-comment">-- | Authentication credentials for pixiv API.</span><span>
+</span><span id="line-50"></span><span class="hs-comment">--</span><span>
+</span><span id="line-51"></span><span class="hs-comment">-- Normally, users are supposed to create value of this data type using 'Password' constructor,</span><span>
+</span><span id="line-52"></span><span class="hs-comment">-- then pass it to 'Web.Pixiv.Types.PixivT.runPixivT'.</span><span>
+</span><span id="line-53"></span><span class="hs-keyword">data</span><span> </span><span id="Credential"><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-var">Credential</span></a></span></span><span>
+</span><span id="line-54"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="Password"><span class="annot"><a href="Web.Pixiv.Auth.html#Password"><span class="hs-identifier hs-var">Password</span></a></span></span><span>
+</span><span id="line-55"></span><span>      </span><span class="hs-special">{</span><span> </span><span id="username"><span class="annot"><span class="annottext">Credential -&gt; ByteString
 </span><a href="Web.Pixiv.Auth.html#username"><span class="hs-identifier hs-var hs-var">username</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ByteString</span></span><span class="hs-special">,</span><span>
-</span><span id="line-44"></span><span>        </span><span id="password"><span class="annot"><span class="annottext">Credential -&gt; ByteString
+</span><span id="line-56"></span><span>        </span><span id="password"><span class="annot"><span class="annottext">Credential -&gt; ByteString
 </span><a href="Web.Pixiv.Auth.html#password"><span class="hs-identifier hs-var hs-var">password</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">ByteString</span></span><span>
-</span><span id="line-45"></span><span>      </span><span class="hs-special">}</span><span>
-</span><span id="line-46"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="RefreshToken"><span class="annot"><a href="Web.Pixiv.Auth.html#RefreshToken"><span class="hs-identifier hs-var">RefreshToken</span></a></span></span><span>
-</span><span id="line-47"></span><span>      </span><span class="hs-special">{</span><span> </span><span id="refreshToken"><span class="annot"><span class="annottext">Credential -&gt; Token
-</span><a href="Web.Pixiv.Auth.html#refreshToken"><span class="hs-identifier hs-var hs-var">refreshToken</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span>
-</span><span id="line-48"></span><span>      </span><span class="hs-special">}</span><span>
-</span><span id="line-49"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903162"><span id="local-6989586621679903164"><span id="local-6989586621679903166"><span class="annot"><span class="annottext">Int -&gt; Credential -&gt; ShowS
+</span><span id="line-57"></span><span>      </span><span class="hs-special">}</span><span>
+</span><span id="line-58"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="RefreshToken"><span class="annot"><a href="Web.Pixiv.Auth.html#RefreshToken"><span class="hs-identifier hs-var">RefreshToken</span></a></span></span><span>
+</span><span id="line-59"></span><span>      </span><span class="hs-special">{</span><span> </span><span id="cr_refreshToken"><span class="annot"><span class="annottext">Credential -&gt; Token
+</span><a href="Web.Pixiv.Auth.html#cr_refreshToken"><span class="hs-identifier hs-var hs-var">cr_refreshToken</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span>
+</span><span id="line-60"></span><span>      </span><span class="hs-special">}</span><span>
+</span><span id="line-61"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903162"><span id="local-6989586621679903164"><span id="local-6989586621679903166"><span class="annot"><span class="annottext">Int -&gt; Credential -&gt; ShowS
 [Credential] -&gt; ShowS
 Credential -&gt; String
 (Int -&gt; Credential -&gt; ShowS)
@@ -141,49 +153,49 @@ $c/= :: Credential -&gt; Credential -&gt; Bool
 == :: Credential -&gt; Credential -&gt; Bool
 $c== :: Credential -&gt; Credential -&gt; Bool
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">)</span><span>
-</span><span id="line-50"></span><span>
-</span><span id="line-51"></span><span id="local-6989586621679903236"><span class="annot"><a href="Web.Pixiv.Auth.html#mkAuthParts"><span class="hs-identifier hs-type">mkAuthParts</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Applicative</span></span><span> </span><span class="annot"><a href="#local-6989586621679903236"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="hs-identifier hs-type">PartM</span></span><span> </span><span class="annot"><a href="#local-6989586621679903236"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">]</span></span><span>
-</span><span id="line-52"></span><span id="mkAuthParts"><span class="annot"><span class="annottext">mkAuthParts :: Credential -&gt; [PartM m]
+</span><span id="line-62"></span><span>
+</span><span id="line-63"></span><span id="local-6989586621679903236"><span class="annot"><a href="Web.Pixiv.Auth.html#mkAuthParts"><span class="hs-identifier hs-type">mkAuthParts</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Applicative</span></span><span> </span><span class="annot"><a href="#local-6989586621679903236"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="hs-identifier hs-type">PartM</span></span><span> </span><span class="annot"><a href="#local-6989586621679903236"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-64"></span><span id="mkAuthParts"><span class="annot"><span class="annottext">mkAuthParts :: Credential -&gt; [PartM m]
 </span><a href="Web.Pixiv.Auth.html#mkAuthParts"><span class="hs-identifier hs-var hs-var">mkAuthParts</span></a></span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Password"><span class="hs-identifier hs-type">Password</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679903155"><span id="local-6989586621679903156"><span class="annot"><span class="annottext">ByteString
 password :: ByteString
 username :: ByteString
 password :: Credential -&gt; ByteString
 username :: Credential -&gt; ByteString
 </span><a href="#local-6989586621679903155"><span class="hs-glyph hs-var hs-var hs-var hs-var">..</span></a></span></span></span><span class="hs-special">}</span><span> </span><span class="hs-glyph">=</span><span>
-</span><span id="line-53"></span><span>  </span><span class="hs-special">[</span><span> </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM m
+</span><span id="line-65"></span><span>  </span><span class="hs-special">[</span><span> </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM m
 forall (m :: Type -&gt; Type).
 Applicative m =&gt;
 Text -&gt; ByteString -&gt; PartM m
 </span><span class="hs-identifier hs-var">partBS</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;grant_type&quot;</span></span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><span class="hs-string">&quot;password&quot;</span></span><span class="hs-special">,</span><span>
-</span><span id="line-54"></span><span>    </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM m
+</span><span id="line-66"></span><span>    </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM m
 forall (m :: Type -&gt; Type).
 Applicative m =&gt;
 Text -&gt; ByteString -&gt; PartM m
 </span><span class="hs-identifier hs-var">partBS</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;username&quot;</span></span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><a href="#local-6989586621679903156"><span class="hs-identifier hs-var">username</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-55"></span><span>    </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM m
+</span><span id="line-67"></span><span>    </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM m
 forall (m :: Type -&gt; Type).
 Applicative m =&gt;
 Text -&gt; ByteString -&gt; PartM m
 </span><span class="hs-identifier hs-var">partBS</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;password&quot;</span></span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><a href="#local-6989586621679903155"><span class="hs-identifier hs-var">password</span></a></span><span>
-</span><span id="line-56"></span><span>  </span><span class="hs-special">]</span><span>
-</span><span id="line-57"></span><span class="annot"><a href="Web.Pixiv.Auth.html#mkAuthParts"><span class="hs-identifier hs-var">mkAuthParts</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#RefreshToken"><span class="hs-identifier hs-type">RefreshToken</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679903154"><span class="annot"><span class="annottext">Token
-refreshToken :: Token
-refreshToken :: Credential -&gt; Token
+</span><span id="line-68"></span><span>  </span><span class="hs-special">]</span><span>
+</span><span id="line-69"></span><span class="annot"><a href="Web.Pixiv.Auth.html#mkAuthParts"><span class="hs-identifier hs-var">mkAuthParts</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#RefreshToken"><span class="hs-identifier hs-type">RefreshToken</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679903154"><span class="annot"><span class="annottext">Token
+cr_refreshToken :: Token
+cr_refreshToken :: Credential -&gt; Token
 </span><a href="#local-6989586621679903154"><span class="hs-glyph hs-var hs-var">..</span></a></span></span><span class="hs-special">}</span><span> </span><span class="hs-glyph">=</span><span>
-</span><span id="line-58"></span><span>  </span><span class="hs-special">[</span><span> </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM m
+</span><span id="line-70"></span><span>  </span><span class="hs-special">[</span><span> </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM m
 forall (m :: Type -&gt; Type).
 Applicative m =&gt;
 Text -&gt; ByteString -&gt; PartM m
 </span><span class="hs-identifier hs-var">partBS</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;grant_type&quot;</span></span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><span class="hs-string">&quot;refresh_token&quot;</span></span><span class="hs-special">,</span><span>
-</span><span id="line-59"></span><span>    </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM m
+</span><span id="line-71"></span><span>    </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM m
 forall (m :: Type -&gt; Type).
 Applicative m =&gt;
 Text -&gt; ByteString -&gt; PartM m
@@ -195,18 +207,19 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><a href="Web.Pixiv.Auth.html#unToken"><span class="hs-identifier hs-var hs-var">unToken</span></a></span><span> </span><span class="annot"><span class="annottext">(Token -&gt; ByteString) -&gt; Token -&gt; ByteString
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Token
-</span><a href="#local-6989586621679903154"><span class="hs-identifier hs-var">refreshToken</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-60"></span><span>  </span><span class="hs-special">]</span><span>
-</span><span id="line-61"></span><span>
-</span><span id="line-62"></span><span id="local-6989586621679903151"><span id="local-6989586621679903152"></span></span><span class="hs-keyword">data</span><span> </span><span id="OAuth2Token"><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-var">OAuth2Token</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="OAuth2Token"><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-var">OAuth2Token</span></a></span></span><span>
-</span><span id="line-63"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="oa_accessToken"><span class="annot"><span class="annottext">OAuth2Token -&gt; Token
+</span><a href="#local-6989586621679903154"><span class="hs-identifier hs-var">cr_refreshToken</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-72"></span><span>  </span><span class="hs-special">]</span><span>
+</span><span id="line-73"></span><span>
+</span><span id="line-74"></span><span class="hs-comment">-- | Successful result.</span><span>
+</span><span id="line-75"></span><span id="local-6989586621679903151"><span id="local-6989586621679903152"></span></span><span class="hs-keyword">data</span><span> </span><span id="OAuth2Token"><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-var">OAuth2Token</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="OAuth2Token"><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-var">OAuth2Token</span></a></span></span><span>
+</span><span id="line-76"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="oa_accessToken"><span class="annot"><span class="annottext">OAuth2Token -&gt; Token
 </span><a href="Web.Pixiv.Auth.html#oa_accessToken"><span class="hs-identifier hs-var hs-var">oa_accessToken</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-64"></span><span>    </span><span id="oa_expiresIn"><span class="annot"><span class="annottext">OAuth2Token -&gt; Int
+</span><span id="line-77"></span><span>    </span><span id="oa_expiresIn"><span class="annot"><span class="annottext">OAuth2Token -&gt; Int
 </span><a href="Web.Pixiv.Auth.html#oa_expiresIn"><span class="hs-identifier hs-var hs-var">oa_expiresIn</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span class="hs-special">,</span><span>
-</span><span id="line-65"></span><span>    </span><span id="oa_refreshToken"><span class="annot"><span class="annottext">OAuth2Token -&gt; Token
+</span><span id="line-78"></span><span>    </span><span id="oa_refreshToken"><span class="annot"><span class="annottext">OAuth2Token -&gt; Token
 </span><a href="Web.Pixiv.Auth.html#oa_refreshToken"><span class="hs-identifier hs-var hs-var">oa_refreshToken</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span>
-</span><span id="line-66"></span><span>  </span><span class="hs-special">}</span><span>
-</span><span id="line-67"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903141"><span id="local-6989586621679903143"><span id="local-6989586621679903145"><span class="annot"><span class="annottext">Int -&gt; OAuth2Token -&gt; ShowS
+</span><span id="line-79"></span><span>  </span><span class="hs-special">}</span><span>
+</span><span id="line-80"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903141"><span id="local-6989586621679903143"><span id="local-6989586621679903145"><span class="annot"><span class="annottext">Int -&gt; OAuth2Token -&gt; ShowS
 [OAuth2Token] -&gt; ShowS
 OAuth2Token -&gt; String
 (Int -&gt; OAuth2Token -&gt; ShowS)
@@ -239,7 +252,7 @@ forall a.
 $cto :: forall x. Rep OAuth2Token x -&gt; OAuth2Token
 $cfrom :: forall x. OAuth2Token -&gt; Rep OAuth2Token x
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></span><span class="hs-special">)</span><span>
-</span><span id="line-68"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903131"><span id="local-6989586621679903133"><span class="annot"><span class="annottext">Value -&gt; Parser [OAuth2Token]
+</span><span id="line-81"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903131"><span id="local-6989586621679903133"><span class="annot"><span class="annottext">Value -&gt; Parser [OAuth2Token]
 Value -&gt; Parser OAuth2Token
 (Value -&gt; Parser OAuth2Token)
 -&gt; (Value -&gt; Parser [OAuth2Token]) -&gt; FromJSON OAuth2Token
@@ -273,15 +286,16 @@ $ctoEncoding :: OAuth2Token -&gt; Encoding
 toJSON :: OAuth2Token -&gt; Value
 $ctoJSON :: OAuth2Token -&gt; Value
 </span><a href="#local-6989586621679903123"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></a></span></span></span></span></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">via</span><span> </span><span class="annot"><a href="Data.Generically.html#PixivJSON"><span class="hs-identifier hs-type">PixivJSON</span></a></span><span> </span><span class="annot"><span class="hs-string">&quot;oa_&quot;</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-type">OAuth2Token</span></a></span><span>
-</span><span id="line-69"></span><span>
-</span><span id="line-70"></span><span id="local-6989586621679903120"><span id="local-6989586621679903121"></span></span><span class="hs-keyword">data</span><span> </span><span id="Errors"><span class="annot"><a href="Web.Pixiv.Auth.html#Errors"><span class="hs-identifier hs-var">Errors</span></a></span></span><span>
-</span><span id="line-71"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="InvalidRequest"><span class="annot"><a href="Web.Pixiv.Auth.html#InvalidRequest"><span class="hs-identifier hs-var">InvalidRequest</span></a></span></span><span>
-</span><span id="line-72"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="InvalidClient"><span class="annot"><a href="Web.Pixiv.Auth.html#InvalidClient"><span class="hs-identifier hs-var">InvalidClient</span></a></span></span><span>
-</span><span id="line-73"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="InvalidGrant"><span class="annot"><a href="Web.Pixiv.Auth.html#InvalidGrant"><span class="hs-identifier hs-var">InvalidGrant</span></a></span></span><span>
-</span><span id="line-74"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="UnauthorizedClient"><span class="annot"><a href="Web.Pixiv.Auth.html#UnauthorizedClient"><span class="hs-identifier hs-var">UnauthorizedClient</span></a></span></span><span>
-</span><span id="line-75"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="UnsupportedGrantType"><span class="annot"><a href="Web.Pixiv.Auth.html#UnsupportedGrantType"><span class="hs-identifier hs-var">UnsupportedGrantType</span></a></span></span><span>
-</span><span id="line-76"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="InvalidScope"><span class="annot"><a href="Web.Pixiv.Auth.html#InvalidScope"><span class="hs-identifier hs-var">InvalidScope</span></a></span></span><span>
-</span><span id="line-77"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903108"><span id="local-6989586621679903110"><span id="local-6989586621679903112"><span class="annot"><span class="annottext">Int -&gt; Errors -&gt; ShowS
+</span><span id="line-82"></span><span>
+</span><span id="line-83"></span><span class="hs-comment">-- | Authentication failure reasions.</span><span>
+</span><span id="line-84"></span><span id="local-6989586621679903120"><span id="local-6989586621679903121"></span></span><span class="hs-keyword">data</span><span> </span><span id="Errors"><span class="annot"><a href="Web.Pixiv.Auth.html#Errors"><span class="hs-identifier hs-var">Errors</span></a></span></span><span>
+</span><span id="line-85"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="InvalidRequest"><span class="annot"><a href="Web.Pixiv.Auth.html#InvalidRequest"><span class="hs-identifier hs-var">InvalidRequest</span></a></span></span><span>
+</span><span id="line-86"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="InvalidClient"><span class="annot"><a href="Web.Pixiv.Auth.html#InvalidClient"><span class="hs-identifier hs-var">InvalidClient</span></a></span></span><span>
+</span><span id="line-87"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="InvalidGrant"><span class="annot"><a href="Web.Pixiv.Auth.html#InvalidGrant"><span class="hs-identifier hs-var">InvalidGrant</span></a></span></span><span>
+</span><span id="line-88"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="UnauthorizedClient"><span class="annot"><a href="Web.Pixiv.Auth.html#UnauthorizedClient"><span class="hs-identifier hs-var">UnauthorizedClient</span></a></span></span><span>
+</span><span id="line-89"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="UnsupportedGrantType"><span class="annot"><a href="Web.Pixiv.Auth.html#UnsupportedGrantType"><span class="hs-identifier hs-var">UnsupportedGrantType</span></a></span></span><span>
+</span><span id="line-90"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="InvalidScope"><span class="annot"><a href="Web.Pixiv.Auth.html#InvalidScope"><span class="hs-identifier hs-var">InvalidScope</span></a></span></span><span>
+</span><span id="line-91"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903108"><span id="local-6989586621679903110"><span id="local-6989586621679903112"><span class="annot"><span class="annottext">Int -&gt; Errors -&gt; ShowS
 [Errors] -&gt; ShowS
 Errors -&gt; String
 (Int -&gt; Errors -&gt; ShowS)
@@ -311,7 +325,7 @@ forall a.
 $cto :: forall x. Rep Errors x -&gt; Errors
 $cfrom :: forall x. Errors -&gt; Rep Errors x
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></span><span class="hs-special">)</span><span>
-</span><span id="line-78"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903098"><span id="local-6989586621679903100"><span class="annot"><span class="annottext">Value -&gt; Parser [Errors]
+</span><span id="line-92"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903098"><span id="local-6989586621679903100"><span class="annot"><span class="annottext">Value -&gt; Parser [Errors]
 Value -&gt; Parser Errors
 (Value -&gt; Parser Errors)
 -&gt; (Value -&gt; Parser [Errors]) -&gt; FromJSON Errors
@@ -345,14 +359,15 @@ $ctoEncoding :: Errors -&gt; Encoding
 toJSON :: Errors -&gt; Value
 $ctoJSON :: Errors -&gt; Value
 </span><a href="#local-6989586621679903090"><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">ToJSON</span></a></span></span></span></span></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">via</span><span> </span><span class="annot"><a href="Data.Generically.html#EnumJSON%27"><span class="hs-identifier hs-type">EnumJSON'</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Errors"><span class="hs-identifier hs-type">Errors</span></a></span><span>
-</span><span id="line-79"></span><span>
-</span><span id="line-80"></span><span id="local-6989586621679903087"><span id="local-6989586621679903088"></span></span><span class="hs-keyword">data</span><span> </span><span id="OAuth2Error"><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Error"><span class="hs-identifier hs-var">OAuth2Error</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="OAuth2Error"><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Error"><span class="hs-identifier hs-var">OAuth2Error</span></a></span></span><span>
-</span><span id="line-81"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="oa_error"><span class="annot"><span class="annottext">OAuth2Error -&gt; Errors
+</span><span id="line-93"></span><span>
+</span><span id="line-94"></span><span class="hs-comment">-- | Failed result.</span><span>
+</span><span id="line-95"></span><span id="local-6989586621679903087"><span id="local-6989586621679903088"></span></span><span class="hs-keyword">data</span><span> </span><span id="OAuth2Error"><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Error"><span class="hs-identifier hs-var">OAuth2Error</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="OAuth2Error"><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Error"><span class="hs-identifier hs-var">OAuth2Error</span></a></span></span><span>
+</span><span id="line-96"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="oa_error"><span class="annot"><span class="annottext">OAuth2Error -&gt; Errors
 </span><a href="Web.Pixiv.Auth.html#oa_error"><span class="hs-identifier hs-var hs-var">oa_error</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Errors"><span class="hs-identifier hs-type">Errors</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-82"></span><span>    </span><span id="oa_message"><span class="annot"><span class="annottext">OAuth2Error -&gt; Text
+</span><span id="line-97"></span><span>    </span><span id="oa_message"><span class="annot"><span class="annottext">OAuth2Error -&gt; Text
 </span><a href="Web.Pixiv.Auth.html#oa_message"><span class="hs-identifier hs-var hs-var">oa_message</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
-</span><span id="line-83"></span><span>  </span><span class="hs-special">}</span><span>
-</span><span id="line-84"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903078"><span id="local-6989586621679903080"><span id="local-6989586621679903082"><span class="annot"><span class="annottext">Int -&gt; OAuth2Error -&gt; ShowS
+</span><span id="line-98"></span><span>  </span><span class="hs-special">}</span><span>
+</span><span id="line-99"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903078"><span id="local-6989586621679903080"><span id="local-6989586621679903082"><span class="annot"><span class="annottext">Int -&gt; OAuth2Error -&gt; ShowS
 [OAuth2Error] -&gt; ShowS
 OAuth2Error -&gt; String
 (Int -&gt; OAuth2Error -&gt; ShowS)
@@ -385,7 +400,7 @@ forall a.
 $cto :: forall x. Rep OAuth2Error x -&gt; OAuth2Error
 $cfrom :: forall x. OAuth2Error -&gt; Rep OAuth2Error x
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></span><span class="hs-special">)</span><span>
-</span><span id="line-85"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">anyclass</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903064"><span id="local-6989586621679903066"><span id="local-6989586621679903068"><span class="annot"><span class="annottext">Show OAuth2Error
+</span><span id="line-100"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">anyclass</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903064"><span id="local-6989586621679903066"><span id="local-6989586621679903068"><span class="annot"><span class="annottext">Show OAuth2Error
 Typeable OAuth2Error
 Typeable OAuth2Error
 -&gt; Show OAuth2Error
@@ -412,9 +427,9 @@ $ctoException :: OAuth2Error -&gt; SomeException
 $cp2Exception :: Show OAuth2Error
 $cp1Exception :: Typeable OAuth2Error
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Exception</span></span></span></span></span><span class="hs-special">)</span><span>
-</span><span id="line-86"></span><span>
-</span><span id="line-87"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679903060"><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Error"><span class="hs-identifier hs-type">OAuth2Error</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-88"></span><span>  </span><span id="local-6989586621679903059"><span class="annot"><span class="annottext">parseJSON :: Value -&gt; Parser OAuth2Error
+</span><span id="line-101"></span><span>
+</span><span id="line-102"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679903060"><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Error"><span class="hs-identifier hs-type">OAuth2Error</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-103"></span><span>  </span><span id="local-6989586621679903059"><span class="annot"><span class="annottext">parseJSON :: Value -&gt; Parser OAuth2Error
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var">parseJSON</span></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String
 -&gt; (Object -&gt; Parser OAuth2Error) -&gt; Value -&gt; Parser OAuth2Error
 forall a. String -&gt; (Object -&gt; Parser a) -&gt; Value -&gt; Parser a
@@ -424,19 +439,19 @@ forall a. String -&gt; (Object -&gt; Parser a) -&gt; Value -&gt; Parser a
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-glyph">\</span><span id="local-6989586621679903056"><span class="annot"><span class="annottext">Object
 </span><a href="#local-6989586621679903056"><span class="hs-identifier hs-var">o</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-89"></span><span>    </span><span id="local-6989586621679903055"><span class="annot"><span class="annottext">Errors
+</span><span id="line-104"></span><span>    </span><span id="local-6989586621679903055"><span class="annot"><span class="annottext">Errors
 </span><a href="#local-6989586621679903055"><span class="hs-identifier hs-var">oa_error</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Object
 </span><a href="#local-6989586621679903056"><span class="hs-identifier hs-var">o</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Text -&gt; Parser Errors
 forall a. FromJSON a =&gt; Object -&gt; Text -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;error&quot;</span></span><span>
-</span><span id="line-90"></span><span>    </span><span id="local-6989586621679903053"><span class="annot"><span class="annottext">Value
+</span><span id="line-105"></span><span>    </span><span id="local-6989586621679903053"><span class="annot"><span class="annottext">Value
 </span><a href="#local-6989586621679903053"><span class="hs-identifier hs-var">errors</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Object
 </span><a href="#local-6989586621679903056"><span class="hs-identifier hs-var">o</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Text -&gt; Parser Value
 forall a. FromJSON a =&gt; Object -&gt; Text -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;errors&quot;</span></span><span>
-</span><span id="line-91"></span><span>    </span><span id="local-6989586621679903052"><span class="annot"><span class="annottext">Text
+</span><span id="line-106"></span><span>    </span><span id="local-6989586621679903052"><span class="annot"><span class="annottext">Text
 </span><a href="#local-6989586621679903052"><span class="hs-identifier hs-var">oa_message</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">((Object -&gt; Parser Text) -&gt; Value -&gt; Parser Text)
 -&gt; Value -&gt; (Object -&gt; Parser Text) -&gt; Parser Text
 forall a b c. (a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c
@@ -449,13 +464,13 @@ forall a. String -&gt; (Object -&gt; Parser a) -&gt; Value -&gt; Parser a
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-glyph">\</span><span id="local-6989586621679903050"><span class="annot"><span class="annottext">Object
 </span><a href="#local-6989586621679903050"><span class="hs-identifier hs-var">o'</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-92"></span><span>      </span><span id="local-6989586621679903049"><span class="annot"><span class="annottext">Value
+</span><span id="line-107"></span><span>      </span><span id="local-6989586621679903049"><span class="annot"><span class="annottext">Value
 </span><a href="#local-6989586621679903049"><span class="hs-identifier hs-var">system</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Object
 </span><a href="#local-6989586621679903050"><span class="hs-identifier hs-var">o'</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Text -&gt; Parser Value
 forall a. FromJSON a =&gt; Object -&gt; Text -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;system&quot;</span></span><span>
-</span><span id="line-93"></span><span>      </span><span class="annot"><span class="annottext">((Object -&gt; Parser Text) -&gt; Value -&gt; Parser Text)
+</span><span id="line-108"></span><span>      </span><span class="annot"><span class="annottext">((Object -&gt; Parser Text) -&gt; Value -&gt; Parser Text)
 -&gt; Value -&gt; (Object -&gt; Parser Text) -&gt; Parser Text
 forall a b c. (a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c
 </span><span class="hs-identifier hs-var">flip</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String -&gt; (Object -&gt; Parser Text) -&gt; Value -&gt; Parser Text
@@ -467,12 +482,12 @@ forall a. String -&gt; (Object -&gt; Parser a) -&gt; Value -&gt; Parser a
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-glyph">\</span><span id="local-6989586621679903048"><span class="annot"><span class="annottext">Object
 </span><a href="#local-6989586621679903048"><span class="hs-identifier hs-var">o''</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-94"></span><span>        </span><span class="annot"><span class="annottext">Object
+</span><span id="line-109"></span><span>        </span><span class="annot"><span class="annottext">Object
 </span><a href="#local-6989586621679903048"><span class="hs-identifier hs-var">o''</span></a></span><span> </span><span class="annot"><span class="annottext">Object -&gt; Text -&gt; Parser Text
 forall a. FromJSON a =&gt; Object -&gt; Text -&gt; Parser a
 </span><span class="hs-operator hs-var">.:</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;message&quot;</span></span><span>
-</span><span id="line-95"></span><span>    </span><span class="annot"><span class="annottext">OAuth2Error -&gt; Parser OAuth2Error
+</span><span id="line-110"></span><span>    </span><span class="annot"><span class="annottext">OAuth2Error -&gt; Parser OAuth2Error
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">OAuth2Error :: Errors -&gt; Text -&gt; OAuth2Error
 </span><a href="Web.Pixiv.Auth.html#OAuth2Error"><span class="hs-identifier hs-type">OAuth2Error</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">Text
@@ -482,11 +497,12 @@ oa_error :: Errors
 oa_message :: Text
 oa_error :: Errors
 </span><a href="#local-6989586621679903052"><span class="hs-glyph hs-var hs-var hs-var hs-var">..</span></a></span><span class="hs-special">}</span><span>
-</span><span id="line-96"></span><span>
-</span><span id="line-97"></span><span id="local-6989586621679903046"><span id="local-6989586621679903047"></span></span><span class="hs-keyword">data</span><span> </span><span id="OAuth2Result"><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Result"><span class="hs-identifier hs-var">OAuth2Result</span></a></span></span><span>
-</span><span id="line-98"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="AuthSuccess"><span class="annot"><a href="Web.Pixiv.Auth.html#AuthSuccess"><span class="hs-identifier hs-var">AuthSuccess</span></a></span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-type">OAuth2Token</span></a></span><span>
-</span><span id="line-99"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="AuthFailure"><span class="annot"><a href="Web.Pixiv.Auth.html#AuthFailure"><span class="hs-identifier hs-var">AuthFailure</span></a></span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Error"><span class="hs-identifier hs-type">OAuth2Error</span></a></span><span>
-</span><span id="line-100"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903038"><span id="local-6989586621679903040"><span id="local-6989586621679903042"><span class="annot"><span class="annottext">Int -&gt; OAuth2Result -&gt; ShowS
+</span><span id="line-111"></span><span>
+</span><span id="line-112"></span><span class="hs-comment">-- | Authentication result.</span><span>
+</span><span id="line-113"></span><span id="local-6989586621679903046"><span id="local-6989586621679903047"></span></span><span class="hs-keyword">data</span><span> </span><span id="OAuth2Result"><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Result"><span class="hs-identifier hs-var">OAuth2Result</span></a></span></span><span>
+</span><span id="line-114"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="AuthSuccess"><span class="annot"><a href="Web.Pixiv.Auth.html#AuthSuccess"><span class="hs-identifier hs-var">AuthSuccess</span></a></span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-type">OAuth2Token</span></a></span><span>
+</span><span id="line-115"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="AuthFailure"><span class="annot"><a href="Web.Pixiv.Auth.html#AuthFailure"><span class="hs-identifier hs-var">AuthFailure</span></a></span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Error"><span class="hs-identifier hs-type">OAuth2Error</span></a></span><span>
+</span><span id="line-116"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679903038"><span id="local-6989586621679903040"><span id="local-6989586621679903042"><span class="annot"><span class="annottext">Int -&gt; OAuth2Result -&gt; ShowS
 [OAuth2Result] -&gt; ShowS
 OAuth2Result -&gt; String
 (Int -&gt; OAuth2Result -&gt; ShowS)
@@ -519,12 +535,12 @@ forall a.
 $cto :: forall x. Rep OAuth2Result x -&gt; OAuth2Result
 $cfrom :: forall x. OAuth2Result -&gt; Rep OAuth2Result x
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var">Generic</span></span><span class="hs-special">)</span><span>
-</span><span id="line-101"></span><span>
-</span><span id="line-102"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679903029"><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Result"><span class="hs-identifier hs-type">OAuth2Result</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-103"></span><span>  </span><span id="local-6989586621679903028"><span class="annot"><span class="annottext">parseJSON :: Value -&gt; Parser OAuth2Result
+</span><span id="line-117"></span><span>
+</span><span id="line-118"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679903029"><span class="annot"><span class="hs-identifier hs-type">FromJSON</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Result"><span class="hs-identifier hs-type">OAuth2Result</span></a></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-119"></span><span>  </span><span id="local-6989586621679903028"><span class="annot"><span class="annottext">parseJSON :: Value -&gt; Parser OAuth2Result
 </span><a href="#local-6989586621679903028"><span class="hs-identifier hs-var hs-var hs-var hs-var">parseJSON</span></a></span></span><span> </span><span id="local-6989586621679903027"><span class="annot"><span class="annottext">Value
 </span><a href="#local-6989586621679903027"><span class="hs-identifier hs-var">v</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
-</span><span id="line-104"></span><span>    </span><span class="annot"><span class="annottext">OAuth2Token -&gt; OAuth2Result
+</span><span id="line-120"></span><span>    </span><span class="annot"><span class="annottext">OAuth2Token -&gt; OAuth2Result
 </span><a href="Web.Pixiv.Auth.html#AuthSuccess"><span class="hs-identifier hs-var">AuthSuccess</span></a></span><span> </span><span class="annot"><span class="annottext">(OAuth2Token -&gt; OAuth2Result)
 -&gt; Parser OAuth2Token -&gt; Parser OAuth2Result
 forall (f :: Type -&gt; Type) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
@@ -541,24 +557,25 @@ forall (f :: Type -&gt; Type) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f
 forall a. FromJSON a =&gt; Value -&gt; Parser a
 </span><span class="hs-identifier hs-var">parseJSON</span></span><span> </span><span class="annot"><span class="annottext">Value
 </span><a href="#local-6989586621679903027"><span class="hs-identifier hs-var">v</span></a></span><span>
-</span><span id="line-105"></span><span>
-</span><span id="line-106"></span><span class="annot"><a href="Web.Pixiv.Auth.html#auth"><span class="hs-identifier hs-type">auth</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Result"><span class="hs-identifier hs-type">OAuth2Result</span></a></span><span>
-</span><span id="line-107"></span><span id="auth"><span class="annot"><span class="annottext">auth :: Manager -&gt; Credential -&gt; IO OAuth2Result
+</span><span id="line-121"></span><span>
+</span><span id="line-122"></span><span class="hs-comment">-- | Given a credential, performs a authentication request.</span><span>
+</span><span id="line-123"></span><span class="annot"><a href="Web.Pixiv.Auth.html#auth"><span class="hs-identifier hs-type">auth</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Result"><span class="hs-identifier hs-type">OAuth2Result</span></a></span><span>
+</span><span id="line-124"></span><span id="auth"><span class="annot"><span class="annottext">auth :: Manager -&gt; Credential -&gt; IO OAuth2Result
 </span><a href="Web.Pixiv.Auth.html#auth"><span class="hs-identifier hs-var hs-var">auth</span></a></span></span><span> </span><span id="local-6989586621679903025"><span class="annot"><span class="annottext">Manager
 </span><a href="#local-6989586621679903025"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span id="local-6989586621679903024"><span class="annot"><span class="annottext">Credential
 </span><a href="#local-6989586621679903024"><span class="hs-identifier hs-var">credential</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-108"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679903023"><span class="annot"><span class="annottext">authUrl :: String
+</span><span id="line-125"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679903023"><span class="annot"><span class="annottext">authUrl :: String
 </span><a href="#local-6989586621679903023"><span class="hs-identifier hs-var hs-var">authUrl</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;https://oauth.secure.pixiv.net/auth/token&quot;</span></span><span>
-</span><span id="line-109"></span><span>  </span><span id="local-6989586621679903022"><span class="annot"><span class="annottext">Request
+</span><span id="line-126"></span><span>  </span><span id="local-6989586621679903022"><span class="annot"><span class="annottext">Request
 </span><a href="#local-6989586621679903022"><span class="hs-identifier hs-var">initReq</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">String -&gt; IO Request
 forall (m :: Type -&gt; Type). MonadThrow m =&gt; String -&gt; m Request
 </span><span class="hs-identifier hs-var">parseRequest</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><a href="#local-6989586621679903023"><span class="hs-identifier hs-var">authUrl</span></a></span><span>
-</span><span id="line-110"></span><span>  </span><span id="local-6989586621679903020"><span class="annot"><span class="annottext">UTCTime
+</span><span id="line-127"></span><span>  </span><span id="local-6989586621679903020"><span class="annot"><span class="annottext">UTCTime
 </span><a href="#local-6989586621679903020"><span class="hs-identifier hs-var">utcT</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO UTCTime
 </span><span class="hs-identifier hs-var">getCurrentTime</span></span><span>
-</span><span id="line-111"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679903019"><span class="annot"><span class="annottext">clientTime :: ByteString
+</span><span id="line-128"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679903019"><span class="annot"><span class="annottext">clientTime :: ByteString
 </span><a href="#local-6989586621679903019"><span class="hs-identifier hs-var hs-var">clientTime</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; ByteString
 </span><span class="hs-identifier hs-var">C.pack</span></span><span> </span><span class="annot"><span class="annottext">(String -&gt; ByteString) -&gt; String -&gt; ByteString
 forall a b. (a -&gt; b) -&gt; a -&gt; b
@@ -568,7 +585,7 @@ forall t. FormatTime t =&gt; TimeLocale -&gt; String -&gt; t -&gt; String
 </span><span class="hs-identifier hs-var">defaultTimeLocale</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;%Y-%m-%dT%H:%I:%S+00:00&quot;</span></span><span> </span><span class="annot"><span class="annottext">UTCTime
 </span><a href="#local-6989586621679903020"><span class="hs-identifier hs-var">utcT</span></a></span><span>
-</span><span id="line-112"></span><span>      </span><span id="local-6989586621679903017"><span class="annot"><span class="annottext">clientHash :: ByteString
+</span><span id="line-129"></span><span>      </span><span id="local-6989586621679903017"><span class="annot"><span class="annottext">clientHash :: ByteString
 </span><a href="#local-6989586621679903017"><span class="hs-identifier hs-var hs-var">clientHash</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ByteString -&gt; ByteString
 </span><span class="hs-identifier hs-var">B16.encode</span></span><span> </span><span class="annot"><span class="annottext">(ByteString -&gt; ByteString) -&gt; ByteString -&gt; ByteString
 forall a b. (a -&gt; b) -&gt; a -&gt; b
@@ -580,48 +597,48 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 forall a. Semigroup a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">&lt;&gt;</span></span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><a href="Web.Pixiv.Auth.html#hashSecret"><span class="hs-identifier hs-var">hashSecret</span></a></span><span>
-</span><span id="line-113"></span><span>      </span><span id="local-6989586621679903015"><span class="annot"><span class="annottext">headers :: [(HeaderName, ByteString)]
+</span><span id="line-130"></span><span>      </span><span id="local-6989586621679903015"><span class="annot"><span class="annottext">headers :: [(HeaderName, ByteString)]
 </span><a href="#local-6989586621679903015"><span class="hs-identifier hs-var hs-var">headers</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
-</span><span id="line-114"></span><span>        </span><span class="hs-special">[</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">HeaderName
+</span><span id="line-131"></span><span>        </span><span class="hs-special">[</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">HeaderName
 </span><span class="hs-string">&quot;User-Agent&quot;</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><span class="hs-string">&quot;PixivAndroidApp/5.0.64 (Android 6.0)&quot;</span></span><span class="hs-special">)</span><span class="hs-special">,</span><span>
-</span><span id="line-115"></span><span>          </span><span class="hs-special">(</span><span class="annot"><span class="annottext">HeaderName
+</span><span id="line-132"></span><span>          </span><span class="hs-special">(</span><span class="annot"><span class="annottext">HeaderName
 </span><span class="hs-string">&quot;X-Client-Time&quot;</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><a href="#local-6989586621679903019"><span class="hs-identifier hs-var">clientTime</span></a></span><span class="hs-special">)</span><span class="hs-special">,</span><span>
-</span><span id="line-116"></span><span>          </span><span class="hs-special">(</span><span class="annot"><span class="annottext">HeaderName
+</span><span id="line-133"></span><span>          </span><span class="hs-special">(</span><span class="annot"><span class="annottext">HeaderName
 </span><span class="hs-string">&quot;X-Client-Hash&quot;</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><a href="#local-6989586621679903017"><span class="hs-identifier hs-var">clientHash</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-117"></span><span>        </span><span class="hs-special">]</span><span>
-</span><span id="line-118"></span><span>      </span><span id="local-6989586621679903014"><span class="annot"><span class="annottext">req :: Request
+</span><span id="line-134"></span><span>        </span><span class="hs-special">]</span><span>
+</span><span id="line-135"></span><span>      </span><span id="local-6989586621679903014"><span class="annot"><span class="annottext">req :: Request
 </span><a href="#local-6989586621679903014"><span class="hs-identifier hs-var hs-var">req</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Request
 </span><a href="#local-6989586621679903022"><span class="hs-identifier hs-var">initReq</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">requestHeaders :: [(HeaderName, ByteString)]
 </span><span class="hs-identifier hs-var">requestHeaders</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[(HeaderName, ByteString)]
 </span><a href="#local-6989586621679903015"><span class="hs-identifier hs-var">headers</span></a></span><span class="hs-special">}</span><span>
-</span><span id="line-119"></span><span>      </span><span id="local-6989586621679903012"><span class="annot"><span class="annottext">parts :: [PartM IO]
+</span><span id="line-136"></span><span>      </span><span id="local-6989586621679903012"><span class="annot"><span class="annottext">parts :: [PartM IO]
 </span><a href="#local-6989586621679903012"><span class="hs-identifier hs-var hs-var">parts</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
-</span><span id="line-120"></span><span>        </span><span class="hs-special">[</span><span> </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM IO
+</span><span id="line-137"></span><span>        </span><span class="hs-special">[</span><span> </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM IO
 forall (m :: Type -&gt; Type).
 Applicative m =&gt;
 Text -&gt; ByteString -&gt; PartM m
 </span><span class="hs-identifier hs-var">partBS</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;client_id&quot;</span></span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><a href="Web.Pixiv.Auth.html#clientId"><span class="hs-identifier hs-var">clientId</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-121"></span><span>          </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM IO
+</span><span id="line-138"></span><span>          </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM IO
 forall (m :: Type -&gt; Type).
 Applicative m =&gt;
 Text -&gt; ByteString -&gt; PartM m
 </span><span class="hs-identifier hs-var">partBS</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;client_secret&quot;</span></span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><a href="Web.Pixiv.Auth.html#clientSecret"><span class="hs-identifier hs-var">clientSecret</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-122"></span><span>          </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM IO
+</span><span id="line-139"></span><span>          </span><span class="annot"><span class="annottext">Text -&gt; ByteString -&gt; PartM IO
 forall (m :: Type -&gt; Type).
 Applicative m =&gt;
 Text -&gt; ByteString -&gt; PartM m
 </span><span class="hs-identifier hs-var">partBS</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;get_secure_url&quot;</span></span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><span class="hs-string">&quot;1&quot;</span></span><span>
-</span><span id="line-123"></span><span>        </span><span class="hs-special">]</span><span>
-</span><span id="line-124"></span><span>          </span><span class="annot"><span class="annottext">[PartM IO] -&gt; [PartM IO] -&gt; [PartM IO]
+</span><span id="line-140"></span><span>        </span><span class="hs-special">]</span><span>
+</span><span id="line-141"></span><span>          </span><span class="annot"><span class="annottext">[PartM IO] -&gt; [PartM IO] -&gt; [PartM IO]
 forall a. [a] -&gt; [a] -&gt; [a]
 </span><span class="hs-operator hs-var">++</span></span><span> </span><span class="annot"><span class="annottext">Credential -&gt; [PartM IO]
 forall (m :: Type -&gt; Type).
@@ -629,7 +646,7 @@ Applicative m =&gt;
 Credential -&gt; [PartM m]
 </span><a href="Web.Pixiv.Auth.html#mkAuthParts"><span class="hs-identifier hs-var">mkAuthParts</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
 </span><a href="#local-6989586621679903024"><span class="hs-identifier hs-var">credential</span></a></span><span>
-</span><span id="line-125"></span><span>  </span><span id="local-6989586621679903011"><span class="annot"><span class="annottext">Request
+</span><span id="line-142"></span><span>  </span><span id="local-6989586621679903011"><span class="annot"><span class="annottext">Request
 </span><a href="#local-6989586621679903011"><span class="hs-identifier hs-var">finalReq</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">[PartM IO] -&gt; Request -&gt; IO Request
 forall (m :: Type -&gt; Type).
 MonadIO m =&gt;
@@ -637,17 +654,17 @@ MonadIO m =&gt;
 </span><span class="hs-identifier hs-var">formDataBody</span></span><span> </span><span class="annot"><span class="annottext">[PartM IO]
 </span><a href="#local-6989586621679903012"><span class="hs-identifier hs-var">parts</span></a></span><span> </span><span class="annot"><span class="annottext">Request
 </span><a href="#local-6989586621679903014"><span class="hs-identifier hs-var">req</span></a></span><span>
-</span><span id="line-126"></span><span>  </span><span id="local-6989586621679903010"><span class="annot"><span class="annottext">Response ByteString
+</span><span id="line-143"></span><span>  </span><span id="local-6989586621679903010"><span class="annot"><span class="annottext">Response ByteString
 </span><a href="#local-6989586621679903010"><span class="hs-identifier hs-var">resp</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Request -&gt; Manager -&gt; IO (Response ByteString)
 </span><span class="hs-identifier hs-var">httpLbs</span></span><span> </span><span class="annot"><span class="annottext">Request
 </span><a href="#local-6989586621679903011"><span class="hs-identifier hs-var">finalReq</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
 </span><a href="#local-6989586621679903025"><span class="hs-identifier hs-var">manager</span></a></span><span>
-</span><span id="line-127"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679903008"><span class="annot"><span class="annottext">body :: ByteString
+</span><span id="line-144"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679903008"><span class="annot"><span class="annottext">body :: ByteString
 </span><a href="#local-6989586621679903008"><span class="hs-identifier hs-var hs-var">body</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Response ByteString -&gt; ByteString
 forall body. Response body -&gt; body
 </span><span class="hs-identifier hs-var hs-var">responseBody</span></span><span> </span><span class="annot"><span class="annottext">Response ByteString
 </span><a href="#local-6989586621679903010"><span class="hs-identifier hs-var">resp</span></a></span><span>
-</span><span id="line-128"></span><span>  </span><span class="annot"><span class="annottext">IO OAuth2Result
+</span><span id="line-145"></span><span>  </span><span class="annot"><span class="annottext">IO OAuth2Result
 -&gt; (OAuth2Result -&gt; IO OAuth2Result)
 -&gt; Maybe OAuth2Result
 -&gt; IO OAuth2Result
@@ -661,28 +678,28 @@ forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 forall a. FromJSON a =&gt; ByteString -&gt; Maybe a
 </span><span class="hs-identifier hs-var">A.decode</span></span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><a href="#local-6989586621679903008"><span class="hs-identifier hs-var">body</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-129"></span><span>
-</span><span id="line-130"></span><span class="hs-comment">-- | Like 'auth', but immediately throws 'OAuth2Error' if auth failed</span><span>
-</span><span id="line-131"></span><span class="annot"><a href="Web.Pixiv.Auth.html#auth%27"><span class="hs-identifier hs-type">auth'</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-type">OAuth2Token</span></a></span><span>
-</span><span id="line-132"></span><span id="auth%27"><span class="annot"><span class="annottext">auth' :: Manager -&gt; Credential -&gt; IO OAuth2Token
+</span><span id="line-146"></span><span>
+</span><span id="line-147"></span><span class="hs-comment">-- | Like 'auth', but immediately throws 'OAuth2Error' if auth failed.</span><span>
+</span><span id="line-148"></span><span class="annot"><a href="Web.Pixiv.Auth.html#auth%27"><span class="hs-identifier hs-type">auth'</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Credential"><span class="hs-identifier hs-type">Credential</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#OAuth2Token"><span class="hs-identifier hs-type">OAuth2Token</span></a></span><span>
+</span><span id="line-149"></span><span id="auth%27"><span class="annot"><span class="annottext">auth' :: Manager -&gt; Credential -&gt; IO OAuth2Token
 </span><a href="Web.Pixiv.Auth.html#auth%27"><span class="hs-identifier hs-var hs-var">auth'</span></a></span></span><span> </span><span id="local-6989586621679903004"><span class="annot"><span class="annottext">Manager
 </span><a href="#local-6989586621679903004"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span id="local-6989586621679903003"><span class="annot"><span class="annottext">Credential
 </span><a href="#local-6989586621679903003"><span class="hs-identifier hs-var">credential</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
-</span><span id="line-133"></span><span>  </span><span class="annot"><span class="annottext">Manager -&gt; Credential -&gt; IO OAuth2Result
+</span><span id="line-150"></span><span>  </span><span class="annot"><span class="annottext">Manager -&gt; Credential -&gt; IO OAuth2Result
 </span><a href="Web.Pixiv.Auth.html#auth"><span class="hs-identifier hs-var">auth</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
 </span><a href="#local-6989586621679903004"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">Credential
 </span><a href="#local-6989586621679903003"><span class="hs-identifier hs-var">credential</span></a></span><span> </span><span class="annot"><span class="annottext">IO OAuth2Result
 -&gt; (OAuth2Result -&gt; IO OAuth2Token) -&gt; IO OAuth2Token
 forall (m :: Type -&gt; Type) a b. Monad m =&gt; m a -&gt; (a -&gt; m b) -&gt; m b
 </span><span class="hs-operator hs-var">&gt;&gt;=</span></span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
-</span><span id="line-134"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#AuthSuccess"><span class="hs-identifier hs-type">AuthSuccess</span></a></span><span> </span><span id="local-6989586621679903002"><span class="annot"><span class="annottext">OAuth2Token
+</span><span id="line-151"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#AuthSuccess"><span class="hs-identifier hs-type">AuthSuccess</span></a></span><span> </span><span id="local-6989586621679903002"><span class="annot"><span class="annottext">OAuth2Token
 </span><a href="#local-6989586621679903002"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">OAuth2Token -&gt; IO OAuth2Token
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">OAuth2Token
 </span><a href="#local-6989586621679903002"><span class="hs-identifier hs-var">t</span></a></span><span>
-</span><span id="line-135"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#AuthFailure"><span class="hs-identifier hs-type">AuthFailure</span></a></span><span> </span><span id="local-6989586621679903001"><span class="annot"><span class="annottext">OAuth2Error
+</span><span id="line-152"></span><span>    </span><span class="annot"><a href="Web.Pixiv.Auth.html#AuthFailure"><span class="hs-identifier hs-type">AuthFailure</span></a></span><span> </span><span id="local-6989586621679903001"><span class="annot"><span class="annottext">OAuth2Error
 </span><a href="#local-6989586621679903001"><span class="hs-identifier hs-var">err</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">OAuth2Error -&gt; IO OAuth2Token
 forall e a. Exception e =&gt; e -&gt; IO a
 </span><span class="hs-identifier hs-var">throwIO</span></span><span> </span><span class="annot"><span class="annottext">OAuth2Error
 </span><a href="#local-6989586621679903001"><span class="hs-identifier hs-var">err</span></a></span><span>
-</span><span id="line-136"></span></pre></body></html>
+</span><span id="line-153"></span></pre></body></html>
