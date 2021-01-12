@@ -70,7 +70,13 @@ ugoiraMetadataToFFConcat meta =
     "ffconcat version 1.0" :
       [ T.unlines
           [ "file " <> frame ^. ugoiraFile,
-            "duration " <> T.pack (frame ^. ugoiraDelay & fromIntegral & (/ 1000) & flip (showFFloat @Double Nothing) "")
+            "duration "
+              <> T.pack
+                ( frame ^. ugoiraDelay
+                    & fromIntegral
+                    & (/ 1000)
+                    & flip (showFFloat @Double Nothing) ""
+                )
           ]
         | frame <- meta ^. frames
       ]

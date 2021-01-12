@@ -436,7 +436,7 @@ newtype UgoiraMetadataWrapper = UgoiraMetadataWrapper
 
 -----------------------------------------------------------------------------
 
--- | Spotlight article
+-- | Spotlight article.
 data SpotlightArticle = SpotlightArticle
   { _saId :: Int,
     _title :: Text,

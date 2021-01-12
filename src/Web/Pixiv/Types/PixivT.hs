@@ -89,7 +89,7 @@ instance MonadIO m => RunClient (ClientT m) where
     res <- liftIO $ runClientM m env
     liftEither res
 
--- | Given 'Manager', creates a 'ClientEnv' using @"https://app-api.pixiv.net"@ as base url.
+-- | Given 'Manager', creates a 'ClientEnv' using <https://app-api.pixiv.net> as base url.
 mkDefaultClientEnv :: Manager -> IO ClientEnv
 mkDefaultClientEnv manager = do
   baseUrl <- parseBaseUrl "https://app-api.pixiv.net"
@@ -213,6 +213,8 @@ runPixivT' credential m = do
   runPixivT manager credential m
 
 -- | Computes the 'TokenState'.
+--
+-- This function calls 'auth'' to perform authentication.
 computeTokenState ::
   Manager ->
   -- | Could be username with password or 'refreshToken'.

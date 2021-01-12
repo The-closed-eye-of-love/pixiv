@@ -6,7 +6,7 @@
 -- Functions to access pixiv api. They are supposed to be run in "Web.Pixiv.Types.PixivT".
 --
 -- You may notice that except 'getUserBookmarks', many of functions take a @page@ as input.
--- This is because each query contains 30 entries (except 'getSpotlightArticles''s , which containes 10), i.e. you should pass @2@ if you want items ranged from 31 to 60.
+-- This is because each query contains 30 entries (except 'Web.Pixiv.API.getSpotlightArticles''s , which containes 10), i.e. you should pass @2@ if you want items ranged from 31 to 60.
 module Web.Pixiv.API
   ( -- * Trending
     getTrendingTags,

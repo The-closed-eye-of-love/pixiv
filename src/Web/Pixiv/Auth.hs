@@ -1,3 +1,10 @@
+-- | Copyright: (c) 2021 The closed eye of love
+-- SPDX-License-Identifier: BSD-3-Clause
+-- Maintainer: Poscat <poscat@mail.poscat.moe>, berberman <berberman@yandex.com>
+-- Stability: alpha
+-- Portability: portable
+-- Authentication pixiv API. Users should not use logics in this module directly,
+-- since "Web.Pixiv.Types.PixivT" takes over token management, providing user friendly operations.
 module Web.Pixiv.Auth
   ( Token (..),
     Credential (..),
@@ -34,17 +41,22 @@ clientSecret = "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"
 hashSecret :: ByteString
 hashSecret = "28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0bae2c"
 
+-- | A wrapped 'Text' represents a token.
 newtype Token = Token {unToken :: Text}
   deriving stock (Show, Eq, Generic)
   deriving (FromJSON, ToJSON) via CustomJSON '[UnwrapUnaryRecords] Token
 
+-- | Authentication credentials for pixiv API.
+--
+-- Normally, users are supposed to create value of this data type using 'Password' constructor,
+-- then pass it to 'Web.Pixiv.Types.PixivT.runPixivT'.
 data Credential
   = Password
       { username :: ByteString,
         password :: ByteString
       }
   | RefreshToken
-      { refreshToken :: Token
+      { cr_refreshToken :: Token
       }
   deriving stock (Show, Eq)
 
@@ -56,9 +68,10 @@ mkAuthParts Password {..} =
   ]
 mkAuthParts RefreshToken {..} =
   [ partBS "grant_type" "refresh_token",
-    partBS "refresh_token" (encodeUtf8 . unToken $ refreshToken)
+    partBS "refresh_token" (encodeUtf8 . unToken $ cr_refreshToken)
   ]
 
+-- | Successful result.
 data OAuth2Token = OAuth2Token
   { oa_accessToken :: Token,
     oa_expiresIn :: Int,
@@ -67,6 +80,7 @@ data OAuth2Token = OAuth2Token
   deriving stock (Show, Eq, Generic)
   deriving (FromJSON, ToJSON) via PixivJSON "oa_" OAuth2Token
 
+-- | Authentication failure reasions.
 data Errors
   = InvalidRequest
   | InvalidClient
@@ -77,6 +91,7 @@ data Errors
   deriving stock (Show, Eq, Generic)
   deriving (FromJSON, ToJSON) via EnumJSON' Errors
 
+-- | Failed result.
 data OAuth2Error = OAuth2Error
   { oa_error :: Errors,
     oa_message :: Text
@@ -94,6 +109,7 @@ instance FromJSON OAuth2Error where
         o'' .: "message"
     pure OAuth2Error {..}
 
+-- | Authentication result.
 data OAuth2Result
   = AuthSuccess OAuth2Token
   | AuthFailure OAuth2Error
@@ -103,6 +119,7 @@ instance FromJSON OAuth2Result where
   parseJSON v =
     AuthSuccess <$> parseJSON v <|> AuthFailure <$> parseJSON v
 
+-- | Given a credential, performs a authentication request.
 auth :: Manager -> Credential -> IO OAuth2Result
 auth manager credential = do
   let authUrl = "https://oauth.secure.pixiv.net/auth/token"
@@ -127,7 +144,7 @@ auth manager credential = do
   let body = responseBody resp
   maybe (fail "impossible: unable to parse response") pure (A.decode body)
 
--- | Like 'auth', but immediately throws 'OAuth2Error' if auth failed
+-- | Like 'auth', but immediately throws 'OAuth2Error' if auth failed.
 auth' :: Manager -> Credential -> IO OAuth2Token
 auth' manager credential =
   auth manager credential >>= \case
