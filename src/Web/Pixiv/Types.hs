@@ -273,6 +273,7 @@ data UserProfile = UserProfile
     _jobId :: Int,
     _totalFollowUsers :: Int,
     _totalMypixivUsers :: Int,
+    _totalIllusts :: Int,
     _totalManga :: Int,
     _totalIllustBookmarksPublic :: Int,
     _totalIllustSeries :: Int,
