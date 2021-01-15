@@ -233,7 +233,7 @@ User :: Int -> Text -> Text -> ImageUrls -> Maybe Text -> Maybe Bool -> User
 --   Not sure if all fields are covered, and maybe some fields should be
 --   optional.
 data UserProfile
-UserProfile :: Text -> Text -> Text -> Text -> Int -> Text -> Int -> Text -> Text -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> ImageUrl -> Text -> Text -> Maybe Text -> Maybe Bool -> Bool -> UserProfile
+UserProfile :: Text -> Text -> Text -> Text -> Int -> Text -> Int -> Text -> Text -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> ImageUrl -> Text -> Text -> Maybe Text -> Maybe Bool -> Bool -> UserProfile
 [$sel:_webpage:UserProfile] :: UserProfile -> Text
 [$sel:_gender:UserProfile] :: UserProfile -> Text
 [$sel:_birth:UserProfile] :: UserProfile -> Text
@@ -246,6 +246,7 @@ UserProfile :: Text -> Text -> Text -> Text -> Int -> Text -> Int -> Text -> Tex
 [$sel:_jobId:UserProfile] :: UserProfile -> Int
 [$sel:_totalFollowUsers:UserProfile] :: UserProfile -> Int
 [$sel:_totalMypixivUsers:UserProfile] :: UserProfile -> Int
+[$sel:_totalIllusts:UserProfile] :: UserProfile -> Int
 [$sel:_totalManga:UserProfile] :: UserProfile -> Int
 [$sel:_totalIllustBookmarksPublic:UserProfile] :: UserProfile -> Int
 [$sel:_totalIllustSeries:UserProfile] :: UserProfile -> Int
@@ -693,6 +694,8 @@ class HasTotalMypixivUsers s a | s -> a
 totalMypixivUsers :: HasTotalMypixivUsers s a => Lens' s a
 class HasTotalManga s a | s -> a
 totalManga :: HasTotalManga s a => Lens' s a
+class HasTotalIllusts s a | s -> a
+totalIllusts :: HasTotalIllusts s a => Lens' s a
 class HasTotalIllustSeries s a | s -> a
 totalIllustSeries :: HasTotalIllustSeries s a => Lens' s a
 class HasTotalIllustBookmarksPublic s a | s -> a
@@ -827,6 +830,7 @@ instance Web.Pixiv.Types.Lens.HasTwitterAccount Web.Pixiv.Types.UserProfile Data
 instance Web.Pixiv.Types.Lens.HasTotalNovelSeries Web.Pixiv.Types.UserProfile GHC.Types.Int
 instance Web.Pixiv.Types.Lens.HasTotalMypixivUsers Web.Pixiv.Types.UserProfile GHC.Types.Int
 instance Web.Pixiv.Types.Lens.HasTotalManga Web.Pixiv.Types.UserProfile GHC.Types.Int
+instance Web.Pixiv.Types.Lens.HasTotalIllusts Web.Pixiv.Types.UserProfile GHC.Types.Int
 instance Web.Pixiv.Types.Lens.HasTotalIllustSeries Web.Pixiv.Types.UserProfile GHC.Types.Int
 instance Web.Pixiv.Types.Lens.HasTotalIllustBookmarksPublic Web.Pixiv.Types.UserProfile GHC.Types.Int
 instance Web.Pixiv.Types.Lens.HasTotalFollowUsers Web.Pixiv.Types.UserProfile GHC.Types.Int
