@@ -26,7 +26,9 @@ import Data.ByteString (ByteString)
 import qualified Data.ByteString.Base16 as B16
 import qualified Data.ByteString.Char8 as C
 import Data.Generically
+import Data.String (IsString (..))
 import Data.Text (Text)
+import qualified Data.Text as T
 import Data.Text.Encoding (encodeUtf8)
 import Data.Time (defaultTimeLocale, formatTime, getCurrentTime)
 import Network.HTTP.Client
@@ -45,6 +47,9 @@ hashSecret = "28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0bae2c"
 newtype Token = Token {unToken :: Text}
   deriving stock (Show, Eq, Generic)
   deriving (FromJSON, ToJSON) via CustomJSON '[UnwrapUnaryRecords] Token
+
+instance IsString Token where
+  fromString = Token . T.pack
 
 -- | Authentication credentials for pixiv API.
 --

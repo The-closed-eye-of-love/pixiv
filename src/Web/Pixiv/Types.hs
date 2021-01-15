@@ -261,7 +261,7 @@ data User = User
 --
 -- Not sure if all fields are covered, and maybe some fields should be optional.
 data UserProfile = UserProfile
-  { _webpage :: Text,
+  { _webpage :: Maybe Text,
     _gender :: Text,
     _birth :: Text,
     _birthDay :: Text,
@@ -278,9 +278,9 @@ data UserProfile = UserProfile
     _totalIllustBookmarksPublic :: Int,
     _totalIllustSeries :: Int,
     _totalNovelSeries :: Int,
-    _backgroundImageUrl :: ImageUrl,
+    _backgroundImageUrl :: Maybe ImageUrl,
     _twitterAccount :: Text,
-    _twitterUrl :: Text,
+    _twitterUrl :: Maybe Text,
     _pawooUrl :: Maybe Text,
     _isPreminum :: Maybe Bool,
     _isUsingCustomProfileImage :: Bool
@@ -292,7 +292,11 @@ data UserProfile = UserProfile
 --
 -- The value @public@ or @private@ are present in 'ProfilePublicity'.
 -- This type is also used in @restrict@ query param.
-data Publicity = Public | Private
+data Publicity
+  = Public
+  | Private
+  -- | May not be available in @restrict@ query param
+  | Mypixiv
   deriving stock (Eq, Show, Generic)
   deriving (FromJSON, ToJSON) via EnumJSON' Publicity
   deriving (ToHttpApiData) via PixivHttpApiData' Publicity
