@@ -58,20 +58,20 @@
 </span><span id="line-58"></span><span class="hs-comment">-----------------------------------------------------------------------------</span><span>
 </span><span id="line-59"></span><span>
 </span><span id="line-60"></span><span class="hs-comment">-- | Gets trending tags.</span><span>
-</span><span id="line-61"></span><span id="local-6989586621679910189"><span class="annot"><a href="Web.Pixiv.API.html#getTrendingTags"><span class="hs-identifier hs-type">getTrendingTags</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-62"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910189"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-61"></span><span id="local-6989586621679915799"><span class="annot"><a href="Web.Pixiv.API.html#getTrendingTags"><span class="hs-identifier hs-type">getTrendingTags</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-62"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915799"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-63"></span><span>  </span><span class="hs-comment">-- | includes translated tag results</span><span>
 </span><span id="line-64"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Bool</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-65"></span><span>  </span><span class="annot"><a href="#local-6989586621679910189"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#TrendingTag"><span class="hs-identifier hs-type">TrendingTag</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-65"></span><span>  </span><span class="annot"><a href="#local-6989586621679915799"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#TrendingTag"><span class="hs-identifier hs-type">TrendingTag</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-66"></span><span id="getTrendingTags"><span class="annot"><span class="annottext">getTrendingTags :: Maybe Bool -&gt; m [TrendingTag]
-</span><a href="Web.Pixiv.API.html#getTrendingTags"><span class="hs-identifier hs-var hs-var">getTrendingTags</span></a></span></span><span> </span><span id="local-6989586621679910188"><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="#local-6989586621679910188"><span class="hs-identifier hs-var">includeTranslatedTagResults</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-67"></span><span>  </span><span id="local-6989586621679910187"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910187"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><a href="Web.Pixiv.API.html#getTrendingTags"><span class="hs-identifier hs-var hs-var">getTrendingTags</span></a></span></span><span> </span><span id="local-6989586621679915798"><span class="annot"><span class="annottext">Maybe Bool
+</span><a href="#local-6989586621679915798"><span class="hs-identifier hs-var">includeTranslatedTagResults</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-67"></span><span>  </span><span id="local-6989586621679915797"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915797"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-68"></span><span>  </span><span id="local-6989586621679910185"><span class="annot"><span class="annottext">TrendingTags
-</span><a href="#local-6989586621679910185"><span class="hs-identifier hs-var">tags</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetTrendingTags
+</span><span id="line-68"></span><span>  </span><span id="local-6989586621679915795"><span class="annot"><span class="annottext">TrendingTags
+</span><a href="#local-6989586621679915795"><span class="hs-identifier hs-var">tags</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetTrendingTags
 -&gt; Proxy m -&gt; (Token, Maybe Text) -&gt; Maybe Bool -&gt; m TrendingTags
 forall (m :: Type -&gt; Type) api.
 HasClient m api =&gt;
@@ -81,8 +81,8 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Trending.html#GetTrendingTags"><span class="hs-identifier hs-type">GetTrendingTags</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910187"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="#local-6989586621679910188"><span class="hs-identifier hs-var">includeTranslatedTagResults</span></a></span><span>
+</span><a href="#local-6989586621679915797"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Bool
+</span><a href="#local-6989586621679915798"><span class="hs-identifier hs-var">includeTranslatedTagResults</span></a></span><span>
 </span><span id="line-69"></span><span>  </span><span class="annot"><span class="annottext">[TrendingTag] -&gt; m [TrendingTag]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([TrendingTag] -&gt; m [TrendingTag])
@@ -90,26 +90,26 @@ forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">TrendingTags -&gt; [TrendingTag]
 </span><span class="hs-identifier hs-var">coerce</span></span><span> </span><span class="annot"><span class="annottext">TrendingTags
-</span><a href="#local-6989586621679910185"><span class="hs-identifier hs-var">tags</span></a></span><span>
+</span><a href="#local-6989586621679915795"><span class="hs-identifier hs-var">tags</span></a></span><span>
 </span><span id="line-70"></span><span>
 </span><span id="line-71"></span><span class="hs-comment">-- | Gets recommended illustrations of the account which is used for login.</span><span>
-</span><span id="line-72"></span><span id="local-6989586621679910182"><span class="annot"><a href="Web.Pixiv.API.html#getRecommendedIllusts"><span class="hs-identifier hs-type">getRecommendedIllusts</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-73"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910182"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-72"></span><span id="local-6989586621679915792"><span class="annot"><a href="Web.Pixiv.API.html#getRecommendedIllusts"><span class="hs-identifier hs-type">getRecommendedIllusts</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-73"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915792"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-74"></span><span>  </span><span class="hs-comment">-- | includes privacy policy</span><span>
 </span><span id="line-75"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Bool</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-76"></span><span>  </span><span class="hs-comment">-- | includes translated tag results</span><span>
 </span><span id="line-77"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Bool</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-78"></span><span>  </span><span class="annot"><a href="#local-6989586621679910182"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-78"></span><span>  </span><span class="annot"><a href="#local-6989586621679915792"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-79"></span><span id="getRecommendedIllusts"><span class="annot"><span class="annottext">getRecommendedIllusts :: Maybe Bool -&gt; Maybe Bool -&gt; m [Illust]
-</span><a href="Web.Pixiv.API.html#getRecommendedIllusts"><span class="hs-identifier hs-var hs-var">getRecommendedIllusts</span></a></span></span><span> </span><span id="local-6989586621679910181"><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="#local-6989586621679910181"><span class="hs-identifier hs-var">includePrivacyPolicy</span></a></span></span><span> </span><span id="local-6989586621679910180"><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="#local-6989586621679910180"><span class="hs-identifier hs-var">includeTranslatedTagResults</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-80"></span><span>  </span><span id="local-6989586621679910179"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910179"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><a href="Web.Pixiv.API.html#getRecommendedIllusts"><span class="hs-identifier hs-var hs-var">getRecommendedIllusts</span></a></span></span><span> </span><span id="local-6989586621679915791"><span class="annot"><span class="annottext">Maybe Bool
+</span><a href="#local-6989586621679915791"><span class="hs-identifier hs-var">includePrivacyPolicy</span></a></span></span><span> </span><span id="local-6989586621679915790"><span class="annot"><span class="annottext">Maybe Bool
+</span><a href="#local-6989586621679915790"><span class="hs-identifier hs-var">includeTranslatedTagResults</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-80"></span><span>  </span><span id="local-6989586621679915789"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915789"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-81"></span><span>  </span><span id="local-6989586621679910178"><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910178"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetRecommendedIllusts
+</span><span id="line-81"></span><span>  </span><span id="local-6989586621679915788"><span class="annot"><span class="annottext">Illusts
+</span><a href="#local-6989586621679915788"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetRecommendedIllusts
 -&gt; Proxy m
 -&gt; (Token, Maybe Text)
 -&gt; Maybe Bool
@@ -123,9 +123,9 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Trending.html#GetRecommendedIllusts"><span class="hs-identifier hs-type">GetRecommendedIllusts</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910179"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="#local-6989586621679910181"><span class="hs-identifier hs-var">includePrivacyPolicy</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="#local-6989586621679910180"><span class="hs-identifier hs-var">includeTranslatedTagResults</span></a></span><span>
+</span><a href="#local-6989586621679915789"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Bool
+</span><a href="#local-6989586621679915791"><span class="hs-identifier hs-var">includePrivacyPolicy</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Bool
+</span><a href="#local-6989586621679915790"><span class="hs-identifier hs-var">includeTranslatedTagResults</span></a></span><span>
 </span><span id="line-82"></span><span>  </span><span class="annot"><span class="annottext">[Illust] -&gt; m [Illust]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([Illust] -&gt; m [Illust]) -&gt; [Illust] -&gt; m [Illust]
@@ -133,20 +133,20 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Illusts -&gt; NextUrlLess Illusts
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910178"><span class="hs-identifier hs-var">illusts</span></a></span><span>
+</span><a href="#local-6989586621679915788"><span class="hs-identifier hs-var">illusts</span></a></span><span>
 </span><span id="line-83"></span><span>
 </span><span id="line-84"></span><span class="hs-comment">-- | Gets recommended mangas of the account which is used for login.</span><span>
-</span><span id="line-85"></span><span id="local-6989586621679910176"><span class="annot"><a href="Web.Pixiv.API.html#getRecommendedMangas"><span class="hs-identifier hs-type">getRecommendedMangas</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910176"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Bool</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Bool</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679910176"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-85"></span><span id="local-6989586621679915786"><span class="annot"><a href="Web.Pixiv.API.html#getRecommendedMangas"><span class="hs-identifier hs-type">getRecommendedMangas</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915786"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Bool</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Bool</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679915786"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-86"></span><span id="getRecommendedMangas"><span class="annot"><span class="annottext">getRecommendedMangas :: Maybe Bool -&gt; Maybe Bool -&gt; m [Illust]
-</span><a href="Web.Pixiv.API.html#getRecommendedMangas"><span class="hs-identifier hs-var hs-var">getRecommendedMangas</span></a></span></span><span> </span><span id="local-6989586621679910175"><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="#local-6989586621679910175"><span class="hs-identifier hs-var">includePrivacyPolicy</span></a></span></span><span> </span><span id="local-6989586621679910174"><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="#local-6989586621679910174"><span class="hs-identifier hs-var">includeTranslatedTagResults</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-87"></span><span>  </span><span id="local-6989586621679910173"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910173"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><a href="Web.Pixiv.API.html#getRecommendedMangas"><span class="hs-identifier hs-var hs-var">getRecommendedMangas</span></a></span></span><span> </span><span id="local-6989586621679915785"><span class="annot"><span class="annottext">Maybe Bool
+</span><a href="#local-6989586621679915785"><span class="hs-identifier hs-var">includePrivacyPolicy</span></a></span></span><span> </span><span id="local-6989586621679915784"><span class="annot"><span class="annottext">Maybe Bool
+</span><a href="#local-6989586621679915784"><span class="hs-identifier hs-var">includeTranslatedTagResults</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-87"></span><span>  </span><span id="local-6989586621679915783"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915783"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-88"></span><span>  </span><span id="local-6989586621679910172"><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910172"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetRecommendedMangas
+</span><span id="line-88"></span><span>  </span><span id="local-6989586621679915782"><span class="annot"><span class="annottext">Illusts
+</span><a href="#local-6989586621679915782"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetRecommendedMangas
 -&gt; Proxy m
 -&gt; (Token, Maybe Text)
 -&gt; Maybe Bool
@@ -160,9 +160,9 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Trending.html#GetRecommendedMangas"><span class="hs-identifier hs-type">GetRecommendedMangas</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910173"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="#local-6989586621679910175"><span class="hs-identifier hs-var">includePrivacyPolicy</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="#local-6989586621679910174"><span class="hs-identifier hs-var">includeTranslatedTagResults</span></a></span><span>
+</span><a href="#local-6989586621679915783"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Bool
+</span><a href="#local-6989586621679915785"><span class="hs-identifier hs-var">includePrivacyPolicy</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Bool
+</span><a href="#local-6989586621679915784"><span class="hs-identifier hs-var">includeTranslatedTagResults</span></a></span><span>
 </span><span id="line-89"></span><span>  </span><span class="annot"><span class="annottext">[Illust] -&gt; m [Illust]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([Illust] -&gt; m [Illust]) -&gt; [Illust] -&gt; m [Illust]
@@ -170,25 +170,25 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Illusts -&gt; NextUrlLess Illusts
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910172"><span class="hs-identifier hs-var">illusts</span></a></span><span>
+</span><a href="#local-6989586621679915782"><span class="hs-identifier hs-var">illusts</span></a></span><span>
 </span><span id="line-90"></span><span>
 </span><span id="line-91"></span><span class="hs-comment">-----------------------------------------------------------------------------</span><span>
 </span><span id="line-92"></span><span>
 </span><span id="line-93"></span><span class="hs-comment">-- | Gets the details of a illustration.</span><span>
-</span><span id="line-94"></span><span id="local-6989586621679910171"><span class="annot"><a href="Web.Pixiv.API.html#getIllustDetail"><span class="hs-identifier hs-type">getIllustDetail</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-95"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910171"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-94"></span><span id="local-6989586621679915781"><span class="annot"><a href="Web.Pixiv.API.html#getIllustDetail"><span class="hs-identifier hs-type">getIllustDetail</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-95"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915781"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-96"></span><span>  </span><span class="hs-comment">-- | illust id</span><span>
 </span><span id="line-97"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-98"></span><span>  </span><span class="annot"><a href="#local-6989586621679910171"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span></span><span>
+</span><span id="line-98"></span><span>  </span><span class="annot"><a href="#local-6989586621679915781"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span></span><span>
 </span><span id="line-99"></span><span id="getIllustDetail"><span class="annot"><span class="annottext">getIllustDetail :: Int -&gt; m Illust
-</span><a href="Web.Pixiv.API.html#getIllustDetail"><span class="hs-identifier hs-var hs-var">getIllustDetail</span></a></span></span><span> </span><span id="local-6989586621679910170"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910170"><span class="hs-identifier hs-var">illustId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-100"></span><span>  </span><span id="local-6989586621679910169"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910169"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><a href="Web.Pixiv.API.html#getIllustDetail"><span class="hs-identifier hs-var hs-var">getIllustDetail</span></a></span></span><span> </span><span id="local-6989586621679915780"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915780"><span class="hs-identifier hs-var">illustId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-100"></span><span>  </span><span id="local-6989586621679915779"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915779"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-101"></span><span>  </span><span id="local-6989586621679910168"><span class="annot"><span class="annottext">IllustWrapper
-</span><a href="#local-6989586621679910168"><span class="hs-identifier hs-var">detail</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetIllustDetail
+</span><span id="line-101"></span><span>  </span><span id="local-6989586621679915778"><span class="annot"><span class="annottext">IllustWrapper
+</span><a href="#local-6989586621679915778"><span class="hs-identifier hs-var">detail</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetIllustDetail
 -&gt; Proxy m -&gt; (Token, Maybe Text) -&gt; Int -&gt; m IllustWrapper
 forall (m :: Type -&gt; Type) api.
 HasClient m api =&gt;
@@ -198,32 +198,32 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Illust.html#GetIllustDetail"><span class="hs-identifier hs-type">GetIllustDetail</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910169"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910170"><span class="hs-identifier hs-var">illustId</span></a></span><span>
+</span><a href="#local-6989586621679915779"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915780"><span class="hs-identifier hs-var">illustId</span></a></span><span>
 </span><span id="line-102"></span><span>  </span><span class="annot"><span class="annottext">Illust -&gt; m Illust
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">(Illust -&gt; m Illust) -&gt; Illust -&gt; m Illust
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">IllustWrapper -&gt; Illust
 </span><span class="hs-identifier hs-var">coerce</span></span><span> </span><span class="annot"><span class="annottext">IllustWrapper
-</span><a href="#local-6989586621679910168"><span class="hs-identifier hs-var">detail</span></a></span><span>
+</span><a href="#local-6989586621679915778"><span class="hs-identifier hs-var">detail</span></a></span><span>
 </span><span id="line-103"></span><span>
 </span><span id="line-104"></span><span class="hs-comment">-- | Gets the comments of a illustration.</span><span>
-</span><span id="line-105"></span><span id="local-6989586621679910167"><span class="annot"><a href="Web.Pixiv.API.html#getIllustComments"><span class="hs-identifier hs-type">getIllustComments</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-106"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910167"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-105"></span><span id="local-6989586621679915777"><span class="annot"><a href="Web.Pixiv.API.html#getIllustComments"><span class="hs-identifier hs-type">getIllustComments</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-106"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915777"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-107"></span><span>  </span><span class="hs-comment">-- | illust id</span><span>
 </span><span id="line-108"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-109"></span><span>  </span><span class="hs-comment">-- | page</span><span>
 </span><span id="line-110"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-111"></span><span>  </span><span class="annot"><a href="#local-6989586621679910167"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#Comments"><span class="hs-identifier hs-type">Comments</span></a></span></span><span>
+</span><span id="line-111"></span><span>  </span><span class="annot"><a href="#local-6989586621679915777"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#Comments"><span class="hs-identifier hs-type">Comments</span></a></span></span><span>
 </span><span id="line-112"></span><span id="getIllustComments"><span class="annot"><span class="annottext">getIllustComments :: Int -&gt; Int -&gt; m Comments
-</span><a href="Web.Pixiv.API.html#getIllustComments"><span class="hs-identifier hs-var hs-var">getIllustComments</span></a></span></span><span> </span><span id="local-6989586621679910166"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910166"><span class="hs-identifier hs-var">illustId</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
+</span><a href="Web.Pixiv.API.html#getIllustComments"><span class="hs-identifier hs-var hs-var">getIllustComments</span></a></span></span><span> </span><span id="local-6989586621679915776"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915776"><span class="hs-identifier hs-var">illustId</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
 </span><a href="Web.Pixiv.API.PixivEntry.html#pageToOffset"><span class="hs-identifier hs-var">pageToOffset</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910165"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910165"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-113"></span><span>  </span><span id="local-6989586621679910164"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910164"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679915775"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915775"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-113"></span><span>  </span><span id="local-6989586621679915774"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915774"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
 </span><span id="line-114"></span><span>  </span><span class="annot"><span class="annottext">Proxy GetIllustComments
@@ -236,30 +236,30 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Illust.html#GetIllustComments"><span class="hs-identifier hs-type">GetIllustComments</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910164"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910166"><span class="hs-identifier hs-var">illustId</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910165"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><a href="#local-6989586621679915774"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915776"><span class="hs-identifier hs-var">illustId</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915775"><span class="hs-identifier hs-var">offset</span></a></span><span>
 </span><span id="line-115"></span><span>
 </span><span id="line-116"></span><span class="hs-comment">-- | Gets related illustrations.</span><span>
-</span><span id="line-117"></span><span id="local-6989586621679910163"><span class="annot"><a href="Web.Pixiv.API.html#getIllustRelated"><span class="hs-identifier hs-type">getIllustRelated</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-118"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910163"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-117"></span><span id="local-6989586621679915773"><span class="annot"><a href="Web.Pixiv.API.html#getIllustRelated"><span class="hs-identifier hs-type">getIllustRelated</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-118"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915773"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-119"></span><span>  </span><span class="hs-comment">-- | illust id</span><span>
 </span><span id="line-120"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-121"></span><span>  </span><span class="hs-comment">-- | page</span><span>
 </span><span id="line-122"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-123"></span><span>  </span><span class="annot"><a href="#local-6989586621679910163"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-123"></span><span>  </span><span class="annot"><a href="#local-6989586621679915773"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-124"></span><span id="getIllustRelated"><span class="annot"><span class="annottext">getIllustRelated :: Int -&gt; Int -&gt; m [Illust]
-</span><a href="Web.Pixiv.API.html#getIllustRelated"><span class="hs-identifier hs-var hs-var">getIllustRelated</span></a></span></span><span> </span><span id="local-6989586621679910162"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910162"><span class="hs-identifier hs-var">illustId</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
+</span><a href="Web.Pixiv.API.html#getIllustRelated"><span class="hs-identifier hs-var hs-var">getIllustRelated</span></a></span></span><span> </span><span id="local-6989586621679915772"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915772"><span class="hs-identifier hs-var">illustId</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
 </span><a href="Web.Pixiv.API.PixivEntry.html#pageToOffset"><span class="hs-identifier hs-var">pageToOffset</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910161"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910161"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-125"></span><span>  </span><span id="local-6989586621679910160"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910160"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679915771"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915771"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-125"></span><span>  </span><span id="local-6989586621679915770"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915770"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-126"></span><span>  </span><span id="local-6989586621679910159"><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910159"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetIllustRelated
+</span><span id="line-126"></span><span>  </span><span id="local-6989586621679915769"><span class="annot"><span class="annottext">Illusts
+</span><a href="#local-6989586621679915769"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetIllustRelated
 -&gt; Proxy m -&gt; (Token, Maybe Text) -&gt; Int -&gt; Maybe Int -&gt; m Illusts
 forall (m :: Type -&gt; Type) api.
 HasClient m api =&gt;
@@ -269,9 +269,9 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Illust.html#GetIllustRelated"><span class="hs-identifier hs-type">GetIllustRelated</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910160"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910162"><span class="hs-identifier hs-var">illustId</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910161"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><a href="#local-6989586621679915770"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915772"><span class="hs-identifier hs-var">illustId</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915771"><span class="hs-identifier hs-var">offset</span></a></span><span>
 </span><span id="line-127"></span><span>  </span><span class="annot"><span class="annottext">[Illust] -&gt; m [Illust]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([Illust] -&gt; m [Illust]) -&gt; [Illust] -&gt; m [Illust]
@@ -279,28 +279,28 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Illusts -&gt; NextUrlLess Illusts
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910159"><span class="hs-identifier hs-var">illusts</span></a></span><span>
+</span><a href="#local-6989586621679915769"><span class="hs-identifier hs-var">illusts</span></a></span><span>
 </span><span id="line-128"></span><span>
 </span><span id="line-129"></span><span class="hs-comment">-- | Gets ranking illustrations.</span><span>
-</span><span id="line-130"></span><span id="local-6989586621679910158"><span class="annot"><a href="Web.Pixiv.API.html#getIllustRanking"><span class="hs-identifier hs-type">getIllustRanking</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-131"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910158"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-130"></span><span id="local-6989586621679915768"><span class="annot"><a href="Web.Pixiv.API.html#getIllustRanking"><span class="hs-identifier hs-type">getIllustRanking</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-131"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915768"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-132"></span><span>  </span><span class="hs-comment">-- | rank mode</span><span>
 </span><span id="line-133"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#RankMode"><span class="hs-identifier hs-type">RankMode</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-134"></span><span>  </span><span class="hs-comment">-- | page</span><span>
 </span><span id="line-135"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-136"></span><span>  </span><span class="annot"><a href="#local-6989586621679910158"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-136"></span><span>  </span><span class="annot"><a href="#local-6989586621679915768"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-137"></span><span id="getIllustRanking"><span class="annot"><span class="annottext">getIllustRanking :: Maybe RankMode -&gt; Int -&gt; m [Illust]
-</span><a href="Web.Pixiv.API.html#getIllustRanking"><span class="hs-identifier hs-var hs-var">getIllustRanking</span></a></span></span><span> </span><span id="local-6989586621679910157"><span class="annot"><span class="annottext">Maybe RankMode
-</span><a href="#local-6989586621679910157"><span class="hs-identifier hs-var">mode</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
+</span><a href="Web.Pixiv.API.html#getIllustRanking"><span class="hs-identifier hs-var hs-var">getIllustRanking</span></a></span></span><span> </span><span id="local-6989586621679915767"><span class="annot"><span class="annottext">Maybe RankMode
+</span><a href="#local-6989586621679915767"><span class="hs-identifier hs-var">mode</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
 </span><a href="Web.Pixiv.API.PixivEntry.html#pageToOffset"><span class="hs-identifier hs-var">pageToOffset</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910156"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910156"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-138"></span><span>  </span><span id="local-6989586621679910155"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910155"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679915766"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915766"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-138"></span><span>  </span><span id="local-6989586621679915765"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915765"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-139"></span><span>  </span><span id="local-6989586621679910154"><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910154"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetIllustRanking
+</span><span id="line-139"></span><span>  </span><span id="local-6989586621679915764"><span class="annot"><span class="annottext">Illusts
+</span><a href="#local-6989586621679915764"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetIllustRanking
 -&gt; Proxy m
 -&gt; (Token, Maybe Text)
 -&gt; Maybe RankMode
@@ -314,9 +314,9 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Illust.html#GetIllustRanking"><span class="hs-identifier hs-type">GetIllustRanking</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910155"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe RankMode
-</span><a href="#local-6989586621679910157"><span class="hs-identifier hs-var">mode</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910156"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><a href="#local-6989586621679915765"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe RankMode
+</span><a href="#local-6989586621679915767"><span class="hs-identifier hs-var">mode</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915766"><span class="hs-identifier hs-var">offset</span></a></span><span>
 </span><span id="line-140"></span><span>  </span><span class="annot"><span class="annottext">[Illust] -&gt; m [Illust]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([Illust] -&gt; m [Illust]) -&gt; [Illust] -&gt; m [Illust]
@@ -324,28 +324,28 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Illusts -&gt; NextUrlLess Illusts
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910154"><span class="hs-identifier hs-var">illusts</span></a></span><span>
+</span><a href="#local-6989586621679915764"><span class="hs-identifier hs-var">illusts</span></a></span><span>
 </span><span id="line-141"></span><span>
 </span><span id="line-142"></span><span class="hs-comment">-- | Gets illustrations of artists which the login account follows.</span><span>
-</span><span id="line-143"></span><span id="local-6989586621679910153"><span class="annot"><a href="Web.Pixiv.API.html#getIllustFollow"><span class="hs-identifier hs-type">getIllustFollow</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-144"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910153"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-143"></span><span id="local-6989586621679915763"><span class="annot"><a href="Web.Pixiv.API.html#getIllustFollow"><span class="hs-identifier hs-type">getIllustFollow</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-144"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915763"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-145"></span><span>  </span><span class="hs-comment">-- | restrict</span><span>
 </span><span id="line-146"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.html#Publicity"><span class="hs-identifier hs-type">Publicity</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-147"></span><span>  </span><span class="hs-comment">-- | page</span><span>
 </span><span id="line-148"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-149"></span><span>  </span><span class="annot"><a href="#local-6989586621679910153"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-149"></span><span>  </span><span class="annot"><a href="#local-6989586621679915763"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-150"></span><span id="getIllustFollow"><span class="annot"><span class="annottext">getIllustFollow :: Publicity -&gt; Int -&gt; m [Illust]
-</span><a href="Web.Pixiv.API.html#getIllustFollow"><span class="hs-identifier hs-var hs-var">getIllustFollow</span></a></span></span><span> </span><span id="local-6989586621679910152"><span class="annot"><span class="annottext">Publicity
-</span><a href="#local-6989586621679910152"><span class="hs-identifier hs-var">restrict</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
+</span><a href="Web.Pixiv.API.html#getIllustFollow"><span class="hs-identifier hs-var hs-var">getIllustFollow</span></a></span></span><span> </span><span id="local-6989586621679915762"><span class="annot"><span class="annottext">Publicity
+</span><a href="#local-6989586621679915762"><span class="hs-identifier hs-var">restrict</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
 </span><a href="Web.Pixiv.API.PixivEntry.html#pageToOffset"><span class="hs-identifier hs-var">pageToOffset</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910151"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910151"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-151"></span><span>  </span><span id="local-6989586621679910150"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910150"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679915761"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915761"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-151"></span><span>  </span><span id="local-6989586621679915760"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915760"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-152"></span><span>  </span><span id="local-6989586621679910149"><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910149"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetIllustFollow
+</span><span id="line-152"></span><span>  </span><span id="local-6989586621679915759"><span class="annot"><span class="annottext">Illusts
+</span><a href="#local-6989586621679915759"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetIllustFollow
 -&gt; Proxy m
 -&gt; (Token, Maybe Text)
 -&gt; Publicity
@@ -359,9 +359,9 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Illust.html#GetIllustFollow"><span class="hs-identifier hs-type">GetIllustFollow</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910150"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Publicity
-</span><a href="#local-6989586621679910152"><span class="hs-identifier hs-var">restrict</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910151"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><a href="#local-6989586621679915760"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Publicity
+</span><a href="#local-6989586621679915762"><span class="hs-identifier hs-var">restrict</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915761"><span class="hs-identifier hs-var">offset</span></a></span><span>
 </span><span id="line-153"></span><span>  </span><span class="annot"><span class="annottext">[Illust] -&gt; m [Illust]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([Illust] -&gt; m [Illust]) -&gt; [Illust] -&gt; m [Illust]
@@ -369,25 +369,25 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Illusts -&gt; NextUrlLess Illusts
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910149"><span class="hs-identifier hs-var">illusts</span></a></span><span>
+</span><a href="#local-6989586621679915759"><span class="hs-identifier hs-var">illusts</span></a></span><span>
 </span><span id="line-154"></span><span>
 </span><span id="line-155"></span><span class="hs-comment">-- | Gets the newest illustrations.</span><span>
-</span><span id="line-156"></span><span id="local-6989586621679910148"><span class="annot"><a href="Web.Pixiv.API.html#getIllustNew"><span class="hs-identifier hs-type">getIllustNew</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-157"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910148"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-156"></span><span id="local-6989586621679915758"><span class="annot"><a href="Web.Pixiv.API.html#getIllustNew"><span class="hs-identifier hs-type">getIllustNew</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-157"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915758"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-158"></span><span>  </span><span class="hs-comment">-- | page</span><span>
 </span><span id="line-159"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-160"></span><span>  </span><span class="annot"><a href="#local-6989586621679910148"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-160"></span><span>  </span><span class="annot"><a href="#local-6989586621679915758"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-161"></span><span id="getIllustNew"><span class="annot"><span class="annottext">getIllustNew :: Int -&gt; m [Illust]
 </span><a href="Web.Pixiv.API.html#getIllustNew"><span class="hs-identifier hs-var hs-var">getIllustNew</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
 </span><a href="Web.Pixiv.API.PixivEntry.html#pageToOffset"><span class="hs-identifier hs-var">pageToOffset</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910147"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910147"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-162"></span><span>  </span><span id="local-6989586621679910146"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910146"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679915757"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915757"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-162"></span><span>  </span><span id="local-6989586621679915756"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915756"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-163"></span><span>  </span><span id="local-6989586621679910145"><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910145"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetIllustNew
+</span><span id="line-163"></span><span>  </span><span id="local-6989586621679915755"><span class="annot"><span class="annottext">Illusts
+</span><a href="#local-6989586621679915755"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetIllustNew
 -&gt; Proxy m -&gt; (Token, Maybe Text) -&gt; Maybe Int -&gt; m Illusts
 forall (m :: Type -&gt; Type) api.
 HasClient m api =&gt;
@@ -397,8 +397,8 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Illust.html#GetIllustNew"><span class="hs-identifier hs-type">GetIllustNew</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910146"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910147"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><a href="#local-6989586621679915756"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915757"><span class="hs-identifier hs-var">offset</span></a></span><span>
 </span><span id="line-164"></span><span>  </span><span class="annot"><span class="annottext">[Illust] -&gt; m [Illust]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([Illust] -&gt; m [Illust]) -&gt; [Illust] -&gt; m [Illust]
@@ -406,23 +406,23 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Illusts -&gt; NextUrlLess Illusts
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910145"><span class="hs-identifier hs-var">illusts</span></a></span><span>
+</span><a href="#local-6989586621679915755"><span class="hs-identifier hs-var">illusts</span></a></span><span>
 </span><span id="line-165"></span><span>
 </span><span id="line-166"></span><span class="hs-comment">-- | Gets the metadata of a ugoira</span><span>
-</span><span id="line-167"></span><span id="local-6989586621679910144"><span class="annot"><a href="Web.Pixiv.API.html#getUgoiraMetadata"><span class="hs-identifier hs-type">getUgoiraMetadata</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-168"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910144"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-167"></span><span id="local-6989586621679915754"><span class="annot"><a href="Web.Pixiv.API.html#getUgoiraMetadata"><span class="hs-identifier hs-type">getUgoiraMetadata</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-168"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915754"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-169"></span><span>  </span><span class="hs-comment">-- | illust id</span><span>
 </span><span id="line-170"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-171"></span><span>  </span><span class="annot"><a href="#local-6989586621679910144"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#UgoiraMetadata"><span class="hs-identifier hs-type">UgoiraMetadata</span></a></span></span><span>
+</span><span id="line-171"></span><span>  </span><span class="annot"><a href="#local-6989586621679915754"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#UgoiraMetadata"><span class="hs-identifier hs-type">UgoiraMetadata</span></a></span></span><span>
 </span><span id="line-172"></span><span id="getUgoiraMetadata"><span class="annot"><span class="annottext">getUgoiraMetadata :: Int -&gt; m UgoiraMetadata
-</span><a href="Web.Pixiv.API.html#getUgoiraMetadata"><span class="hs-identifier hs-var hs-var">getUgoiraMetadata</span></a></span></span><span> </span><span id="local-6989586621679910143"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910143"><span class="hs-identifier hs-var">illustId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-173"></span><span>  </span><span id="local-6989586621679910142"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910142"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><a href="Web.Pixiv.API.html#getUgoiraMetadata"><span class="hs-identifier hs-var hs-var">getUgoiraMetadata</span></a></span></span><span> </span><span id="local-6989586621679915753"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915753"><span class="hs-identifier hs-var">illustId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-173"></span><span>  </span><span id="local-6989586621679915752"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915752"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-174"></span><span>  </span><span id="local-6989586621679910141"><span class="annot"><span class="annottext">UgoiraMetadataWrapper
-</span><a href="#local-6989586621679910141"><span class="hs-identifier hs-var">ug</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetUgoiraMetadata
+</span><span id="line-174"></span><span>  </span><span id="local-6989586621679915751"><span class="annot"><span class="annottext">UgoiraMetadataWrapper
+</span><a href="#local-6989586621679915751"><span class="hs-identifier hs-var">ug</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetUgoiraMetadata
 -&gt; Proxy m -&gt; (Token, Maybe Text) -&gt; Int -&gt; m UgoiraMetadataWrapper
 forall (m :: Type -&gt; Type) api.
 HasClient m api =&gt;
@@ -432,8 +432,8 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Illust.html#GetUgoiraMetadata"><span class="hs-identifier hs-type">GetUgoiraMetadata</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910142"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910143"><span class="hs-identifier hs-var">illustId</span></a></span><span>
+</span><a href="#local-6989586621679915752"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915753"><span class="hs-identifier hs-var">illustId</span></a></span><span>
 </span><span id="line-175"></span><span>  </span><span class="annot"><span class="annottext">UgoiraMetadata -&gt; m UgoiraMetadata
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">(UgoiraMetadata -&gt; m UgoiraMetadata)
@@ -441,13 +441,13 @@ forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">UgoiraMetadataWrapper -&gt; UgoiraMetadata
 </span><span class="hs-identifier hs-var">coerce</span></span><span> </span><span class="annot"><span class="annottext">UgoiraMetadataWrapper
-</span><a href="#local-6989586621679910141"><span class="hs-identifier hs-var">ug</span></a></span><span>
+</span><a href="#local-6989586621679915751"><span class="hs-identifier hs-var">ug</span></a></span><span>
 </span><span id="line-176"></span><span>
 </span><span id="line-177"></span><span class="hs-comment">-----------------------------------------------------------------------------</span><span>
 </span><span id="line-178"></span><span>
 </span><span id="line-179"></span><span class="hs-comment">-- | Searches an illustration.</span><span>
-</span><span id="line-180"></span><span id="local-6989586621679910140"><span class="annot"><a href="Web.Pixiv.API.html#searchIllust"><span class="hs-identifier hs-type">searchIllust</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-181"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910140"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-180"></span><span id="local-6989586621679915750"><span class="annot"><a href="Web.Pixiv.API.html#searchIllust"><span class="hs-identifier hs-type">searchIllust</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-181"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915750"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-182"></span><span>  </span><span class="hs-comment">-- | search target</span><span>
 </span><span id="line-183"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.html#SearchTarget"><span class="hs-identifier hs-type">SearchTarget</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-184"></span><span>  </span><span class="hs-comment">-- | word</span><span>
@@ -460,7 +460,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span id="line-191"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#Duration"><span class="hs-identifier hs-type">Duration</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-192"></span><span>  </span><span class="hs-comment">-- | page</span><span>
 </span><span id="line-193"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-194"></span><span>  </span><span class="annot"><a href="#local-6989586621679910140"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-194"></span><span>  </span><span class="annot"><a href="#local-6989586621679915750"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-195"></span><span id="searchIllust"><span class="annot"><span class="annottext">searchIllust :: SearchTarget
 -&gt; Text
 -&gt; Maybe Bool
@@ -468,21 +468,21 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 -&gt; Maybe Duration
 -&gt; Int
 -&gt; m [Illust]
-</span><a href="Web.Pixiv.API.html#searchIllust"><span class="hs-identifier hs-var hs-var">searchIllust</span></a></span></span><span> </span><span id="local-6989586621679910139"><span class="annot"><span class="annottext">SearchTarget
-</span><a href="#local-6989586621679910139"><span class="hs-identifier hs-var">searchTarget</span></a></span></span><span> </span><span id="local-6989586621679910138"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679910138"><span class="hs-identifier hs-var">searchWord</span></a></span></span><span> </span><span id="local-6989586621679910137"><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="#local-6989586621679910137"><span class="hs-identifier hs-var">includeTranslatedTag</span></a></span></span><span> </span><span id="local-6989586621679910136"><span class="annot"><span class="annottext">Maybe SortingMethod
-</span><a href="#local-6989586621679910136"><span class="hs-identifier hs-var">sortingMethod</span></a></span></span><span> </span><span id="local-6989586621679910135"><span class="annot"><span class="annottext">Maybe Duration
-</span><a href="#local-6989586621679910135"><span class="hs-identifier hs-var">duration</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
+</span><a href="Web.Pixiv.API.html#searchIllust"><span class="hs-identifier hs-var hs-var">searchIllust</span></a></span></span><span> </span><span id="local-6989586621679915749"><span class="annot"><span class="annottext">SearchTarget
+</span><a href="#local-6989586621679915749"><span class="hs-identifier hs-var">searchTarget</span></a></span></span><span> </span><span id="local-6989586621679915748"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679915748"><span class="hs-identifier hs-var">searchWord</span></a></span></span><span> </span><span id="local-6989586621679915747"><span class="annot"><span class="annottext">Maybe Bool
+</span><a href="#local-6989586621679915747"><span class="hs-identifier hs-var">includeTranslatedTag</span></a></span></span><span> </span><span id="local-6989586621679915746"><span class="annot"><span class="annottext">Maybe SortingMethod
+</span><a href="#local-6989586621679915746"><span class="hs-identifier hs-var">sortingMethod</span></a></span></span><span> </span><span id="local-6989586621679915745"><span class="annot"><span class="annottext">Maybe Duration
+</span><a href="#local-6989586621679915745"><span class="hs-identifier hs-var">duration</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
 </span><a href="Web.Pixiv.API.PixivEntry.html#pageToOffset"><span class="hs-identifier hs-var">pageToOffset</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910134"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910134"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-196"></span><span>  </span><span id="local-6989586621679910133"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910133"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679915744"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915744"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-196"></span><span>  </span><span id="local-6989586621679915743"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915743"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-197"></span><span>  </span><span id="local-6989586621679910132"><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910132"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy SearchIllust
+</span><span id="line-197"></span><span>  </span><span id="local-6989586621679915742"><span class="annot"><span class="annottext">Illusts
+</span><a href="#local-6989586621679915742"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy SearchIllust
 -&gt; Proxy m
 -&gt; (Token, Maybe Text)
 -&gt; SearchTarget
@@ -500,13 +500,13 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Search.html#SearchIllust"><span class="hs-identifier hs-type">SearchIllust</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910133"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">SearchTarget
-</span><a href="#local-6989586621679910139"><span class="hs-identifier hs-var">searchTarget</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679910138"><span class="hs-identifier hs-var">searchWord</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Bool
-</span><a href="#local-6989586621679910137"><span class="hs-identifier hs-var">includeTranslatedTag</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe SortingMethod
-</span><a href="#local-6989586621679910136"><span class="hs-identifier hs-var">sortingMethod</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Duration
-</span><a href="#local-6989586621679910135"><span class="hs-identifier hs-var">duration</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910134"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><a href="#local-6989586621679915743"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">SearchTarget
+</span><a href="#local-6989586621679915749"><span class="hs-identifier hs-var">searchTarget</span></a></span><span> </span><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679915748"><span class="hs-identifier hs-var">searchWord</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Bool
+</span><a href="#local-6989586621679915747"><span class="hs-identifier hs-var">includeTranslatedTag</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe SortingMethod
+</span><a href="#local-6989586621679915746"><span class="hs-identifier hs-var">sortingMethod</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Duration
+</span><a href="#local-6989586621679915745"><span class="hs-identifier hs-var">duration</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915744"><span class="hs-identifier hs-var">offset</span></a></span><span>
 </span><span id="line-198"></span><span>  </span><span class="annot"><span class="annottext">[Illust] -&gt; m [Illust]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([Illust] -&gt; m [Illust]) -&gt; [Illust] -&gt; m [Illust]
@@ -514,31 +514,31 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Illusts -&gt; NextUrlLess Illusts
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910132"><span class="hs-identifier hs-var">illusts</span></a></span><span>
+</span><a href="#local-6989586621679915742"><span class="hs-identifier hs-var">illusts</span></a></span><span>
 </span><span id="line-199"></span><span>
 </span><span id="line-200"></span><span class="hs-comment">-- | Searches an user.</span><span>
-</span><span id="line-201"></span><span id="local-6989586621679910131"><span class="annot"><a href="Web.Pixiv.API.html#searchUser"><span class="hs-identifier hs-type">searchUser</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-202"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910131"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-201"></span><span id="local-6989586621679915741"><span class="annot"><a href="Web.Pixiv.API.html#searchUser"><span class="hs-identifier hs-type">searchUser</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-202"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915741"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-203"></span><span>  </span><span class="hs-comment">-- | word</span><span>
 </span><span id="line-204"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-205"></span><span>  </span><span class="hs-comment">-- | sorting method</span><span>
 </span><span id="line-206"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#SortingMethod"><span class="hs-identifier hs-type">SortingMethod</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-207"></span><span>  </span><span class="hs-comment">-- | page</span><span>
 </span><span id="line-208"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-209"></span><span>  </span><span class="annot"><a href="#local-6989586621679910131"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#UserPreview"><span class="hs-identifier hs-type">UserPreview</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-209"></span><span>  </span><span class="annot"><a href="#local-6989586621679915741"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#UserPreview"><span class="hs-identifier hs-type">UserPreview</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-210"></span><span id="searchUser"><span class="annot"><span class="annottext">searchUser :: Text -&gt; Maybe SortingMethod -&gt; Int -&gt; m [UserPreview]
-</span><a href="Web.Pixiv.API.html#searchUser"><span class="hs-identifier hs-var hs-var">searchUser</span></a></span></span><span> </span><span id="local-6989586621679910130"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679910130"><span class="hs-identifier hs-var">searchWord</span></a></span></span><span> </span><span id="local-6989586621679910129"><span class="annot"><span class="annottext">Maybe SortingMethod
-</span><a href="#local-6989586621679910129"><span class="hs-identifier hs-var">sortingMethod</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
+</span><a href="Web.Pixiv.API.html#searchUser"><span class="hs-identifier hs-var hs-var">searchUser</span></a></span></span><span> </span><span id="local-6989586621679915740"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679915740"><span class="hs-identifier hs-var">searchWord</span></a></span></span><span> </span><span id="local-6989586621679915739"><span class="annot"><span class="annottext">Maybe SortingMethod
+</span><a href="#local-6989586621679915739"><span class="hs-identifier hs-var">sortingMethod</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
 </span><a href="Web.Pixiv.API.PixivEntry.html#pageToOffset"><span class="hs-identifier hs-var">pageToOffset</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910128"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910128"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-211"></span><span>  </span><span id="local-6989586621679910127"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910127"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679915738"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915738"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-211"></span><span>  </span><span id="local-6989586621679915737"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915737"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-212"></span><span>  </span><span id="local-6989586621679910126"><span class="annot"><span class="annottext">UserPreviews
-</span><a href="#local-6989586621679910126"><span class="hs-identifier hs-var">ups</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy SearchUser
+</span><span id="line-212"></span><span>  </span><span id="local-6989586621679915736"><span class="annot"><span class="annottext">UserPreviews
+</span><a href="#local-6989586621679915736"><span class="hs-identifier hs-var">ups</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy SearchUser
 -&gt; Proxy m
 -&gt; (Token, Maybe Text)
 -&gt; Text
@@ -553,10 +553,10 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Search.html#SearchUser"><span class="hs-identifier hs-type">SearchUser</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910127"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679910130"><span class="hs-identifier hs-var">searchWord</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe SortingMethod
-</span><a href="#local-6989586621679910129"><span class="hs-identifier hs-var">sortingMethod</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910128"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><a href="#local-6989586621679915737"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679915740"><span class="hs-identifier hs-var">searchWord</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe SortingMethod
+</span><a href="#local-6989586621679915739"><span class="hs-identifier hs-var">sortingMethod</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915738"><span class="hs-identifier hs-var">offset</span></a></span><span>
 </span><span id="line-213"></span><span>  </span><span class="annot"><span class="annottext">[UserPreview] -&gt; m [UserPreview]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([UserPreview] -&gt; m [UserPreview])
@@ -565,21 +565,21 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">UserPreviews -&gt; NextUrlLess UserPreviews
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">UserPreviews
-</span><a href="#local-6989586621679910126"><span class="hs-identifier hs-var">ups</span></a></span><span>
+</span><a href="#local-6989586621679915736"><span class="hs-identifier hs-var">ups</span></a></span><span>
 </span><span id="line-214"></span><span>
 </span><span id="line-215"></span><span class="hs-comment">-----------------------------------------------------------------------------</span><span>
 </span><span id="line-216"></span><span>
 </span><span id="line-217"></span><span class="hs-comment">-- | Gets the details of an user.</span><span>
-</span><span id="line-218"></span><span id="local-6989586621679910125"><span class="annot"><a href="Web.Pixiv.API.html#getUserDetail"><span class="hs-identifier hs-type">getUserDetail</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-219"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910125"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-218"></span><span id="local-6989586621679915735"><span class="annot"><a href="Web.Pixiv.API.html#getUserDetail"><span class="hs-identifier hs-type">getUserDetail</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-219"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915735"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-220"></span><span>  </span><span class="hs-comment">-- | user id</span><span>
 </span><span id="line-221"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-222"></span><span>  </span><span class="annot"><a href="#local-6989586621679910125"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#UserDetail"><span class="hs-identifier hs-type">UserDetail</span></a></span></span><span>
+</span><span id="line-222"></span><span>  </span><span class="annot"><a href="#local-6989586621679915735"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#UserDetail"><span class="hs-identifier hs-type">UserDetail</span></a></span></span><span>
 </span><span id="line-223"></span><span id="getUserDetail"><span class="annot"><span class="annottext">getUserDetail :: Int -&gt; m UserDetail
-</span><a href="Web.Pixiv.API.html#getUserDetail"><span class="hs-identifier hs-var hs-var">getUserDetail</span></a></span></span><span> </span><span id="local-6989586621679910124"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910124"><span class="hs-identifier hs-var">userId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-224"></span><span>  </span><span id="local-6989586621679910123"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910123"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><a href="Web.Pixiv.API.html#getUserDetail"><span class="hs-identifier hs-var hs-var">getUserDetail</span></a></span></span><span> </span><span id="local-6989586621679915734"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915734"><span class="hs-identifier hs-var">userId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-224"></span><span>  </span><span id="local-6989586621679915733"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915733"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
 </span><span id="line-225"></span><span>  </span><span class="annot"><span class="annottext">Proxy GetUserDetail
@@ -592,32 +592,32 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.User.html#GetUserDetail"><span class="hs-identifier hs-type">GetUserDetail</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910123"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910124"><span class="hs-identifier hs-var">userId</span></a></span><span>
+</span><a href="#local-6989586621679915733"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915734"><span class="hs-identifier hs-var">userId</span></a></span><span>
 </span><span id="line-226"></span><span>
 </span><span id="line-227"></span><span class="hs-comment">-- | Gets illustrations submitted by a specific user.</span><span>
-</span><span id="line-228"></span><span id="local-6989586621679910122"><span class="annot"><a href="Web.Pixiv.API.html#getUserIllusts"><span class="hs-identifier hs-type">getUserIllusts</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-229"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910122"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-228"></span><span id="local-6989586621679915732"><span class="annot"><a href="Web.Pixiv.API.html#getUserIllusts"><span class="hs-identifier hs-type">getUserIllusts</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-229"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915732"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-230"></span><span>  </span><span class="hs-comment">-- | user id</span><span>
 </span><span id="line-231"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-232"></span><span>  </span><span class="hs-comment">-- | illust type</span><span>
 </span><span id="line-233"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#IllustType"><span class="hs-identifier hs-type">IllustType</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-234"></span><span>  </span><span class="hs-comment">-- | page</span><span>
 </span><span id="line-235"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-236"></span><span>  </span><span class="annot"><a href="#local-6989586621679910122"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-236"></span><span>  </span><span class="annot"><a href="#local-6989586621679915732"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-237"></span><span id="getUserIllusts"><span class="annot"><span class="annottext">getUserIllusts :: Int -&gt; Maybe IllustType -&gt; Int -&gt; m [Illust]
-</span><a href="Web.Pixiv.API.html#getUserIllusts"><span class="hs-identifier hs-var hs-var">getUserIllusts</span></a></span></span><span> </span><span id="local-6989586621679910121"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910121"><span class="hs-identifier hs-var">userId</span></a></span></span><span> </span><span id="local-6989586621679910120"><span class="annot"><span class="annottext">Maybe IllustType
-</span><a href="#local-6989586621679910120"><span class="hs-identifier hs-var">illustType</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
+</span><a href="Web.Pixiv.API.html#getUserIllusts"><span class="hs-identifier hs-var hs-var">getUserIllusts</span></a></span></span><span> </span><span id="local-6989586621679915731"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915731"><span class="hs-identifier hs-var">userId</span></a></span></span><span> </span><span id="local-6989586621679915730"><span class="annot"><span class="annottext">Maybe IllustType
+</span><a href="#local-6989586621679915730"><span class="hs-identifier hs-var">illustType</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
 </span><a href="Web.Pixiv.API.PixivEntry.html#pageToOffset"><span class="hs-identifier hs-var">pageToOffset</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910119"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910119"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-238"></span><span>  </span><span id="local-6989586621679910118"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910118"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679915729"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915729"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-238"></span><span>  </span><span id="local-6989586621679915728"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915728"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-239"></span><span>  </span><span id="local-6989586621679910117"><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910117"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetUserIllusts
+</span><span id="line-239"></span><span>  </span><span id="local-6989586621679915727"><span class="annot"><span class="annottext">Illusts
+</span><a href="#local-6989586621679915727"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetUserIllusts
 -&gt; Proxy m
 -&gt; (Token, Maybe Text)
 -&gt; Int
@@ -632,10 +632,10 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.User.html#GetUserIllusts"><span class="hs-identifier hs-type">GetUserIllusts</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910118"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910121"><span class="hs-identifier hs-var">userId</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe IllustType
-</span><a href="#local-6989586621679910120"><span class="hs-identifier hs-var">illustType</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910119"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><a href="#local-6989586621679915728"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915731"><span class="hs-identifier hs-var">userId</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe IllustType
+</span><a href="#local-6989586621679915730"><span class="hs-identifier hs-var">illustType</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915729"><span class="hs-identifier hs-var">offset</span></a></span><span>
 </span><span id="line-240"></span><span>  </span><span class="annot"><span class="annottext">[Illust] -&gt; m [Illust]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([Illust] -&gt; m [Illust]) -&gt; [Illust] -&gt; m [Illust]
@@ -643,31 +643,31 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Illusts -&gt; NextUrlLess Illusts
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910117"><span class="hs-identifier hs-var">illusts</span></a></span><span>
+</span><a href="#local-6989586621679915727"><span class="hs-identifier hs-var">illusts</span></a></span><span>
 </span><span id="line-241"></span><span>
 </span><span id="line-242"></span><span class="hs-comment">-- |  Gets the following of an user.</span><span>
-</span><span id="line-243"></span><span id="local-6989586621679910116"><span class="annot"><a href="Web.Pixiv.API.html#getUserFollowing"><span class="hs-identifier hs-type">getUserFollowing</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-244"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910116"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-243"></span><span id="local-6989586621679915726"><span class="annot"><a href="Web.Pixiv.API.html#getUserFollowing"><span class="hs-identifier hs-type">getUserFollowing</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-244"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915726"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-245"></span><span>  </span><span class="hs-comment">-- | user id</span><span>
 </span><span id="line-246"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-247"></span><span>  </span><span class="hs-comment">-- | restrict</span><span>
 </span><span id="line-248"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.html#Publicity"><span class="hs-identifier hs-type">Publicity</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-249"></span><span>  </span><span class="hs-comment">-- | page</span><span>
 </span><span id="line-250"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-251"></span><span>  </span><span class="annot"><a href="#local-6989586621679910116"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#UserPreview"><span class="hs-identifier hs-type">UserPreview</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-251"></span><span>  </span><span class="annot"><a href="#local-6989586621679915726"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#UserPreview"><span class="hs-identifier hs-type">UserPreview</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-252"></span><span id="getUserFollowing"><span class="annot"><span class="annottext">getUserFollowing :: Int -&gt; Publicity -&gt; Int -&gt; m [UserPreview]
-</span><a href="Web.Pixiv.API.html#getUserFollowing"><span class="hs-identifier hs-var hs-var">getUserFollowing</span></a></span></span><span> </span><span id="local-6989586621679910115"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910115"><span class="hs-identifier hs-var">userId</span></a></span></span><span> </span><span id="local-6989586621679910114"><span class="annot"><span class="annottext">Publicity
-</span><a href="#local-6989586621679910114"><span class="hs-identifier hs-var">restrict</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
+</span><a href="Web.Pixiv.API.html#getUserFollowing"><span class="hs-identifier hs-var hs-var">getUserFollowing</span></a></span></span><span> </span><span id="local-6989586621679915725"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915725"><span class="hs-identifier hs-var">userId</span></a></span></span><span> </span><span id="local-6989586621679915724"><span class="annot"><span class="annottext">Publicity
+</span><a href="#local-6989586621679915724"><span class="hs-identifier hs-var">restrict</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
 </span><a href="Web.Pixiv.API.PixivEntry.html#pageToOffset"><span class="hs-identifier hs-var">pageToOffset</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910113"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910113"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-253"></span><span>  </span><span id="local-6989586621679910112"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910112"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679915723"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915723"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-253"></span><span>  </span><span id="local-6989586621679915722"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915722"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-254"></span><span>  </span><span id="local-6989586621679910111"><span class="annot"><span class="annottext">UserPreviews
-</span><a href="#local-6989586621679910111"><span class="hs-identifier hs-var">ups</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetUserFollowing
+</span><span id="line-254"></span><span>  </span><span id="local-6989586621679915721"><span class="annot"><span class="annottext">UserPreviews
+</span><a href="#local-6989586621679915721"><span class="hs-identifier hs-var">ups</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetUserFollowing
 -&gt; Proxy m
 -&gt; (Token, Maybe Text)
 -&gt; Int
@@ -682,10 +682,10 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.User.html#GetUserFollowing"><span class="hs-identifier hs-type">GetUserFollowing</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910112"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910115"><span class="hs-identifier hs-var">userId</span></a></span><span> </span><span class="annot"><span class="annottext">Publicity
-</span><a href="#local-6989586621679910114"><span class="hs-identifier hs-var">restrict</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910113"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><a href="#local-6989586621679915722"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915725"><span class="hs-identifier hs-var">userId</span></a></span><span> </span><span class="annot"><span class="annottext">Publicity
+</span><a href="#local-6989586621679915724"><span class="hs-identifier hs-var">restrict</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915723"><span class="hs-identifier hs-var">offset</span></a></span><span>
 </span><span id="line-255"></span><span>  </span><span class="annot"><span class="annottext">[UserPreview] -&gt; m [UserPreview]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([UserPreview] -&gt; m [UserPreview])
@@ -694,28 +694,28 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">UserPreviews -&gt; NextUrlLess UserPreviews
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">UserPreviews
-</span><a href="#local-6989586621679910111"><span class="hs-identifier hs-var">ups</span></a></span><span>
+</span><a href="#local-6989586621679915721"><span class="hs-identifier hs-var">ups</span></a></span><span>
 </span><span id="line-256"></span><span>
 </span><span id="line-257"></span><span class="hs-comment">-- | Gets the followers of an user.</span><span>
-</span><span id="line-258"></span><span id="local-6989586621679910110"><span class="annot"><a href="Web.Pixiv.API.html#getUserFollower"><span class="hs-identifier hs-type">getUserFollower</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-259"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910110"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-258"></span><span id="local-6989586621679915720"><span class="annot"><a href="Web.Pixiv.API.html#getUserFollower"><span class="hs-identifier hs-type">getUserFollower</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-259"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915720"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-260"></span><span>  </span><span class="hs-comment">-- | user id</span><span>
 </span><span id="line-261"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-262"></span><span>  </span><span class="hs-comment">-- | page</span><span>
 </span><span id="line-263"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-264"></span><span>  </span><span class="annot"><a href="#local-6989586621679910110"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#UserPreview"><span class="hs-identifier hs-type">UserPreview</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-264"></span><span>  </span><span class="annot"><a href="#local-6989586621679915720"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#UserPreview"><span class="hs-identifier hs-type">UserPreview</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-265"></span><span id="getUserFollower"><span class="annot"><span class="annottext">getUserFollower :: Int -&gt; Int -&gt; m [UserPreview]
-</span><a href="Web.Pixiv.API.html#getUserFollower"><span class="hs-identifier hs-var hs-var">getUserFollower</span></a></span></span><span> </span><span id="local-6989586621679910109"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910109"><span class="hs-identifier hs-var">userId</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
+</span><a href="Web.Pixiv.API.html#getUserFollower"><span class="hs-identifier hs-var hs-var">getUserFollower</span></a></span></span><span> </span><span id="local-6989586621679915719"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915719"><span class="hs-identifier hs-var">userId</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
 </span><a href="Web.Pixiv.API.PixivEntry.html#pageToOffset"><span class="hs-identifier hs-var">pageToOffset</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910108"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910108"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-266"></span><span>  </span><span id="local-6989586621679910107"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910107"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679915718"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915718"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-266"></span><span>  </span><span id="local-6989586621679915717"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915717"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-267"></span><span>  </span><span id="local-6989586621679910106"><span class="annot"><span class="annottext">UserPreviews
-</span><a href="#local-6989586621679910106"><span class="hs-identifier hs-var">ups</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetUserFollower
+</span><span id="line-267"></span><span>  </span><span id="local-6989586621679915716"><span class="annot"><span class="annottext">UserPreviews
+</span><a href="#local-6989586621679915716"><span class="hs-identifier hs-var">ups</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetUserFollower
 -&gt; Proxy m
 -&gt; (Token, Maybe Text)
 -&gt; Int
@@ -729,9 +729,9 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.User.html#GetUserFollower"><span class="hs-identifier hs-type">GetUserFollower</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910107"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910109"><span class="hs-identifier hs-var">userId</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910108"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><a href="#local-6989586621679915717"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915719"><span class="hs-identifier hs-var">userId</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915718"><span class="hs-identifier hs-var">offset</span></a></span><span>
 </span><span id="line-268"></span><span>  </span><span class="annot"><span class="annottext">[UserPreview] -&gt; m [UserPreview]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([UserPreview] -&gt; m [UserPreview])
@@ -740,28 +740,28 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">UserPreviews -&gt; NextUrlLess UserPreviews
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">UserPreviews
-</span><a href="#local-6989586621679910106"><span class="hs-identifier hs-var">ups</span></a></span><span>
+</span><a href="#local-6989586621679915716"><span class="hs-identifier hs-var">ups</span></a></span><span>
 </span><span id="line-269"></span><span>
 </span><span id="line-270"></span><span class="hs-comment">-- | Gets @mypixiv@ of an user.</span><span>
-</span><span id="line-271"></span><span id="local-6989586621679910105"><span class="annot"><a href="Web.Pixiv.API.html#getUserMypixiv"><span class="hs-identifier hs-type">getUserMypixiv</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-272"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910105"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-271"></span><span id="local-6989586621679915715"><span class="annot"><a href="Web.Pixiv.API.html#getUserMypixiv"><span class="hs-identifier hs-type">getUserMypixiv</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-272"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915715"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-273"></span><span>  </span><span class="hs-comment">-- | user id</span><span>
 </span><span id="line-274"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-275"></span><span>  </span><span class="hs-comment">-- | page</span><span>
 </span><span id="line-276"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-277"></span><span>  </span><span class="annot"><a href="#local-6989586621679910105"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#UserPreview"><span class="hs-identifier hs-type">UserPreview</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-277"></span><span>  </span><span class="annot"><a href="#local-6989586621679915715"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#UserPreview"><span class="hs-identifier hs-type">UserPreview</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-278"></span><span id="getUserMypixiv"><span class="annot"><span class="annottext">getUserMypixiv :: Int -&gt; Int -&gt; m [UserPreview]
-</span><a href="Web.Pixiv.API.html#getUserMypixiv"><span class="hs-identifier hs-var hs-var">getUserMypixiv</span></a></span></span><span> </span><span id="local-6989586621679910104"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910104"><span class="hs-identifier hs-var">userId</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
+</span><a href="Web.Pixiv.API.html#getUserMypixiv"><span class="hs-identifier hs-var hs-var">getUserMypixiv</span></a></span></span><span> </span><span id="local-6989586621679915714"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915714"><span class="hs-identifier hs-var">userId</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
 </span><a href="Web.Pixiv.API.PixivEntry.html#pageToOffset"><span class="hs-identifier hs-var">pageToOffset</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910103"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910103"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-279"></span><span>  </span><span id="local-6989586621679910102"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910102"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><span class="hs-number">30</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679915713"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915713"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-279"></span><span>  </span><span id="local-6989586621679915712"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915712"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-280"></span><span>  </span><span id="local-6989586621679910101"><span class="annot"><span class="annottext">UserPreviews
-</span><a href="#local-6989586621679910101"><span class="hs-identifier hs-var">ups</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetUserMypixiv
+</span><span id="line-280"></span><span>  </span><span id="local-6989586621679915711"><span class="annot"><span class="annottext">UserPreviews
+</span><a href="#local-6989586621679915711"><span class="hs-identifier hs-var">ups</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetUserMypixiv
 -&gt; Proxy m
 -&gt; (Token, Maybe Text)
 -&gt; Int
@@ -775,9 +775,9 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.User.html#GetUserMypixiv"><span class="hs-identifier hs-type">GetUserMypixiv</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910102"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910104"><span class="hs-identifier hs-var">userId</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910103"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><a href="#local-6989586621679915712"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915714"><span class="hs-identifier hs-var">userId</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915713"><span class="hs-identifier hs-var">offset</span></a></span><span>
 </span><span id="line-281"></span><span>  </span><span class="annot"><span class="annottext">[UserPreview] -&gt; m [UserPreview]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([UserPreview] -&gt; m [UserPreview])
@@ -786,30 +786,30 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">UserPreviews -&gt; NextUrlLess UserPreviews
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">UserPreviews
-</span><a href="#local-6989586621679910101"><span class="hs-identifier hs-var">ups</span></a></span><span>
+</span><a href="#local-6989586621679915711"><span class="hs-identifier hs-var">ups</span></a></span><span>
 </span><span id="line-282"></span><span>
 </span><span id="line-283"></span><span class="hs-comment">-- | Gets illustrations collected by a specific user.</span><span>
 </span><span id="line-284"></span><span class="hs-comment">-- Returns the a list of illustrations and result and an integer for paging.</span><span>
-</span><span id="line-285"></span><span id="local-6989586621679910100"><span class="annot"><a href="Web.Pixiv.API.html#getUserBookmarks"><span class="hs-identifier hs-type">getUserBookmarks</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-286"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910100"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-285"></span><span id="local-6989586621679915710"><span class="annot"><a href="Web.Pixiv.API.html#getUserBookmarks"><span class="hs-identifier hs-type">getUserBookmarks</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-286"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915710"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-287"></span><span>  </span><span class="hs-comment">-- | user id</span><span>
 </span><span id="line-288"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-289"></span><span>  </span><span class="hs-comment">-- | restrict</span><span>
 </span><span id="line-290"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.html#Publicity"><span class="hs-identifier hs-type">Publicity</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-291"></span><span>  </span><span class="hs-comment">-- | the last illust id of this query</span><span>
 </span><span id="line-292"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-293"></span><span>  </span><span class="annot"><a href="#local-6989586621679910100"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span class="hs-special">)</span></span><span>
+</span><span id="line-293"></span><span>  </span><span class="annot"><a href="#local-6989586621679915710"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span class="hs-special">]</span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span class="hs-special">)</span></span><span>
 </span><span id="line-294"></span><span id="getUserBookmarks"><span class="annot"><span class="annottext">getUserBookmarks :: Int -&gt; Publicity -&gt; Maybe Int -&gt; m ([Illust], Maybe Int)
-</span><a href="Web.Pixiv.API.html#getUserBookmarks"><span class="hs-identifier hs-var hs-var">getUserBookmarks</span></a></span></span><span> </span><span id="local-6989586621679910099"><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910099"><span class="hs-identifier hs-var">userId</span></a></span></span><span> </span><span id="local-6989586621679910098"><span class="annot"><span class="annottext">Publicity
-</span><a href="#local-6989586621679910098"><span class="hs-identifier hs-var">restrict</span></a></span></span><span> </span><span id="local-6989586621679910097"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910097"><span class="hs-identifier hs-var">maxBookmarkId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-295"></span><span>  </span><span id="local-6989586621679910096"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910096"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><a href="Web.Pixiv.API.html#getUserBookmarks"><span class="hs-identifier hs-var hs-var">getUserBookmarks</span></a></span></span><span> </span><span id="local-6989586621679915709"><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915709"><span class="hs-identifier hs-var">userId</span></a></span></span><span> </span><span id="local-6989586621679915708"><span class="annot"><span class="annottext">Publicity
+</span><a href="#local-6989586621679915708"><span class="hs-identifier hs-var">restrict</span></a></span></span><span> </span><span id="local-6989586621679915707"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915707"><span class="hs-identifier hs-var">maxBookmarkId</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-295"></span><span>  </span><span id="local-6989586621679915706"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915706"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-296"></span><span>  </span><span id="local-6989586621679910095"><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910095"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetUserBookmarks
+</span><span id="line-296"></span><span>  </span><span id="local-6989586621679915705"><span class="annot"><span class="annottext">Illusts
+</span><a href="#local-6989586621679915705"><span class="hs-identifier hs-var">illusts</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetUserBookmarks
 -&gt; Proxy m
 -&gt; (Token, Maybe Text)
 -&gt; Int
@@ -824,19 +824,19 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.User.html#GetUserBookmarks"><span class="hs-identifier hs-type">GetUserBookmarks</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910096"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><a href="#local-6989586621679910099"><span class="hs-identifier hs-var">userId</span></a></span><span> </span><span class="annot"><span class="annottext">Publicity
-</span><a href="#local-6989586621679910098"><span class="hs-identifier hs-var">restrict</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910097"><span class="hs-identifier hs-var">maxBookmarkId</span></a></span><span>
+</span><a href="#local-6989586621679915706"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679915709"><span class="hs-identifier hs-var">userId</span></a></span><span> </span><span class="annot"><span class="annottext">Publicity
+</span><a href="#local-6989586621679915708"><span class="hs-identifier hs-var">restrict</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915707"><span class="hs-identifier hs-var">maxBookmarkId</span></a></span><span>
 </span><span id="line-297"></span><span>  </span><span class="annot"><span class="annottext">([Illust], Maybe Int) -&gt; m ([Illust], Maybe Int)
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Illusts -&gt; NextUrlLess Illusts
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910095"><span class="hs-identifier hs-var">illusts</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Illusts -&gt; Maybe Text
+</span><a href="#local-6989586621679915705"><span class="hs-identifier hs-var">illusts</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Illusts -&gt; Maybe Text
 forall a. HasNextUrl a =&gt; a -&gt; Maybe Text
 </span><a href="Web.Pixiv.Types.html#getNextUrl"><span class="hs-identifier hs-var">getNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">Illusts
-</span><a href="#local-6989586621679910095"><span class="hs-identifier hs-var">illusts</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Text -&gt; (Text -&gt; Maybe Int) -&gt; Maybe Int
+</span><a href="#local-6989586621679915705"><span class="hs-identifier hs-var">illusts</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Text -&gt; (Text -&gt; Maybe Int) -&gt; Maybe Int
 forall (m :: Type -&gt; Type) a b. Monad m =&gt; m a -&gt; (a -&gt; m b) -&gt; m b
 </span><span class="hs-operator hs-var">&gt;&gt;=</span></span><span> </span><span class="hs-special">(</span><span class="hs-special">(</span><span class="annot"><span class="annottext">Either String (Int, Text)
 -&gt; Getting (First Int) (Either String (Int, Text)) Int -&gt; Maybe Int
@@ -872,25 +872,25 @@ forall a. Eq a =&gt; a -&gt; a -&gt; Bool
 </span><span id="line-299"></span><span class="hs-comment">-----------------------------------------------------------------------------</span><span>
 </span><span id="line-300"></span><span>
 </span><span id="line-301"></span><span class="hs-comment">-- | Gets spotlight articles</span><span>
-</span><span id="line-302"></span><span id="local-6989586621679910087"><span class="annot"><a href="Web.Pixiv.API.html#getSpotlightArticles"><span class="hs-identifier hs-type">getSpotlightArticles</span></a></span><span> </span><span class="hs-glyph">::</span><span>
-</span><span id="line-303"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910087"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
+</span><span id="line-302"></span><span id="local-6989586621679915697"><span class="annot"><a href="Web.Pixiv.API.html#getSpotlightArticles"><span class="hs-identifier hs-type">getSpotlightArticles</span></a></span><span> </span><span class="hs-glyph">::</span><span>
+</span><span id="line-303"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#MonadPixiv"><span class="hs-identifier hs-type">MonadPixiv</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679915697"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span>
 </span><span id="line-304"></span><span>  </span><span class="hs-comment">-- | category</span><span>
 </span><span id="line-305"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-306"></span><span>  </span><span class="hs-comment">-- | page</span><span>
 </span><span id="line-307"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
-</span><span id="line-308"></span><span>  </span><span class="annot"><a href="#local-6989586621679910087"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#SpotlightArticle"><span class="hs-identifier hs-type">SpotlightArticle</span></a></span><span class="hs-special">]</span></span><span>
+</span><span id="line-308"></span><span>  </span><span class="annot"><a href="#local-6989586621679915697"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Web.Pixiv.Types.html#SpotlightArticle"><span class="hs-identifier hs-type">SpotlightArticle</span></a></span><span class="hs-special">]</span></span><span>
 </span><span id="line-309"></span><span id="getSpotlightArticles"><span class="annot"><span class="annottext">getSpotlightArticles :: Maybe Text -&gt; Int -&gt; m [SpotlightArticle]
-</span><a href="Web.Pixiv.API.html#getSpotlightArticles"><span class="hs-identifier hs-var hs-var">getSpotlightArticles</span></a></span></span><span> </span><span id="local-6989586621679910086"><span class="annot"><span class="annottext">Maybe Text
-</span><a href="#local-6989586621679910086"><span class="hs-identifier hs-var">category</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
+</span><a href="Web.Pixiv.API.html#getSpotlightArticles"><span class="hs-identifier hs-var hs-var">getSpotlightArticles</span></a></span></span><span> </span><span id="local-6989586621679915696"><span class="annot"><span class="annottext">Maybe Text
+</span><a href="#local-6989586621679915696"><span class="hs-identifier hs-var">category</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Maybe Int
 </span><a href="Web.Pixiv.API.PixivEntry.html#pageToOffset"><span class="hs-identifier hs-var">pageToOffset</span></a></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-number">10</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910085"><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910085"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-310"></span><span>  </span><span id="local-6989586621679910084"><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910084"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
+</span><span class="hs-number">10</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679915695"><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915695"><span class="hs-identifier hs-var">offset</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-310"></span><span>  </span><span id="local-6989586621679915694"><span class="annot"><span class="annottext">(Token, Maybe Text)
+</span><a href="#local-6989586621679915694"><span class="hs-identifier hs-var">p</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">m (Token, Maybe Text)
 forall (m :: Type -&gt; Type). MonadPixiv m =&gt; m (Token, Maybe Text)
 </span><a href="Web.Pixiv.Types.PixivT.html#getAccessTokenWithAccpetLanguage"><span class="hs-identifier hs-var">getAccessTokenWithAccpetLanguage</span></a></span><span>
-</span><span id="line-311"></span><span>  </span><span id="local-6989586621679910083"><span class="annot"><span class="annottext">SpotlightArticles
-</span><a href="#local-6989586621679910083"><span class="hs-identifier hs-var">articles</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetSpotlightArticles
+</span><span id="line-311"></span><span>  </span><span id="local-6989586621679915693"><span class="annot"><span class="annottext">SpotlightArticles
+</span><a href="#local-6989586621679915693"><span class="hs-identifier hs-var">articles</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Proxy GetSpotlightArticles
 -&gt; Proxy m
 -&gt; (Token, Maybe Text)
 -&gt; Maybe Text
@@ -904,9 +904,9 @@ forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="Web.Pixiv.API.Article.html#GetSpotlightArticles"><span class="hs-identifier hs-type">GetSpotlightArticles</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Proxy m
 forall k (t :: k). Proxy t
 </span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="annot"><span class="annottext">(Token, Maybe Text)
-</span><a href="#local-6989586621679910084"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Text
-</span><a href="#local-6989586621679910086"><span class="hs-identifier hs-var">category</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
-</span><a href="#local-6989586621679910085"><span class="hs-identifier hs-var">offset</span></a></span><span>
+</span><a href="#local-6989586621679915694"><span class="hs-identifier hs-var">p</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Text
+</span><a href="#local-6989586621679915696"><span class="hs-identifier hs-var">category</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Int
+</span><a href="#local-6989586621679915695"><span class="hs-identifier hs-var">offset</span></a></span><span>
 </span><span id="line-312"></span><span>  </span><span class="annot"><span class="annottext">[SpotlightArticle] -&gt; m [SpotlightArticle]
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">([SpotlightArticle] -&gt; m [SpotlightArticle])
@@ -915,5 +915,5 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">SpotlightArticles -&gt; NextUrlLess SpotlightArticles
 forall a. HasNextUrl a =&gt; a -&gt; NextUrlLess a
 </span><a href="Web.Pixiv.Types.html#unNextUrl"><span class="hs-identifier hs-var">unNextUrl</span></a></span><span> </span><span class="annot"><span class="annottext">SpotlightArticles
-</span><a href="#local-6989586621679910083"><span class="hs-identifier hs-var">articles</span></a></span><span>
+</span><a href="#local-6989586621679915693"><span class="hs-identifier hs-var">articles</span></a></span><span>
 </span><span id="line-313"></span></pre></body></html>

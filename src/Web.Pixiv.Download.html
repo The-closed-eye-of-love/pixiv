@@ -40,10 +40,10 @@
 </span><span id="line-40"></span><span class="hs-keyword">type</span><span> </span><span id="DownloadM"><span class="annot"><a href="Web.Pixiv.Download.html#DownloadM"><span class="hs-identifier hs-var">DownloadM</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MaybeT</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">ReaderT</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span class="hs-special">)</span><span>
 </span><span id="line-41"></span><span>
 </span><span id="line-42"></span><span class="hs-comment">-- | Lifts a pure 'Maybe' value to 'DownloadM'.</span><span>
-</span><span id="line-43"></span><span id="local-6989586621679910826"><span class="annot"><a href="Web.Pixiv.Download.html#liftMaybe"><span class="hs-identifier hs-type">liftMaybe</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="#local-6989586621679910826"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Download.html#DownloadM"><span class="hs-identifier hs-type">DownloadM</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910826"><span class="hs-identifier hs-type">a</span></a></span></span><span>
+</span><span id="line-43"></span><span id="local-6989586621679916437"><span class="annot"><a href="Web.Pixiv.Download.html#liftMaybe"><span class="hs-identifier hs-type">liftMaybe</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="#local-6989586621679916437"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Download.html#DownloadM"><span class="hs-identifier hs-type">DownloadM</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679916437"><span class="hs-identifier hs-type">a</span></a></span></span><span>
 </span><span id="line-44"></span><span id="liftMaybe"><span class="annot"><span class="annottext">liftMaybe :: Maybe a -&gt; DownloadM a
-</span><a href="Web.Pixiv.Download.html#liftMaybe"><span class="hs-identifier hs-var hs-var">liftMaybe</span></a></span></span><span> </span><span id="local-6989586621679910788"><span class="annot"><span class="annottext">Maybe a
-</span><a href="#local-6989586621679910788"><span class="hs-identifier hs-var">x</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ReaderT Manager IO (Maybe a) -&gt; DownloadM a
+</span><a href="Web.Pixiv.Download.html#liftMaybe"><span class="hs-identifier hs-var hs-var">liftMaybe</span></a></span></span><span> </span><span id="local-6989586621679916399"><span class="annot"><span class="annottext">Maybe a
+</span><a href="#local-6989586621679916399"><span class="hs-identifier hs-var">x</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ReaderT Manager IO (Maybe a) -&gt; DownloadM a
 forall (m :: Type -&gt; Type) a. m (Maybe a) -&gt; MaybeT m a
 </span><span class="hs-identifier hs-var">MaybeT</span></span><span> </span><span class="annot"><span class="annottext">(ReaderT Manager IO (Maybe a) -&gt; DownloadM a)
 -&gt; (IO (Maybe a) -&gt; ReaderT Manager IO (Maybe a))
@@ -57,17 +57,17 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Maybe a -&gt; IO (Maybe a)
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">Maybe a
-</span><a href="#local-6989586621679910788"><span class="hs-identifier hs-var">x</span></a></span><span>
+</span><a href="#local-6989586621679916399"><span class="hs-identifier hs-var">x</span></a></span><span>
 </span><span id="line-45"></span><span>
 </span><span id="line-46"></span><span class="hs-comment">-- | Executes the download computation in 'IO'.</span><span>
-</span><span id="line-47"></span><span id="local-6989586621679910845"><span class="annot"><a href="Web.Pixiv.Download.html#runDownloadM"><span class="hs-identifier hs-type">runDownloadM</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Download.html#DownloadM"><span class="hs-identifier hs-type">DownloadM</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910845"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="#local-6989586621679910845"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span><span>
+</span><span id="line-47"></span><span id="local-6989586621679916456"><span class="annot"><a href="Web.Pixiv.Download.html#runDownloadM"><span class="hs-identifier hs-type">runDownloadM</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Manager</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Download.html#DownloadM"><span class="hs-identifier hs-type">DownloadM</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679916456"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="#local-6989586621679916456"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span><span>
 </span><span id="line-48"></span><span id="runDownloadM"><span class="annot"><span class="annottext">runDownloadM :: Manager -&gt; DownloadM a -&gt; IO (Maybe a)
-</span><a href="Web.Pixiv.Download.html#runDownloadM"><span class="hs-identifier hs-var hs-var">runDownloadM</span></a></span></span><span> </span><span id="local-6989586621679910784"><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679910784"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span id="local-6989586621679910783"><span class="annot"><span class="annottext">DownloadM a
-</span><a href="#local-6989586621679910783"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">DownloadM a -&gt; ReaderT Manager IO (Maybe a)
+</span><a href="Web.Pixiv.Download.html#runDownloadM"><span class="hs-identifier hs-var hs-var">runDownloadM</span></a></span></span><span> </span><span id="local-6989586621679916395"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679916395"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span id="local-6989586621679916394"><span class="annot"><span class="annottext">DownloadM a
+</span><a href="#local-6989586621679916394"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">DownloadM a -&gt; ReaderT Manager IO (Maybe a)
 forall (m :: Type -&gt; Type) a. MaybeT m a -&gt; m (Maybe a)
 </span><span class="hs-identifier hs-var hs-var">runMaybeT</span></span><span> </span><span class="annot"><span class="annottext">DownloadM a
-</span><a href="#local-6989586621679910783"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="annot"><span class="annottext">ReaderT Manager IO (Maybe a)
+</span><a href="#local-6989586621679916394"><span class="hs-identifier hs-var">m</span></a></span><span> </span><span class="annot"><span class="annottext">ReaderT Manager IO (Maybe a)
 -&gt; (ReaderT Manager IO (Maybe a) -&gt; IO (Maybe a)) -&gt; IO (Maybe a)
 forall a b. a -&gt; (a -&gt; b) -&gt; b
 </span><span class="hs-operator hs-var">&amp;</span></span><span> </span><span class="annot"><span class="annottext">(ReaderT Manager IO (Maybe a) -&gt; Manager -&gt; IO (Maybe a))
@@ -76,17 +76,17 @@ forall a b c. (a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c
 </span><span class="hs-identifier hs-var">flip</span></span><span> </span><span class="annot"><span class="annottext">ReaderT Manager IO (Maybe a) -&gt; Manager -&gt; IO (Maybe a)
 forall r (m :: Type -&gt; Type) a. ReaderT r m a -&gt; r -&gt; m a
 </span><span class="hs-identifier hs-var hs-var">runReaderT</span></span><span> </span><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679910784"><span class="hs-identifier hs-var">manager</span></a></span><span>
+</span><a href="#local-6989586621679916395"><span class="hs-identifier hs-var">manager</span></a></span><span>
 </span><span id="line-49"></span><span>
 </span><span id="line-50"></span><span class="hs-comment">-- | Lifts a download computation to 'PixivT'.</span><span>
 </span><span id="line-51"></span><span class="hs-comment">--</span><span>
 </span><span id="line-52"></span><span class="hs-comment">-- 'DownloadM' needs 'Manager' to perform the download, which can be provided by 'TokenState'.</span><span>
-</span><span id="line-53"></span><span id="local-6989586621679910777"><span id="local-6989586621679910778"><span class="annot"><a href="Web.Pixiv.Download.html#liftToPixivT"><span class="hs-identifier hs-type">liftToPixivT</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679910778"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Download.html#DownloadM"><span class="hs-identifier hs-type">DownloadM</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910777"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679910778"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="#local-6989586621679910777"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span></span><span>
+</span><span id="line-53"></span><span id="local-6989586621679916388"><span id="local-6989586621679916389"><span class="annot"><a href="Web.Pixiv.Download.html#liftToPixivT"><span class="hs-identifier hs-type">liftToPixivT</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">MonadIO</span></span><span> </span><span class="annot"><a href="#local-6989586621679916389"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Download.html#DownloadM"><span class="hs-identifier hs-type">DownloadM</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679916388"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivT"><span class="hs-identifier hs-type">PixivT</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679916389"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="#local-6989586621679916388"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span></span></span><span>
 </span><span id="line-54"></span><span id="liftToPixivT"><span class="annot"><span class="annottext">liftToPixivT :: DownloadM a -&gt; PixivT m (Maybe a)
-</span><a href="Web.Pixiv.Download.html#liftToPixivT"><span class="hs-identifier hs-var hs-var">liftToPixivT</span></a></span></span><span> </span><span id="local-6989586621679910776"><span class="annot"><span class="annottext">DownloadM a
-</span><a href="#local-6989586621679910776"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><a href="Web.Pixiv.Download.html#liftToPixivT"><span class="hs-identifier hs-var hs-var">liftToPixivT</span></a></span></span><span> </span><span id="local-6989586621679916387"><span class="annot"><span class="annottext">DownloadM a
+</span><a href="#local-6989586621679916387"><span class="hs-identifier hs-var">m</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
 </span><span id="line-55"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#PixivState"><span class="hs-identifier hs-type">PixivState</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">tokenState :: PixivState -&gt; TokenState
-</span><a href="Web.Pixiv.Types.PixivT.html#tokenState"><span class="hs-identifier hs-var">tokenState</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679910769"><span id="local-6989586621679910770"><span id="local-6989586621679910771"><span id="local-6989586621679910772"><span class="annot"><span class="annottext">UTCTime
+</span><a href="Web.Pixiv.Types.PixivT.html#tokenState"><span class="hs-identifier hs-var">tokenState</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.PixivT.html#TokenState"><span class="hs-identifier hs-type">TokenState</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679916380"><span id="local-6989586621679916381"><span id="local-6989586621679916382"><span id="local-6989586621679916383"><span class="annot"><span class="annottext">UTCTime
 Manager
 Token
 manager :: TokenState -&gt; Manager
@@ -108,28 +108,28 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Manager -&gt; DownloadM a -&gt; IO (Maybe a)
 forall a. Manager -&gt; DownloadM a -&gt; IO (Maybe a)
 </span><a href="Web.Pixiv.Download.html#runDownloadM"><span class="hs-identifier hs-var">runDownloadM</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679910769"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">DownloadM a
-</span><a href="#local-6989586621679910776"><span class="hs-identifier hs-var">m</span></a></span><span>
+</span><a href="#local-6989586621679916380"><span class="hs-identifier hs-var">manager</span></a></span><span> </span><span class="annot"><span class="annottext">DownloadM a
+</span><a href="#local-6989586621679916387"><span class="hs-identifier hs-var">m</span></a></span><span>
 </span><span id="line-57"></span><span>
 </span><span id="line-58"></span><span class="hs-comment">-- | Downloads something in 'DownloadM', given url.</span><span>
 </span><span id="line-59"></span><span class="annot"><a href="Web.Pixiv.Download.html#downloadPixiv"><span class="hs-identifier hs-type">downloadPixiv</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Download.html#DownloadM"><span class="hs-identifier hs-type">DownloadM</span></a></span><span> </span><span class="annot"><span class="hs-identifier hs-type">LBS.ByteString</span></span><span>
 </span><span id="line-60"></span><span id="downloadPixiv"><span class="annot"><span class="annottext">downloadPixiv :: Text -&gt; DownloadM ByteString
-</span><a href="Web.Pixiv.Download.html#downloadPixiv"><span class="hs-identifier hs-var hs-var">downloadPixiv</span></a></span></span><span> </span><span id="local-6989586621679910763"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679910763"><span class="hs-identifier hs-var">url</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-61"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679910762"><span class="annot"><span class="annottext">addReferer :: Request -&gt; Request
-</span><a href="#local-6989586621679910762"><span class="hs-identifier hs-var hs-var">addReferer</span></a></span></span><span> </span><span id="local-6989586621679910761"><span class="annot"><span class="annottext">Request
-</span><a href="#local-6989586621679910761"><span class="hs-identifier hs-var">r</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Request
-</span><a href="#local-6989586621679910761"><span class="hs-identifier hs-var">r</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">requestHeaders :: RequestHeaders
-</span><a href="#local-6989586621679910760"><span class="hs-identifier hs-var">requestHeaders</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="annottext">HeaderName
+</span><a href="Web.Pixiv.Download.html#downloadPixiv"><span class="hs-identifier hs-var hs-var">downloadPixiv</span></a></span></span><span> </span><span id="local-6989586621679916374"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679916374"><span class="hs-identifier hs-var">url</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-61"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679916373"><span class="annot"><span class="annottext">addReferer :: Request -&gt; Request
+</span><a href="#local-6989586621679916373"><span class="hs-identifier hs-var hs-var">addReferer</span></a></span></span><span> </span><span id="local-6989586621679916372"><span class="annot"><span class="annottext">Request
+</span><a href="#local-6989586621679916372"><span class="hs-identifier hs-var">r</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Request
+</span><a href="#local-6989586621679916372"><span class="hs-identifier hs-var">r</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">requestHeaders :: RequestHeaders
+</span><a href="#local-6989586621679916371"><span class="hs-identifier hs-var">requestHeaders</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="hs-special">(</span><span class="annot"><span class="annottext">HeaderName
 </span><span class="hs-string">&quot;Referer&quot;</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">ByteString
 </span><span class="hs-string">&quot;https://app-api.pixiv.net/&quot;</span></span><span class="hs-special">)</span><span class="hs-special">]</span><span class="hs-special">}</span><span>
-</span><span id="line-62"></span><span>  </span><span id="local-6989586621679910759"><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679910759"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">MaybeT (ReaderT Manager IO) Manager
+</span><span id="line-62"></span><span>  </span><span id="local-6989586621679916370"><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679916370"><span class="hs-identifier hs-var">manager</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">MaybeT (ReaderT Manager IO) Manager
 forall r (m :: Type -&gt; Type). MonadReader r m =&gt; m r
 </span><span class="hs-identifier hs-var">ask</span></span><span>
-</span><span id="line-63"></span><span>  </span><span id="local-6989586621679910757"><span class="annot"><span class="annottext">Request
-</span><a href="#local-6989586621679910757"><span class="hs-identifier hs-var">req</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Request -&gt; Request
-</span><a href="#local-6989586621679910762"><span class="hs-identifier hs-var">addReferer</span></a></span><span> </span><span class="annot"><span class="annottext">(Request -&gt; Request)
+</span><span id="line-63"></span><span>  </span><span id="local-6989586621679916368"><span class="annot"><span class="annottext">Request
+</span><a href="#local-6989586621679916368"><span class="hs-identifier hs-var">req</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Request -&gt; Request
+</span><a href="#local-6989586621679916373"><span class="hs-identifier hs-var">addReferer</span></a></span><span> </span><span class="annot"><span class="annottext">(Request -&gt; Request)
 -&gt; MaybeT (ReaderT Manager IO) Request
 -&gt; MaybeT (ReaderT Manager IO) Request
 forall (f :: Type -&gt; Type) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
@@ -143,9 +143,9 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 -&gt; Text -&gt; MaybeT (ReaderT Manager IO) Request
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679910763"><span class="hs-identifier hs-var">url</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-64"></span><span>  </span><span id="local-6989586621679910753"><span class="annot"><span class="annottext">Response ByteString
-</span><a href="#local-6989586621679910753"><span class="hs-identifier hs-var">resp</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO (Response ByteString)
+</span><a href="#local-6989586621679916374"><span class="hs-identifier hs-var">url</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-64"></span><span>  </span><span id="local-6989586621679916364"><span class="annot"><span class="annottext">Response ByteString
+</span><a href="#local-6989586621679916364"><span class="hs-identifier hs-var">resp</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO (Response ByteString)
 -&gt; MaybeT (ReaderT Manager IO) (Response ByteString)
 forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">(IO (Response ByteString)
@@ -155,8 +155,8 @@ forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Request -&gt; Manager -&gt; IO (Response ByteString)
 </span><span class="hs-identifier hs-var">httpLbs</span></span><span> </span><span class="annot"><span class="annottext">Request
-</span><a href="#local-6989586621679910757"><span class="hs-identifier hs-var">req</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
-</span><a href="#local-6989586621679910759"><span class="hs-identifier hs-var">manager</span></a></span><span>
+</span><a href="#local-6989586621679916368"><span class="hs-identifier hs-var">req</span></a></span><span> </span><span class="annot"><span class="annottext">Manager
+</span><a href="#local-6989586621679916370"><span class="hs-identifier hs-var">manager</span></a></span><span>
 </span><span id="line-65"></span><span>  </span><span class="annot"><span class="annottext">ByteString -&gt; DownloadM ByteString
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="annot"><span class="annottext">(ByteString -&gt; DownloadM ByteString)
@@ -165,7 +165,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Response ByteString -&gt; ByteString
 forall body. Response body -&gt; body
 </span><span class="hs-identifier hs-var hs-var">responseBody</span></span><span> </span><span class="annot"><span class="annottext">Response ByteString
-</span><a href="#local-6989586621679910753"><span class="hs-identifier hs-var">resp</span></a></span><span>
+</span><a href="#local-6989586621679916364"><span class="hs-identifier hs-var">resp</span></a></span><span>
 </span><span id="line-66"></span><span>
 </span><span id="line-67"></span><span class="hs-comment">-- | Downloads a single page illust.</span><span>
 </span><span id="line-68"></span><span class="hs-comment">--</span><span>
@@ -173,23 +173,23 @@ forall body. Response body -&gt; body
 </span><span id="line-70"></span><span class="hs-comment">-- preferring high quality images. Returns `Nothing` if can't find any image url.</span><span>
 </span><span id="line-71"></span><span class="annot"><a href="Web.Pixiv.Download.html#downloadSingleIllust"><span class="hs-identifier hs-type">downloadSingleIllust</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Web.Pixiv.Download.html#DownloadM"><span class="hs-identifier hs-type">DownloadM</span></a></span><span> </span><span class="annot"><span class="hs-identifier hs-type">LBS.ByteString</span></span><span>
 </span><span id="line-72"></span><span id="downloadSingleIllust"><span class="annot"><span class="annottext">downloadSingleIllust :: Illust -&gt; DownloadM ByteString
-</span><a href="Web.Pixiv.Download.html#downloadSingleIllust"><span class="hs-identifier hs-var hs-var">downloadSingleIllust</span></a></span></span><span> </span><span id="local-6989586621679910750"><span class="annot"><span class="annottext">Illust
-</span><a href="#local-6989586621679910750"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-73"></span><span>  </span><span id="local-6989586621679910749"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679910749"><span class="hs-identifier hs-var">url</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Maybe Text -&gt; DownloadM Text
+</span><a href="Web.Pixiv.Download.html#downloadSingleIllust"><span class="hs-identifier hs-var hs-var">downloadSingleIllust</span></a></span></span><span> </span><span id="local-6989586621679916361"><span class="annot"><span class="annottext">Illust
+</span><a href="#local-6989586621679916361"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-73"></span><span>  </span><span id="local-6989586621679916360"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679916360"><span class="hs-identifier hs-var">url</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Maybe Text -&gt; DownloadM Text
 forall a. Maybe a -&gt; DownloadM a
 </span><a href="Web.Pixiv.Download.html#liftMaybe"><span class="hs-identifier hs-var">liftMaybe</span></a></span><span> </span><span class="annot"><span class="annottext">(Maybe Text -&gt; DownloadM Text) -&gt; Maybe Text -&gt; DownloadM Text
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Illust -&gt; [Text]
 </span><a href="Web.Pixiv.Utils.html#extractImageUrlsFromIllust"><span class="hs-identifier hs-var">extractImageUrlsFromIllust</span></a></span><span> </span><span class="annot"><span class="annottext">Illust
-</span><a href="#local-6989586621679910750"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="annot"><span class="annottext">[Text] -&gt; Getting (First Text) [Text] Text -&gt; Maybe Text
+</span><a href="#local-6989586621679916361"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="annot"><span class="annottext">[Text] -&gt; Getting (First Text) [Text] Text -&gt; Maybe Text
 forall s a. s -&gt; Getting (First a) s a -&gt; Maybe a
 </span><span class="hs-operator hs-var">^?</span></span><span> </span><span class="annot"><span class="annottext">Getting (First Text) [Text] Text
 forall s a. Cons s s a a =&gt; Traversal' s a
 </span><span class="hs-identifier hs-var">_head</span></span><span>
 </span><span id="line-74"></span><span>  </span><span class="annot"><span class="annottext">Text -&gt; DownloadM ByteString
 </span><a href="Web.Pixiv.Download.html#downloadPixiv"><span class="hs-identifier hs-var">downloadPixiv</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679910749"><span class="hs-identifier hs-var">url</span></a></span><span>
+</span><a href="#local-6989586621679916360"><span class="hs-identifier hs-var">url</span></a></span><span>
 </span><span id="line-75"></span><span>
 </span><span id="line-76"></span><span class="hs-comment">-- | Downloads 'UgoiraFrame's, then converts it to MP4 calling external @ffmpeg@.</span><span>
 </span><span id="line-77"></span><span class="annot"><a href="Web.Pixiv.Download.html#downloadUgoiraToMP4"><span class="hs-identifier hs-type">downloadUgoiraToMP4</span></a></span><span> </span><span class="hs-glyph">::</span><span>
@@ -199,22 +199,22 @@ forall s a. Cons s s a a =&gt; Traversal' s a
 </span><span id="line-81"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">FilePath</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-82"></span><span>  </span><span class="annot"><a href="Web.Pixiv.Download.html#DownloadM"><span class="hs-identifier hs-type">DownloadM</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">LBS.ByteString</span></span><span class="hs-special">)</span><span>
 </span><span id="line-83"></span><span id="downloadUgoiraToMP4"><span class="annot"><span class="annottext">downloadUgoiraToMP4 :: UgoiraMetadata -&gt; Maybe String -&gt; DownloadM (String, ByteString)
-</span><a href="Web.Pixiv.Download.html#downloadUgoiraToMP4"><span class="hs-identifier hs-var hs-var">downloadUgoiraToMP4</span></a></span></span><span> </span><span id="local-6989586621679910744"><span class="annot"><span class="annottext">UgoiraMetadata
-</span><a href="#local-6989586621679910744"><span class="hs-identifier hs-var">meta</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String -&gt; Maybe String -&gt; String
+</span><a href="Web.Pixiv.Download.html#downloadUgoiraToMP4"><span class="hs-identifier hs-var hs-var">downloadUgoiraToMP4</span></a></span></span><span> </span><span id="local-6989586621679916355"><span class="annot"><span class="annottext">UgoiraMetadata
+</span><a href="#local-6989586621679916355"><span class="hs-identifier hs-var">meta</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String -&gt; Maybe String -&gt; String
 forall a. a -&gt; Maybe a -&gt; a
 </span><span class="hs-identifier hs-var">fromMaybe</span></span><span> </span><span class="annot"><span class="annottext">String
-</span><span class="hs-string">&quot;ffmpeg&quot;</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679910743"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910743"><span class="hs-identifier hs-var">ffmpeg</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-84"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679910742"><span class="annot"><span class="annottext">ffconcat :: ByteString
-</span><a href="#local-6989586621679910742"><span class="hs-identifier hs-var hs-var">ffconcat</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">UgoiraMetadata -&gt; ByteString
+</span><span class="hs-string">&quot;ffmpeg&quot;</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span id="local-6989586621679916354"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679916354"><span class="hs-identifier hs-var">ffmpeg</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-84"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679916353"><span class="annot"><span class="annottext">ffconcat :: ByteString
+</span><a href="#local-6989586621679916353"><span class="hs-identifier hs-var hs-var">ffconcat</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">UgoiraMetadata -&gt; ByteString
 </span><a href="Web.Pixiv.Utils.html#ugoiraMetadataToFFConcat"><span class="hs-identifier hs-var">ugoiraMetadataToFFConcat</span></a></span><span> </span><span class="annot"><span class="annottext">UgoiraMetadata
-</span><a href="#local-6989586621679910744"><span class="hs-identifier hs-var">meta</span></a></span><span>
-</span><span id="line-85"></span><span>  </span><span id="local-6989586621679910740"><span class="annot"><span class="annottext">ByteString
-</span><a href="#local-6989586621679910740"><span class="hs-identifier hs-var">bs0</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Text -&gt; DownloadM ByteString
+</span><a href="#local-6989586621679916355"><span class="hs-identifier hs-var">meta</span></a></span><span>
+</span><span id="line-85"></span><span>  </span><span id="local-6989586621679916351"><span class="annot"><span class="annottext">ByteString
+</span><a href="#local-6989586621679916351"><span class="hs-identifier hs-var">bs0</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Text -&gt; DownloadM ByteString
 </span><a href="Web.Pixiv.Download.html#downloadPixiv"><span class="hs-identifier hs-var">downloadPixiv</span></a></span><span> </span><span class="annot"><span class="annottext">(Text -&gt; DownloadM ByteString) -&gt; Text -&gt; DownloadM ByteString
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">UgoiraMetadata
-</span><a href="#local-6989586621679910744"><span class="hs-identifier hs-var">meta</span></a></span><span> </span><span class="annot"><span class="annottext">UgoiraMetadata -&gt; Getting Text UgoiraMetadata Text -&gt; Text
+</span><a href="#local-6989586621679916355"><span class="hs-identifier hs-var">meta</span></a></span><span> </span><span class="annot"><span class="annottext">UgoiraMetadata -&gt; Getting Text UgoiraMetadata Text -&gt; Text
 forall s a. s -&gt; Getting a s a -&gt; a
 </span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">(ZipUrls -&gt; Const Text ZipUrls)
 -&gt; UgoiraMetadata -&gt; Const Text UgoiraMetadata
@@ -227,8 +227,8 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">(Text -&gt; Const Text Text) -&gt; ZipUrls -&gt; Const Text ZipUrls
 forall s a. HasZipMedium s a =&gt; Lens' s a
 </span><a href="Web.Pixiv.Types.Lens.html#zipMedium"><span class="hs-identifier hs-var">zipMedium</span></a></span><span>
-</span><span id="line-86"></span><span>  </span><span id="local-6989586621679910736"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910736"><span class="hs-identifier hs-var">systmp</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO String -&gt; MaybeT (ReaderT Manager IO) String
+</span><span id="line-86"></span><span>  </span><span id="local-6989586621679916347"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679916347"><span class="hs-identifier hs-var">systmp</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">IO String -&gt; MaybeT (ReaderT Manager IO) String
 forall (m :: Type -&gt; Type) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">IO String
 </span><span class="hs-identifier hs-var">getCanonicalTemporaryDirectory</span></span><span>
@@ -246,27 +246,27 @@ forall (m :: Type -&gt; Type) a.
 (MonadMask m, MonadIO m) =&gt;
 String -&gt; String -&gt; (String -&gt; m a) -&gt; m a
 </span><span class="hs-identifier hs-var">withTempDirectory</span></span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910736"><span class="hs-identifier hs-var">systmp</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679916347"><span class="hs-identifier hs-var">systmp</span></a></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;ugoira&quot;</span></span><span> </span><span class="annot"><span class="annottext">((String -&gt; IO (String, ByteString)) -&gt; IO (String, ByteString))
 -&gt; (String -&gt; IO (String, ByteString)) -&gt; IO (String, ByteString)
 forall a b. (a -&gt; b) -&gt; a -&gt; b
-</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-glyph">\</span><span id="local-6989586621679910735"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910735"><span class="hs-identifier hs-var">temp</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-glyph">\</span><span id="local-6989586621679916346"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679916346"><span class="hs-identifier hs-var">temp</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
 </span><span id="line-89"></span><span>      </span><span class="annot"><span class="annottext">String -&gt; ByteString -&gt; IO ()
 </span><a href="Web.Pixiv.Utils.html#unzipArchive"><span class="hs-identifier hs-var">unzipArchive</span></a></span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910735"><span class="hs-identifier hs-var">temp</span></a></span><span> </span><span class="annot"><span class="annottext">ByteString
-</span><a href="#local-6989586621679910740"><span class="hs-identifier hs-var">bs0</span></a></span><span>
-</span><span id="line-90"></span><span>      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679910733"><span class="annot"><span class="annottext">concatFilePath :: String
-</span><a href="#local-6989586621679910733"><span class="hs-identifier hs-var hs-var">concatFilePath</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910735"><span class="hs-identifier hs-var">temp</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
+</span><a href="#local-6989586621679916346"><span class="hs-identifier hs-var">temp</span></a></span><span> </span><span class="annot"><span class="annottext">ByteString
+</span><a href="#local-6989586621679916351"><span class="hs-identifier hs-var">bs0</span></a></span><span>
+</span><span id="line-90"></span><span>      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679916344"><span class="annot"><span class="annottext">concatFilePath :: String
+</span><a href="#local-6989586621679916344"><span class="hs-identifier hs-var hs-var">concatFilePath</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679916346"><span class="hs-identifier hs-var">temp</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
 </span><span class="hs-operator hs-var">&lt;/&gt;</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;concat&quot;</span></span><span>
-</span><span id="line-91"></span><span>          </span><span id="local-6989586621679910732"><span class="annot"><span class="annottext">convertProcess :: CreateProcess
-</span><a href="#local-6989586621679910732"><span class="hs-identifier hs-var hs-var">convertProcess</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-91"></span><span>          </span><span id="local-6989586621679916343"><span class="annot"><span class="annottext">convertProcess :: CreateProcess
+</span><a href="#local-6989586621679916343"><span class="hs-identifier hs-var hs-var">convertProcess</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-92"></span><span>            </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="annottext">String -&gt; [String] -&gt; CreateProcess
 </span><span class="hs-identifier hs-var">proc</span></span><span>
 </span><span id="line-93"></span><span>                </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910743"><span class="hs-identifier hs-var">ffmpeg</span></a></span><span>
+</span><a href="#local-6989586621679916354"><span class="hs-identifier hs-var">ffmpeg</span></a></span><span>
 </span><span id="line-94"></span><span>                </span><span class="hs-special">[</span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;-y&quot;</span></span><span class="hs-special">,</span><span>
 </span><span id="line-95"></span><span>                  </span><span class="annot"><span class="annottext">String
@@ -297,26 +297,26 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-identifier hs-var">cwd</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; Maybe String
 forall a. a -&gt; Maybe a
 </span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910735"><span class="hs-identifier hs-var">temp</span></a></span><span>
+</span><a href="#local-6989586621679916346"><span class="hs-identifier hs-var">temp</span></a></span><span>
 </span><span id="line-109"></span><span>              </span><span class="hs-special">}</span><span>
 </span><span id="line-110"></span><span>      </span><span class="annot"><span class="annottext">String -&gt; ByteString -&gt; IO ()
 </span><span class="hs-identifier hs-var">BS.writeFile</span></span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910733"><span class="hs-identifier hs-var">concatFilePath</span></a></span><span> </span><span class="annot"><span class="annottext">ByteString
-</span><a href="#local-6989586621679910742"><span class="hs-identifier hs-var">ffconcat</span></a></span><span>
-</span><span id="line-111"></span><span>      </span><span class="hs-special">(</span><span id="local-6989586621679910728"><span class="annot"><span class="annottext">ExitCode
-</span><a href="#local-6989586621679910728"><span class="hs-identifier hs-var">_code</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679910727"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910727"><span class="hs-identifier hs-var">_stdout</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679910726"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910726"><span class="hs-identifier hs-var">stderr</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">CreateProcess -&gt; String -&gt; IO (ExitCode, String, String)
+</span><a href="#local-6989586621679916344"><span class="hs-identifier hs-var">concatFilePath</span></a></span><span> </span><span class="annot"><span class="annottext">ByteString
+</span><a href="#local-6989586621679916353"><span class="hs-identifier hs-var">ffconcat</span></a></span><span>
+</span><span id="line-111"></span><span>      </span><span class="hs-special">(</span><span id="local-6989586621679916339"><span class="annot"><span class="annottext">ExitCode
+</span><a href="#local-6989586621679916339"><span class="hs-identifier hs-var">_code</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679916338"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679916338"><span class="hs-identifier hs-var">_stdout</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679916337"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679916337"><span class="hs-identifier hs-var">stderr</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">CreateProcess -&gt; String -&gt; IO (ExitCode, String, String)
 </span><span class="hs-identifier hs-var">readCreateProcessWithExitCode</span></span><span> </span><span class="annot"><span class="annottext">CreateProcess
-</span><a href="#local-6989586621679910732"><span class="hs-identifier hs-var">convertProcess</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679916343"><span class="hs-identifier hs-var">convertProcess</span></a></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;&quot;</span></span><span>
 </span><span id="line-112"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910726"><span class="hs-identifier hs-var">stderr</span></a></span><span class="hs-special">,</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(ByteString -&gt; (String, ByteString))
+</span><a href="#local-6989586621679916337"><span class="hs-identifier hs-var">stderr</span></a></span><span class="hs-special">,</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(ByteString -&gt; (String, ByteString))
 -&gt; IO ByteString -&gt; IO (String, ByteString)
 forall (f :: Type -&gt; Type) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><span class="hs-operator hs-var">&lt;$&gt;</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; IO ByteString
 </span><span class="hs-identifier hs-var">LBS.readFile</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679910735"><span class="hs-identifier hs-var">temp</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
+</span><a href="#local-6989586621679916346"><span class="hs-identifier hs-var">temp</span></a></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
 </span><span class="hs-operator hs-var">&lt;/&gt;</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;ugoira.mp4&quot;</span></span><span class="hs-special">)</span><span>
 </span><span id="line-113"></span></pre></body></html>

@@ -89,6 +89,7 @@ instance GHC.Classes.Eq Web.Pixiv.Auth.OAuth2Result
 instance GHC.Show.Show Web.Pixiv.Auth.OAuth2Result
 instance Data.Aeson.Types.FromJSON.FromJSON Web.Pixiv.Auth.OAuth2Result
 instance Data.Aeson.Types.FromJSON.FromJSON Web.Pixiv.Auth.OAuth2Error
+instance Data.String.IsString Web.Pixiv.Auth.Token
 
 
 -- | Data types used in API. This module enables
@@ -233,8 +234,8 @@ User :: Int -> Text -> Text -> ImageUrls -> Maybe Text -> Maybe Bool -> User
 --   Not sure if all fields are covered, and maybe some fields should be
 --   optional.
 data UserProfile
-UserProfile :: Text -> Text -> Text -> Text -> Int -> Text -> Int -> Text -> Text -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> ImageUrl -> Text -> Text -> Maybe Text -> Maybe Bool -> Bool -> UserProfile
-[$sel:_webpage:UserProfile] :: UserProfile -> Text
+UserProfile :: Maybe Text -> Text -> Text -> Text -> Int -> Text -> Int -> Text -> Text -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Maybe ImageUrl -> Text -> Maybe Text -> Maybe Text -> Maybe Bool -> Bool -> UserProfile
+[$sel:_webpage:UserProfile] :: UserProfile -> Maybe Text
 [$sel:_gender:UserProfile] :: UserProfile -> Text
 [$sel:_birth:UserProfile] :: UserProfile -> Text
 [$sel:_birthDay:UserProfile] :: UserProfile -> Text
@@ -251,9 +252,9 @@ UserProfile :: Text -> Text -> Text -> Text -> Int -> Text -> Int -> Text -> Tex
 [$sel:_totalIllustBookmarksPublic:UserProfile] :: UserProfile -> Int
 [$sel:_totalIllustSeries:UserProfile] :: UserProfile -> Int
 [$sel:_totalNovelSeries:UserProfile] :: UserProfile -> Int
-[$sel:_backgroundImageUrl:UserProfile] :: UserProfile -> ImageUrl
+[$sel:_backgroundImageUrl:UserProfile] :: UserProfile -> Maybe ImageUrl
 [$sel:_twitterAccount:UserProfile] :: UserProfile -> Text
-[$sel:_twitterUrl:UserProfile] :: UserProfile -> Text
+[$sel:_twitterUrl:UserProfile] :: UserProfile -> Maybe Text
 [$sel:_pawooUrl:UserProfile] :: UserProfile -> Maybe Text
 [$sel:_isPreminum:UserProfile] :: UserProfile -> Maybe Bool
 [$sel:_isUsingCustomProfileImage:UserProfile] :: UserProfile -> Bool
@@ -266,6 +267,9 @@ UserProfile :: Text -> Text -> Text -> Text -> Int -> Text -> Int -> Text -> Tex
 data Publicity
 Public :: Publicity
 Private :: Publicity
+
+-- | May not be available in <tt>restrict</tt> query param
+Mypixiv :: Publicity
 
 -- | Profile publicity of a user.
 --   
@@ -824,8 +828,8 @@ instance Web.Pixiv.Types.Lens.HasBirthYear Web.Pixiv.Types.ProfilePublicity Web.
 instance Web.Pixiv.Types.Lens.HasGender Web.Pixiv.Types.ProfilePublicity Web.Pixiv.Types.Publicity
 instance Web.Pixiv.Types.Lens.HasJob Web.Pixiv.Types.ProfilePublicity Web.Pixiv.Types.Publicity
 instance Web.Pixiv.Types.Lens.HasRegion Web.Pixiv.Types.ProfilePublicity Web.Pixiv.Types.Publicity
-instance Web.Pixiv.Types.Lens.HasWebpage Web.Pixiv.Types.UserProfile Data.Text.Internal.Text
-instance Web.Pixiv.Types.Lens.HasTwitterUrl Web.Pixiv.Types.UserProfile Data.Text.Internal.Text
+instance Web.Pixiv.Types.Lens.HasWebpage Web.Pixiv.Types.UserProfile (GHC.Maybe.Maybe Data.Text.Internal.Text)
+instance Web.Pixiv.Types.Lens.HasTwitterUrl Web.Pixiv.Types.UserProfile (GHC.Maybe.Maybe Data.Text.Internal.Text)
 instance Web.Pixiv.Types.Lens.HasTwitterAccount Web.Pixiv.Types.UserProfile Data.Text.Internal.Text
 instance Web.Pixiv.Types.Lens.HasTotalNovelSeries Web.Pixiv.Types.UserProfile GHC.Types.Int
 instance Web.Pixiv.Types.Lens.HasTotalMypixivUsers Web.Pixiv.Types.UserProfile GHC.Types.Int
@@ -845,7 +849,7 @@ instance Web.Pixiv.Types.Lens.HasCountryCode Web.Pixiv.Types.UserProfile Data.Te
 instance Web.Pixiv.Types.Lens.HasBirthYear Web.Pixiv.Types.UserProfile GHC.Types.Int
 instance Web.Pixiv.Types.Lens.HasBirthDay Web.Pixiv.Types.UserProfile Data.Text.Internal.Text
 instance Web.Pixiv.Types.Lens.HasBirth Web.Pixiv.Types.UserProfile Data.Text.Internal.Text
-instance Web.Pixiv.Types.Lens.HasBackgroundImageUrl Web.Pixiv.Types.UserProfile Web.Pixiv.Types.ImageUrl
+instance Web.Pixiv.Types.Lens.HasBackgroundImageUrl Web.Pixiv.Types.UserProfile (GHC.Maybe.Maybe Web.Pixiv.Types.ImageUrl)
 instance Web.Pixiv.Types.Lens.HasAddressId Web.Pixiv.Types.UserProfile GHC.Types.Int
 instance Web.Pixiv.Types.Lens.HasUserId Web.Pixiv.Types.User GHC.Types.Int
 instance Web.Pixiv.Types.Lens.HasProfileImageUrls Web.Pixiv.Types.User Web.Pixiv.Types.ImageUrls
