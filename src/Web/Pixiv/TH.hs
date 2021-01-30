@@ -1,5 +1,13 @@
 {-# LANGUAGE TemplateHaskell #-}
 
+-- | Copyright: (c) 2021 The closed eye of love
+-- SPDX-License-Identifier: BSD-3-Clause
+-- Maintainer: Poscat <poscat@mail.poscat.moe>, berberman <berberman@yandex.com>
+-- Stability: alpha
+-- Portability: portable
+-- This module provides some TH functions to create instances
+-- of 'FromJSON', 'ToJSON', and 'ToHttpApiData'.
+-- You can find usages in "Web.Pixiv.Types" and "Web.Pixiv.Auth".
 module Web.Pixiv.TH
   ( derivePixivJSON,
     derivePixivJSON',
@@ -23,6 +31,9 @@ import Servant.API (ToHttpApiData (..))
 
 -----------------------------------------------------------------------------
 
+-- | Creates instances of 'FromJSON' and 'ToJSON',
+-- stripping @_@ and @prefix@ from field labels (making sure result is non-empty),
+-- then converting into snake case.
 derivePixivJSON :: String -> Name -> DecsQ
 derivePixivJSON prefix =
   deriveJSON
@@ -30,11 +41,15 @@ derivePixivJSON prefix =
       { fieldLabelModifier = modifyFieldName prefix
       }
 
+-- | Like 'derivePixivJSON' but does not strip prefix.
 derivePixivJSON' :: Name -> DecsQ
 derivePixivJSON' = derivePixivJSON ""
 
 -----------------------------------------------------------------------------
 
+-- | Creates instances of 'FromJSON' and 'ToJSON',
+-- stripping @prefix@ from constructor tags then converting
+-- into snake case.
 deriveEnumJSON :: String -> Name -> DecsQ
 deriveEnumJSON prefix =
   deriveJSON
@@ -42,11 +57,16 @@ deriveEnumJSON prefix =
       { constructorTagModifier = modifyConsturctorName prefix
       }
 
+-- | Like 'deriveEnumJSON' but does not strip prefix.
 deriveEnumJSON' :: Name -> DecsQ
 deriveEnumJSON' = deriveEnumJSON ""
 
 -----------------------------------------------------------------------------
 
+-- | Creates instance of 'ToHttpApiData' for a enum-like data type
+-- which contains only plain normal constructors.
+--
+-- Constructor tags will be stripped @prefix@, then converted into snake case.
 deriveEnumToHttpApiData :: String -> Name -> DecsQ
 deriveEnumToHttpApiData prefix name =
   reify name >>= \case
@@ -69,6 +89,7 @@ deriveEnumToHttpApiData prefix name =
       _ -> error "Unsupported data declaration"
     _ -> error "Not a plain type constructor"
 
+-- | Like 'deriveEnumToHttpApiData' but does not strip prefix.
 deriveEnumToHttpApiData' :: Name -> DecsQ
 deriveEnumToHttpApiData' = deriveEnumToHttpApiData ""
 
