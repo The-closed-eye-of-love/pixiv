@@ -965,8 +965,7 @@ TokenState :: Token -> Token -> UTCTime -> Manager -> TokenState
 --   password.
 [refreshToken] :: TokenState -> Token
 
--- | Time stamp when <i>both</i> <a>accessToken</a> and <a>refreshToken</a>
---   are invalid.
+-- | Time stamp when <a>accessToken</a> becomes invalid.
 [expirationTime] :: TokenState -> UTCTime
 [manager] :: TokenState -> Manager
 

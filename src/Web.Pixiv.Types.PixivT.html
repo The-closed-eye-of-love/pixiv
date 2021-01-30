@@ -376,7 +376,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span id="line-102"></span><span>    </span><span class="hs-comment">-- | Token to obtain new 'accessToken' without giving username and password.</span><span>
 </span><span id="line-103"></span><span>    </span><span id="refreshToken"><span class="annot"><span class="annottext">TokenState -&gt; Token
 </span><a href="Web.Pixiv.Types.PixivT.html#refreshToken"><span class="hs-identifier hs-var hs-var">refreshToken</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Auth.html#Token"><span class="hs-identifier hs-type">Token</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-104"></span><span>    </span><span class="hs-comment">-- | Time stamp when /both/ 'accessToken' and 'refreshToken' are invalid.</span><span>
+</span><span id="line-104"></span><span>    </span><span class="hs-comment">-- | Time stamp when 'accessToken' becomes invalid.</span><span>
 </span><span id="line-105"></span><span>    </span><span id="expirationTime"><span class="annot"><span class="annottext">TokenState -&gt; UTCTime
 </span><a href="Web.Pixiv.Types.PixivT.html#expirationTime"><span class="hs-identifier hs-var hs-var">expirationTime</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">UTCTime</span></span><span class="hs-special">,</span><span>
 </span><span id="line-106"></span><span>    </span><span id="manager"><span class="annot"><span class="annottext">TokenState -&gt; Manager
