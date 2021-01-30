@@ -1,3 +1,5 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 -- | Copyright: (c) 2021 The closed eye of love
 -- SPDX-License-Identifier: BSD-3-Clause
 -- Maintainer: Poscat <poscat@mail.poscat.moe>, berberman <berberman@yandex.com>
@@ -21,11 +23,10 @@ import Control.Applicative ((<|>))
 import Control.Exception.Base
 import Crypto.Hash.MD5 (hash)
 import Data.Aeson
-import qualified Data.Aeson as A
+import Data.Aeson.TH
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Base16 as B16
 import qualified Data.ByteString.Char8 as C
-import Data.Generically
 import Data.String (IsString (..))
 import Data.Text (Text)
 import qualified Data.Text as T
@@ -33,6 +34,7 @@ import Data.Text.Encoding (encodeUtf8)
 import Data.Time (defaultTimeLocale, formatTime, getCurrentTime)
 import Network.HTTP.Client
 import Network.HTTP.Client.MultipartFormData (PartM, formDataBody, partBS)
+import Web.Pixiv.TH
 
 clientId :: ByteString
 clientId = "MOBrBDS8blbauoSck0ZfDbtuzpyT"
@@ -45,8 +47,9 @@ hashSecret = "28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0bae2c"
 
 -- | A wrapped 'Text' represents a token.
 newtype Token = Token {unToken :: Text}
-  deriving stock (Show, Eq, Generic)
-  deriving (FromJSON, ToJSON) via CustomJSON '[UnwrapUnaryRecords] Token
+  deriving stock (Show, Eq, Read)
+
+deriveJSON defaultOptions {unwrapUnaryRecords = True} ''Token
 
 instance IsString Token where
   fromString = Token . T.pack
@@ -82,8 +85,9 @@ data OAuth2Token = OAuth2Token
     oa_expiresIn :: Int,
     oa_refreshToken :: Token
   }
-  deriving stock (Show, Eq, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON "oa_" OAuth2Token
+  deriving stock (Show, Eq, Read)
+
+derivePixivJSON "oa_" ''OAuth2Token
 
 -- | Authentication failure reasions.
 data Errors
@@ -93,15 +97,16 @@ data Errors
   | UnauthorizedClient
   | UnsupportedGrantType
   | InvalidScope
-  deriving stock (Show, Eq, Generic)
-  deriving (FromJSON, ToJSON) via EnumJSON' Errors
+  deriving stock (Show, Eq, Ord, Enum, Read)
+
+deriveEnumJSON' ''Errors
 
 -- | Failed result.
 data OAuth2Error = OAuth2Error
   { oa_error :: Errors,
     oa_message :: Text
   }
-  deriving stock (Show, Eq, Generic)
+  deriving stock (Show, Eq, Read)
   deriving anyclass (Exception)
 
 instance FromJSON OAuth2Error where
@@ -118,7 +123,7 @@ instance FromJSON OAuth2Error where
 data OAuth2Result
   = AuthSuccess OAuth2Token
   | AuthFailure OAuth2Error
-  deriving stock (Show, Eq, Generic)
+  deriving stock (Show, Eq)
 
 instance FromJSON OAuth2Result where
   parseJSON v =
@@ -147,7 +152,7 @@ auth manager credential = do
   finalReq <- formDataBody parts req
   resp <- httpLbs finalReq manager
   let body = responseBody resp
-  maybe (fail "impossible: unable to parse response") pure (A.decode body)
+  maybe (fail "impossible: unable to parse response") pure (decode body)
 
 -- | Like 'auth', but immediately throws 'OAuth2Error' if auth failed.
 auth' :: Manager -> Credential -> IO OAuth2Token

@@ -1,4 +1,5 @@
 {-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 -- | Copyright: (c) 2021 The closed eye of love
 -- SPDX-License-Identifier: BSD-3-Clause
@@ -63,9 +64,9 @@ module Web.Pixiv.Types
 where
 
 import qualified Data.Aeson as A
-import Data.Generically
 import Data.Text (Text)
 import Data.Time (UTCTime)
+import Web.Pixiv.TH
 
 -- | Undecorate @next_url@ of a type.
 --
@@ -104,8 +105,11 @@ data ImageUrls = ImageUrls
     _large :: Maybe ImageUrl,
     _original :: Maybe ImageUrl
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' ImageUrls
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''ImageUrls
+
+-----------------------------------------------------------------------------
 
 -- | An object contains a single image url.
 --
@@ -118,8 +122,9 @@ data ImageUrls = ImageUrls
 newtype OriginalImageUrl = OriginalImageUrl
   { _originalImageUrl :: Maybe ImageUrl
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' OriginalImageUrl
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''OriginalImageUrl
 
 -----------------------------------------------------------------------------
 
@@ -136,28 +141,21 @@ data Tag = Tag
   { _name :: Text,
     _translatedName :: Maybe Text
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' Tag
+  deriving stock (Eq, Show, Read)
 
--- | A trending tag.
+derivePixivJSON' ''Tag
+
+-----------------------------------------------------------------------------
+
+-- | Type of illustration.
 --
--- Don't confuse with 'Tag'. 'TrendingTag' contains 'Illust',
--- and the textual name of the tag is called @tag@, instead of @name@ in 'Tag'.
-data TrendingTag = TrendingTag
-  { -- This is ugly, not consistent with normal 'Tag'
-    _trendTag :: Text,
-    _translatedName :: Maybe Text,
-    _illust :: Illust
-  }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON "trend" TrendingTag
+-- In pixiv API, all of illustrations, mangas, and ugoiras are represented in 'Illust' data type.
+-- So they can be distinguished by 'IllustType'.
+data IllustType = TypeIllust | TypeManga | TypeUgoira
+  deriving stock (Eq, Ord, Enum, Show, Read)
 
--- | A wrapper of 'TrendingTag's for JSON deserialization.
-newtype TrendingTags = TrendingTags
-  { _trend_tags :: [TrendingTag]
-  }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' TrendingTags
+deriveEnumJSON "Type" ''IllustType
+deriveEnumToHttpApiData "Type" ''IllustType
 
 -----------------------------------------------------------------------------
 
@@ -166,24 +164,37 @@ data Series = Series
   { _seriesId :: Int,
     _title :: Text
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON "series" Series
+  deriving stock (Eq, Show, Read)
 
--- | Type of illustration.
---
--- In pixiv API, all of illustrations, mangas, and ugoiras are represented in 'Illust' data type.
--- So they can be distinguished by 'IllustType'.
-data IllustType = TypeIllust | TypeManga | TypeUgoira
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via EnumJSON "Type" IllustType
-  deriving (ToHttpApiData) via PixivHttpApiData "Type" IllustType
+derivePixivJSON "series" ''Series
+
+-----------------------------------------------------------------------------
 
 -- | A page of 'Illust' containing 'ImageUrls'.
 newtype MetaPage = MetaPage
   { _imageUrls :: ImageUrls
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' MetaPage
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''MetaPage
+
+-----------------------------------------------------------------------------
+
+-- | User data type.
+data User = User
+  { _userId :: Int,
+    _name :: Text,
+    _account :: Text,
+    _profileImageUrls :: ImageUrls,
+    _comment :: Maybe Text,
+    -- | For login account.
+    _isFollowed :: Maybe Bool
+  }
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON "user" ''User
+
+-----------------------------------------------------------------------------
 
 -- | Illustraion data type.
 --
@@ -218,16 +229,46 @@ data Illust = Illust
     _isMuted :: Bool,
     _totalComments :: Maybe Int
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON "illust" Illust
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON "illust" ''Illust
+
+-----------------------------------------------------------------------------
+
+-- | A trending tag.
+--
+-- Don't confuse with 'Tag'. 'TrendingTag' contains 'Illust',
+-- and the textual name of the tag is called @tag@, instead of @name@ in 'Tag'.
+data TrendingTag = TrendingTag
+  { -- This is ugly, not consistent with normal 'Tag'
+    _trendTag :: Text,
+    _translatedName :: Maybe Text,
+    _illust :: Illust
+  }
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON "trend" ''TrendingTag
+
+-----------------------------------------------------------------------------
+
+-- | A wrapper of 'TrendingTag's for JSON deserialization.
+newtype TrendingTags = TrendingTags
+  { _trend_tags :: [TrendingTag]
+  }
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''TrendingTags
+
+-----------------------------------------------------------------------------
 
 -- | Response of API which returns illustrations.
 data Illusts = Illusts
   { _illusts :: [Illust],
     _nextUrl :: Maybe Text
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' Illusts
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''Illusts
 
 type instance NextUrlLess Illusts = [Illust]
 
@@ -235,27 +276,17 @@ instance HasNextUrl Illusts where
   unNextUrl Illusts {..} = _illusts
   getNextUrl Illusts {..} = _nextUrl
 
+-----------------------------------------------------------------------------
+
 -- | A wrapper of 'Illust' for JSON deserialization.
 newtype IllustWrapper = IllustWrapper
   { _illust :: Illust
   }
-  deriving stock (Show, Eq, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' IllustWrapper
+  deriving stock (Show, Eq, Read)
+
+derivePixivJSON' ''IllustWrapper
 
 -----------------------------------------------------------------------------
-
--- | User data type.
-data User = User
-  { _userId :: Int,
-    _name :: Text,
-    _account :: Text,
-    _profileImageUrls :: ImageUrls,
-    _comment :: Maybe Text,
-    -- | For login account.
-    _isFollowed :: Maybe Bool
-  }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON "user" User
 
 -- | UserProfile data type.
 --
@@ -285,8 +316,11 @@ data UserProfile = UserProfile
     _isPreminum :: Maybe Bool,
     _isUsingCustomProfileImage :: Bool
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' UserProfile
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''UserProfile
+
+-----------------------------------------------------------------------------
 
 -- | Publicity data type.
 --
@@ -295,11 +329,14 @@ data UserProfile = UserProfile
 data Publicity
   = Public
   | Private
-  -- | May not be available in @restrict@ query param
-  | Mypixiv
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via EnumJSON' Publicity
-  deriving (ToHttpApiData) via PixivHttpApiData' Publicity
+  | -- | May not be available in @restrict@ query param
+    Mypixiv
+  deriving stock (Eq, Ord, Enum, Show, Read)
+
+deriveEnumJSON' ''Publicity
+deriveEnumToHttpApiData' ''Publicity
+
+-----------------------------------------------------------------------------
 
 -- | Profile publicity of a user.
 --
@@ -312,8 +349,11 @@ data ProfilePublicity = ProfilePublicity
     _job :: Publicity,
     _pawoo :: Bool
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' ProfilePublicity
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''ProfilePublicity
+
+-----------------------------------------------------------------------------
 
 -- | Workspace information of a user.
 -- Not sure if all fields are covered, and maybe some fields should be optional.
@@ -332,8 +372,11 @@ data Workspace = Workspace
     _comment :: Text,
     _workspaceImageUrl :: Maybe Text
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' Workspace
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''Workspace
+
+-----------------------------------------------------------------------------
 
 -- | Details of a user.
 data UserDetail = UserDetail
@@ -342,8 +385,11 @@ data UserDetail = UserDetail
     _profilePublicity :: ProfilePublicity,
     _workspace :: Workspace
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' UserDetail
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''UserDetail
+
+-----------------------------------------------------------------------------
 
 -- | A preview of user information.
 --
@@ -355,16 +401,20 @@ data UserPreview = UserPreview
     _novels :: A.Value,
     _isMuted :: Bool
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' UserPreview
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''UserPreview
+
+-----------------------------------------------------------------------------
 
 -- | Response of API which returns user previews.
 data UserPreviews = UserPreviews
   { _userPreviews :: [UserPreview],
     _nextUrl :: Maybe Text
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' UserPreviews
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''UserPreviews
 
 type instance NextUrlLess UserPreviews = [UserPreview]
 
@@ -383,8 +433,11 @@ data Comment = Comment
     -- TODO
     _parentComment :: Maybe A.Value
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON "comment" Comment
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON "comment" ''Comment
+
+-----------------------------------------------------------------------------
 
 -- | Response of API which returns comments.
 data Comments = Comments
@@ -392,8 +445,9 @@ data Comments = Comments
     _comments :: [Comment],
     _nextUrl :: Maybe Text
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' Comments
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''Comments
 
 type instance NextUrlLess Comments = [Comment]
 
@@ -410,15 +464,21 @@ data UgoiraFrame = UgoiraFrame
     -- | Duration of this frame (in millisecond).
     _ugoiraDelay :: Int
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON "ugoira" UgoiraFrame
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON "ugoira" ''UgoiraFrame
+
+-----------------------------------------------------------------------------
 
 -- | A wrapper of ugoira zip file url.
 newtype ZipUrls = ZipUrls
   { _zipMedium :: Text
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON "zip" ZipUrls
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON "zip" ''ZipUrls
+
+-----------------------------------------------------------------------------
 
 -- | Ugoira is a frame animation, whose common information is represented in 'Illust'.
 -- This metadata contains a link to download the zip archive, which compresses frames of the ugoira;
@@ -429,15 +489,19 @@ data UgoiraMetadata = UgoiraMetadata
   { _zipUrls :: ZipUrls,
     _frames :: [UgoiraFrame]
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' UgoiraMetadata
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''UgoiraMetadata
+
+-----------------------------------------------------------------------------
 
 -- | A wrapper of 'UgoiraMetadata' for JSON deserialization.
 newtype UgoiraMetadataWrapper = UgoiraMetadataWrapper
   { _ugoiraMetadata :: UgoiraMetadata
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' UgoiraMetadataWrapper
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''UgoiraMetadataWrapper
 
 -----------------------------------------------------------------------------
 
@@ -452,16 +516,20 @@ data SpotlightArticle = SpotlightArticle
     _category :: Text,
     _subcategoryLabel :: Text
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' SpotlightArticle
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''SpotlightArticle
+
+-----------------------------------------------------------------------------
 
 -- | Response of API which returns spotlight articles.
 data SpotlightArticles = SpotlightArticles
   { _spotlightArticles :: [SpotlightArticle],
     _nextUrl :: Maybe Text
   }
-  deriving stock (Eq, Show, Generic)
-  deriving (FromJSON, ToJSON) via PixivJSON' SpotlightArticles
+  deriving stock (Eq, Show, Read)
+
+derivePixivJSON' ''SpotlightArticles
 
 type instance NextUrlLess SpotlightArticles = [SpotlightArticle]
 
@@ -488,8 +556,11 @@ data RankMode
   | WeekOriginal
   | WeekRookie
   | DayManga
-  deriving stock (Show, Eq, Ord, Enum, Generic)
-  deriving (ToHttpApiData) via PixivHttpApiData' RankMode
+  deriving stock (Show, Eq, Ord, Enum, Read)
+
+deriveEnumToHttpApiData' ''RankMode
+
+-----------------------------------------------------------------------------
 
 -- | Sorting method query parm.
 --
@@ -497,8 +568,11 @@ data RankMode
 data SortingMethod
   = DateDesc
   | DateAsc
-  deriving stock (Show, Eq, Ord, Enum, Generic)
-  deriving (ToHttpApiData) via PixivHttpApiData' SortingMethod
+  deriving stock (Show, Eq, Ord, Enum, Read)
+
+deriveEnumToHttpApiData' ''SortingMethod
+
+-----------------------------------------------------------------------------
 
 -- | Duration query parm.
 --
@@ -507,12 +581,18 @@ data Duration
   = WithinLastDay
   | WithinLastMonth
   | WithinLastYear
-  deriving stock (Show, Eq, Ord, Generic)
-  deriving (ToHttpApiData) via PixivHttpApiData' Duration
+  deriving stock (Show, Eq, Ord, Read)
+
+deriveEnumToHttpApiData' ''Duration
+
+-----------------------------------------------------------------------------
 
 -- | Search target query parm.
 --
 -- See 'Web.Pixiv.API.searchIllust'.
 data SearchTarget = ExactMatchForTags | PartialMatchForTags | TitleAndCaption
-  deriving stock (Show, Eq, Ord, Enum, Generic)
-  deriving (ToHttpApiData) via PixivHttpApiData' SearchTarget
+  deriving stock (Show, Eq, Ord, Enum, Read)
+
+deriveEnumToHttpApiData' ''SearchTarget
+
+-----------------------------------------------------------------------------

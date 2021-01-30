@@ -7,10 +7,13 @@ module Web.Pixiv.TH
     deriveEnumJSON',
     deriveEnumToHttpApiData,
     deriveEnumToHttpApiData',
+    ToHttpApiData (..),
+    FromJSON (..),
+    ToJSON (..),
   )
 where
 
-import Data.Aeson (camelTo2)
+import Data.Aeson (FromJSON (..), ToJSON (..), camelTo2)
 import Data.Aeson.TH
 import Data.List (stripPrefix)
 import Data.Maybe (fromMaybe)
