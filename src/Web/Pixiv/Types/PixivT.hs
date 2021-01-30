@@ -101,7 +101,7 @@ data TokenState = TokenState
     accessToken :: Token,
     -- | Token to obtain new 'accessToken' without giving username and password.
     refreshToken :: Token,
-    -- | Time stamp when /both/ 'accessToken' and 'refreshToken' are invalid.
+    -- | Time stamp when 'accessToken' becomes invalid.
     expirationTime :: UTCTime,
     manager :: Manager
   }
