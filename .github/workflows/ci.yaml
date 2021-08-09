@@ -5,8 +5,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        ghc: ['8.8.3', '8.8.4', '8.10.1', '8.10.2']
-        cabal: ['3.2.0.0']
+        ghc: ['8.8.3', '8.8.4', '8.10.4', '8.10.5', '9.0.1']
+        cabal: ['3.2.0.0', '3.4.0.0']
         os: [ubuntu-latest, macOS-latest]
     name: ${{ matrix.os }} - GHC ${{ matrix.ghc }}
     steps:
