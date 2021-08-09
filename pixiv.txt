@@ -433,10 +433,11 @@ TitleAndCaption :: SearchTarget
 
 -- | Sorting method query parm.
 --   
---   See <a>searchIllust</a> and <a>searchUser</a>.
+--   See <a>searchIllust</a>.
 data SortingMethod
 DateDesc :: SortingMethod
 DateAsc :: SortingMethod
+PopularDesc :: SortingMethod
 
 -- | Duration query parm.
 --   
@@ -1059,7 +1060,7 @@ getUgoiraMetadata :: MonadPixiv m => Int -> m UgoiraMetadata
 searchIllust :: MonadPixiv m => SearchTarget -> Text -> Maybe Bool -> Maybe SortingMethod -> Maybe Duration -> Int -> m [Illust]
 
 -- | Searches an user.
-searchUser :: MonadPixiv m => Text -> Maybe SortingMethod -> Int -> m [UserPreview]
+searchUser :: MonadPixiv m => Text -> Int -> m [UserPreview]
 
 -- | Gets the details of an user.
 getUserDetail :: MonadPixiv m => Int -> m UserDetail
