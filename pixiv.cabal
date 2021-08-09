@@ -87,7 +87,7 @@ library
     , servant              ^>=0.18.2
     , servant-client       ^>=0.18.2
     , servant-client-core  ^>=0.18.2
-    , template-haskell     ^>=2.16.0 || ^>=2.17.0
+    , template-haskell     ^>=2.15.0 || ^>=2.16.0 || ^>=2.17.0
     , temporary            ^>=1.3
     , text
     , time                 ^>=1.9.3
