@@ -23,6 +23,5 @@ type SearchIllust =
 type SearchUser =
   PixivEntry :> "v1" :> "search" :> "user"
     :> QueryParam' '[Required, Strict] "word" Text
-    :> QueryParam "sort" SortingMethod
     :> OffsetParam
     :> Get '[JSON] UserPreviews

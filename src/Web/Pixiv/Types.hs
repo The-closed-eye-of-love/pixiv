@@ -564,10 +564,11 @@ deriveEnumToHttpApiData' ''RankMode
 
 -- | Sorting method query parm.
 --
--- See 'Web.Pixiv.API.searchIllust' and 'Web.Pixiv.API.searchUser'.
+-- See 'Web.Pixiv.API.searchIllust'.
 data SortingMethod
   = DateDesc
   | DateAsc
+  | PopularDesc
   deriving stock (Show, Eq, Ord, Enum, Read)
 
 deriveEnumToHttpApiData' ''SortingMethod

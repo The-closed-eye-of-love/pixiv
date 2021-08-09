@@ -202,14 +202,12 @@ searchUser ::
   MonadPixiv m =>
   -- | word
   Text ->
-  -- | sorting method
-  Maybe SortingMethod ->
   -- | page
   Int ->
   m [UserPreview]
-searchUser searchWord sortingMethod (pageToOffset 30 -> offset) = do
+searchUser searchWord (pageToOffset 30 -> offset) = do
   p <- getAccessTokenWithAccpetLanguage
-  ups <- clientIn (Proxy @SearchUser) Proxy p searchWord sortingMethod offset
+  ups <- clientIn (Proxy @SearchUser) Proxy p searchWord offset
   pure $ unNextUrl ups
 
 -----------------------------------------------------------------------------
