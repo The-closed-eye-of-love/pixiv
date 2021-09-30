@@ -17,7 +17,9 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.ghc }}-cabal
 
       - uses: actions/checkout@v2
-      - uses: FedericoCarboni/setup-ffmpeg@v1-beta
+      - uses: FedericoCarboni/setup-ffmpeg@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
         id: setup-ffmpeg
 
       - name: "Run HLint"
