@@ -56,24 +56,15 @@ instance IsString Token where
 
 -- | Authentication credentials for pixiv API.
 --
--- Normally, users are supposed to create value of this data type using 'Password' constructor,
--- then pass it to 'Web.Pixiv.Types.PixivT.runPixivT'.
-data Credential
-  = Password
-      { username :: ByteString,
-        password :: ByteString
-      }
-  | RefreshToken
-      { cr_refreshToken :: Token
-      }
+-- Password authentication is no longer supported by pixiv.
+-- You may consult <https://github.com/upbit/pixivpy/issues/158> to get the information of how to acquire refresh token.
+-- Normally, users are supposed to create value of this data type and then pass it to 'Web.Pixiv.Types.PixivT.runPixivT'.
+newtype Credential = RefreshToken
+  { cr_refreshToken :: Token
+  }
   deriving stock (Show, Eq)
 
 mkAuthParts :: Applicative m => Credential -> [PartM m]
-mkAuthParts Password {..} =
-  [ partBS "grant_type" "password",
-    partBS "username" username,
-    partBS "password" password
-  ]
 mkAuthParts RefreshToken {..} =
   [ partBS "grant_type" "refresh_token",
     partBS "refresh_token" (encodeUtf8 . unToken $ cr_refreshToken)

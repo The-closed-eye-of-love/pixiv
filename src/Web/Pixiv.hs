@@ -10,7 +10,7 @@
 --
 -- main :: IO ()
 -- main = do
---   let credential = Password "username" "password"
+--   let credential = RefreshToken "token"
 --   illust <- runPixivT' credential $ getIllustDetail 70479649
 --   print illust
 -- @
@@ -21,7 +21,7 @@ module Web.Pixiv
   ( module Web.Pixiv.API,
     module Web.Pixiv.Types,
     module Web.Pixiv.Types.PixivT,
-    Credential (Password),
+    Credential (..),
   )
 where
 
