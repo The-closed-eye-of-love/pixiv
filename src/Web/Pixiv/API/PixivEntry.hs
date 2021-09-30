@@ -17,7 +17,7 @@ data PixivEntry
 
 instance HasClient m api => HasClient m (PixivEntry :> api) where
   type Client m (PixivEntry :> api) = (Token, Maybe Text) -> Client m api
-  clientWithRoute pm Proxy req = \(unToken -> token, mLanguage) ->
+  clientWithRoute pm Proxy req (unToken -> token, mLanguage) =
     clientWithRoute pm (Proxy @api) $
       req
         & addHeader @Text "User-Agent" "PixivAndroidApp/5.0.175 (Android 6.0; PixivHaskell)"
