@@ -36,8 +36,8 @@
 </span><span id="line-36"></span><span class="hs-comment">-- then converting into snake case.</span><span>
 </span><span id="line-37"></span><span class="annot"><a href="Web.Pixiv.TH.html#derivePixivJSON"><span class="hs-identifier hs-type">derivePixivJSON</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Name</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">DecsQ</span></span><span>
 </span><span id="line-38"></span><span id="derivePixivJSON"><span class="annot"><span class="annottext">derivePixivJSON :: String -&gt; Name -&gt; DecsQ
-</span><a href="Web.Pixiv.TH.html#derivePixivJSON"><span class="hs-identifier hs-var hs-var">derivePixivJSON</span></a></span></span><span> </span><span id="local-6989586621679388856"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388856"><span class="hs-identifier hs-var">prefix</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="Web.Pixiv.TH.html#derivePixivJSON"><span class="hs-identifier hs-var hs-var">derivePixivJSON</span></a></span></span><span> </span><span id="local-6989586621679388853"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679388853"><span class="hs-identifier hs-var">prefix</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-39"></span><span>  </span><span class="annot"><span class="annottext">Options -&gt; Name -&gt; DecsQ
 </span><span class="hs-identifier hs-var">deriveJSON</span></span><span>
 </span><span id="line-40"></span><span>    </span><span class="annot"><span class="annottext">Options
@@ -45,7 +45,7 @@
 </span><span id="line-41"></span><span>      </span><span class="hs-special">{</span><span> </span><span class="annot"><span class="annottext">fieldLabelModifier :: String -&gt; String
 </span><span class="hs-identifier hs-var">fieldLabelModifier</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
 </span><a href="Web.Pixiv.TH.html#modifyFieldName"><span class="hs-identifier hs-var">modifyFieldName</span></a></span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388856"><span class="hs-identifier hs-var">prefix</span></a></span><span>
+</span><a href="#local-6989586621679388853"><span class="hs-identifier hs-var">prefix</span></a></span><span>
 </span><span id="line-42"></span><span>      </span><span class="hs-special">}</span><span>
 </span><span id="line-43"></span><span>
 </span><span id="line-44"></span><span class="hs-comment">-- | Like 'derivePixivJSON' but does not strip prefix.</span><span>
@@ -62,8 +62,8 @@
 </span><span id="line-52"></span><span class="hs-comment">-- into snake case.</span><span>
 </span><span id="line-53"></span><span class="annot"><a href="Web.Pixiv.TH.html#deriveEnumJSON"><span class="hs-identifier hs-type">deriveEnumJSON</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Name</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">DecsQ</span></span><span>
 </span><span id="line-54"></span><span id="deriveEnumJSON"><span class="annot"><span class="annottext">deriveEnumJSON :: String -&gt; Name -&gt; DecsQ
-</span><a href="Web.Pixiv.TH.html#deriveEnumJSON"><span class="hs-identifier hs-var hs-var">deriveEnumJSON</span></a></span></span><span> </span><span id="local-6989586621679388851"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388851"><span class="hs-identifier hs-var">prefix</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="Web.Pixiv.TH.html#deriveEnumJSON"><span class="hs-identifier hs-var hs-var">deriveEnumJSON</span></a></span></span><span> </span><span id="local-6989586621679388848"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679388848"><span class="hs-identifier hs-var">prefix</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-55"></span><span>  </span><span class="annot"><span class="annottext">Options -&gt; Name -&gt; DecsQ
 </span><span class="hs-identifier hs-var">deriveJSON</span></span><span>
 </span><span id="line-56"></span><span>    </span><span class="annot"><span class="annottext">Options
@@ -71,7 +71,7 @@
 </span><span id="line-57"></span><span>      </span><span class="hs-special">{</span><span> </span><span class="annot"><span class="annottext">constructorTagModifier :: String -&gt; String
 </span><span class="hs-identifier hs-var">constructorTagModifier</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
 </span><a href="Web.Pixiv.TH.html#modifyConsturctorName"><span class="hs-identifier hs-var">modifyConsturctorName</span></a></span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388851"><span class="hs-identifier hs-var">prefix</span></a></span><span>
+</span><a href="#local-6989586621679388848"><span class="hs-identifier hs-var">prefix</span></a></span><span>
 </span><span id="line-58"></span><span>      </span><span class="hs-special">}</span><span>
 </span><span id="line-59"></span><span>
 </span><span id="line-60"></span><span class="hs-comment">-- | Like 'deriveEnumJSON' but does not strip prefix.</span><span>
@@ -89,66 +89,66 @@
 </span><span id="line-69"></span><span class="hs-comment">-- Constructor tags will be stripped @prefix@, then converted into snake case.</span><span>
 </span><span id="line-70"></span><span class="annot"><a href="Web.Pixiv.TH.html#deriveEnumToHttpApiData"><span class="hs-identifier hs-type">deriveEnumToHttpApiData</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Name</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">DecsQ</span></span><span>
 </span><span id="line-71"></span><span id="deriveEnumToHttpApiData"><span class="annot"><span class="annottext">deriveEnumToHttpApiData :: String -&gt; Name -&gt; DecsQ
-</span><a href="Web.Pixiv.TH.html#deriveEnumToHttpApiData"><span class="hs-identifier hs-var hs-var">deriveEnumToHttpApiData</span></a></span></span><span> </span><span id="local-6989586621679388848"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388848"><span class="hs-identifier hs-var">prefix</span></a></span></span><span> </span><span id="local-6989586621679388847"><span class="annot"><span class="annottext">Name
-</span><a href="#local-6989586621679388847"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="Web.Pixiv.TH.html#deriveEnumToHttpApiData"><span class="hs-identifier hs-var hs-var">deriveEnumToHttpApiData</span></a></span></span><span> </span><span id="local-6989586621679388845"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679388845"><span class="hs-identifier hs-var">prefix</span></a></span></span><span> </span><span id="local-6989586621679388844"><span class="annot"><span class="annottext">Name
+</span><a href="#local-6989586621679388844"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-72"></span><span>  </span><span class="annot"><span class="annottext">Name -&gt; Q Info
 </span><span class="hs-identifier hs-var">reify</span></span><span> </span><span class="annot"><span class="annottext">Name
-</span><a href="#local-6989586621679388847"><span class="hs-identifier hs-var">name</span></a></span><span> </span><span class="annot"><span class="annottext">Q Info -&gt; (Info -&gt; DecsQ) -&gt; DecsQ
+</span><a href="#local-6989586621679388844"><span class="hs-identifier hs-var">name</span></a></span><span> </span><span class="annot"><span class="annottext">Q Info -&gt; (Info -&gt; DecsQ) -&gt; DecsQ
 forall (m :: Type -&gt; Type) a b. Monad m =&gt; m a -&gt; (a -&gt; m b) -&gt; m b
 </span><span class="hs-operator hs-var">&gt;&gt;=</span></span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
-</span><span id="line-73"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">TyConI</span></span><span> </span><span id="local-6989586621679388844"><span class="annot"><span class="annottext">Dec
-</span><a href="#local-6989586621679388844"><span class="hs-identifier hs-var">dec</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Dec
-</span><a href="#local-6989586621679388844"><span class="hs-identifier hs-var">dec</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-73"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">TyConI</span></span><span> </span><span id="local-6989586621679388841"><span class="annot"><span class="annottext">Dec
+</span><a href="#local-6989586621679388841"><span class="hs-identifier hs-var">dec</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Dec
+</span><a href="#local-6989586621679388841"><span class="hs-identifier hs-var">dec</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-74"></span><span>      </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">DataD</span></span><span> </span><span class="annot"><span class="annottext">Cxt
-</span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679388842"><span class="annot"><span class="annottext">Name
-</span><a href="#local-6989586621679388842"><span class="hs-identifier hs-var">_dataName</span></a></span></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span> </span><span class="annot"><span class="annottext">Maybe Kind
-</span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679388841"><span class="annot"><span class="annottext">[Con]
-</span><a href="#local-6989586621679388841"><span class="hs-identifier hs-var">cons</span></a></span></span><span> </span><span class="annot"><span class="annottext">[DerivClause]
+</span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679388839"><span class="annot"><span class="annottext">Name
+</span><a href="#local-6989586621679388839"><span class="hs-identifier hs-var">_dataName</span></a></span></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span> </span><span class="annot"><span class="annottext">Maybe Kind
+</span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679388838"><span class="annot"><span class="annottext">[Con]
+</span><a href="#local-6989586621679388838"><span class="hs-identifier hs-var">cons</span></a></span></span><span> </span><span class="annot"><span class="annottext">[DerivClause]
 </span><span class="hs-identifier">_</span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-75"></span><span>        </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679388840"><span class="annot"><span class="annottext">conNames :: [Name]
-</span><a href="#local-6989586621679388840"><span class="hs-identifier hs-var hs-var">conNames</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Name
-</span><a href="#local-6989586621679388839"><span class="hs-identifier hs-var">n</span></a></span><span> </span><span class="hs-glyph">|</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">NormalC</span></span><span> </span><span id="local-6989586621679388839"><span class="annot"><span class="annottext">Name
-</span><a href="#local-6989586621679388839"><span class="hs-identifier hs-var">n</span></a></span></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">[Con]
-</span><a href="#local-6989586621679388841"><span class="hs-identifier hs-var">cons</span></a></span><span class="hs-special">]</span><span>
+</span><span id="line-75"></span><span>        </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679388837"><span class="annot"><span class="annottext">conNames :: [Name]
+</span><a href="#local-6989586621679388837"><span class="hs-identifier hs-var hs-var">conNames</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Name
+</span><a href="#local-6989586621679388836"><span class="hs-identifier hs-var">n</span></a></span><span> </span><span class="hs-glyph">|</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">NormalC</span></span><span> </span><span id="local-6989586621679388836"><span class="annot"><span class="annottext">Name
+</span><a href="#local-6989586621679388836"><span class="hs-identifier hs-var">n</span></a></span></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">[Con]
+</span><a href="#local-6989586621679388838"><span class="hs-identifier hs-var">cons</span></a></span><span class="hs-special">]</span><span>
 </span><span id="line-76"></span><span>        </span><span class="hs-keyword">if</span><span> </span><span class="annot"><span class="annottext">[Con] -&gt; Int
 forall (t :: Type -&gt; Type) a. Foldable t =&gt; t a -&gt; Int
 </span><span class="hs-identifier hs-var">length</span></span><span> </span><span class="annot"><span class="annottext">[Con]
-</span><a href="#local-6989586621679388841"><span class="hs-identifier hs-var">cons</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Bool
+</span><a href="#local-6989586621679388838"><span class="hs-identifier hs-var">cons</span></a></span><span> </span><span class="annot"><span class="annottext">Int -&gt; Int -&gt; Bool
 forall a. Eq a =&gt; a -&gt; a -&gt; Bool
 </span><span class="hs-operator hs-var">/=</span></span><span> </span><span class="annot"><span class="annottext">[Name] -&gt; Int
 forall (t :: Type -&gt; Type) a. Foldable t =&gt; t a -&gt; Int
 </span><span class="hs-identifier hs-var">length</span></span><span> </span><span class="annot"><span class="annottext">[Name]
-</span><a href="#local-6989586621679388840"><span class="hs-identifier hs-var">conNames</span></a></span><span>
+</span><a href="#local-6989586621679388837"><span class="hs-identifier hs-var">conNames</span></a></span><span>
 </span><span id="line-77"></span><span>          </span><span class="hs-keyword">then</span><span> </span><span class="annot"><span class="annottext">String -&gt; DecsQ
 forall a. HasCallStack =&gt; String -&gt; a
 </span><span class="hs-identifier hs-var">error</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;Data type is not simply an enum&quot;</span></span><span>
 </span><span id="line-78"></span><span>          </span><span class="hs-keyword">else</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-79"></span><span>            </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679388834"><span class="annot"><span class="annottext">clauses :: [ClauseQ]
-</span><a href="#local-6989586621679388834"><span class="hs-identifier hs-var hs-var">clauses</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-79"></span><span>            </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679388831"><span class="annot"><span class="annottext">clauses :: [ClauseQ]
+</span><a href="#local-6989586621679388831"><span class="hs-identifier hs-var hs-var">clauses</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-80"></span><span>                  </span><span class="hs-special">[</span><span> </span><span class="annot"><span class="annottext">[PatQ] -&gt; BodyQ -&gt; [DecQ] -&gt; ClauseQ
 </span><span class="hs-identifier hs-var">clause</span></span><span>
 </span><span id="line-81"></span><span>                      </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Name -&gt; [PatQ] -&gt; PatQ
 </span><span class="hs-identifier hs-var">conP</span></span><span> </span><span class="annot"><span class="annottext">Name
-</span><a href="#local-6989586621679388833"><span class="hs-identifier hs-var">n</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span class="hs-special">]</span><span>
+</span><a href="#local-6989586621679388830"><span class="hs-identifier hs-var">n</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span class="hs-special">]</span><span>
 </span><span id="line-82"></span><span>                      </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ExpQ -&gt; BodyQ
 </span><span class="hs-identifier hs-var">normalB</span></span><span> </span><span class="hs-special">[|</span><span class="hs-identifier">T.pack</span><span> </span><span class="hs-operator">$</span><span> </span><span class="hs-identifier">modifyConsturctorName</span><span> </span><span class="hs-identifier">prefix</span><span> </span><span class="hs-identifier">n'</span><span class="hs-special">|]</span><span class="hs-special">)</span><span>
 </span><span id="line-83"></span><span>                      </span><span class="hs-special">[</span><span class="hs-special">]</span><span>
-</span><span id="line-84"></span><span>                    </span><span class="hs-glyph">|</span><span> </span><span id="local-6989586621679388833"><span class="annot"><span class="annottext">Name
-</span><a href="#local-6989586621679388833"><span class="hs-identifier hs-var">n</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">[Name]
-</span><a href="#local-6989586621679388840"><span class="hs-identifier hs-var">conNames</span></a></span><span class="hs-special">,</span><span>
-</span><span id="line-85"></span><span>                      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679388832"><span class="annot"><span class="annottext">n' :: String
-</span><a href="#local-6989586621679388832"><span class="hs-identifier hs-var hs-var">n'</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Name -&gt; String
+</span><span id="line-84"></span><span>                    </span><span class="hs-glyph">|</span><span> </span><span id="local-6989586621679388830"><span class="annot"><span class="annottext">Name
+</span><a href="#local-6989586621679388830"><span class="hs-identifier hs-var">n</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">[Name]
+</span><a href="#local-6989586621679388837"><span class="hs-identifier hs-var">conNames</span></a></span><span class="hs-special">,</span><span>
+</span><span id="line-85"></span><span>                      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679388829"><span class="annot"><span class="annottext">n' :: String
+</span><a href="#local-6989586621679388829"><span class="hs-identifier hs-var hs-var">n'</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Name -&gt; String
 </span><span class="hs-identifier hs-var">nameBase</span></span><span> </span><span class="annot"><span class="annottext">Name
-</span><a href="#local-6989586621679388833"><span class="hs-identifier hs-var">n</span></a></span><span>
+</span><a href="#local-6989586621679388830"><span class="hs-identifier hs-var">n</span></a></span><span>
 </span><span id="line-86"></span><span>                  </span><span class="hs-special">]</span><span>
-</span><span id="line-87"></span><span>            </span><span id="local-6989586621679388830"><span class="annot"><span class="annottext">Dec
-</span><a href="#local-6989586621679388830"><span class="hs-identifier hs-var">func</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Name -&gt; [ClauseQ] -&gt; DecQ
+</span><span id="line-87"></span><span>            </span><span id="local-6989586621679388827"><span class="annot"><span class="annottext">Dec
+</span><a href="#local-6989586621679388827"><span class="hs-identifier hs-var">func</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">Name -&gt; [ClauseQ] -&gt; DecQ
 </span><span class="hs-identifier hs-var">funD</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String -&gt; Name
 </span><span class="hs-identifier hs-var">mkName</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;toQueryParam&quot;</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[ClauseQ]
-</span><a href="#local-6989586621679388834"><span class="hs-identifier hs-var">clauses</span></a></span><span>
+</span><a href="#local-6989586621679388831"><span class="hs-identifier hs-var">clauses</span></a></span><span>
 </span><span id="line-88"></span><span>            </span><span class="annot"><span class="annottext">[Dec] -&gt; DecsQ
 forall (f :: Type -&gt; Type) a. Applicative f =&gt; a -&gt; f a
 </span><span class="hs-identifier hs-var">pure</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Maybe Overlap -&gt; Cxt -&gt; Kind -&gt; [Dec] -&gt; Dec
@@ -158,8 +158,8 @@ forall a. Maybe a
 </span><span class="hs-identifier hs-var">ConT</span></span><span> </span><span class="hs-special">''</span><span class="hs-identifier">ToHttpApiData</span><span> </span><span class="annot"><span class="annottext">Kind -&gt; Kind -&gt; Kind
 </span><span class="hs-operator hs-var">`AppT`</span></span><span> </span><span class="annot"><span class="annottext">Name -&gt; Kind
 </span><span class="hs-identifier hs-var">ConT</span></span><span> </span><span class="annot"><span class="annottext">Name
-</span><a href="#local-6989586621679388847"><span class="hs-identifier hs-var">name</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Dec
-</span><a href="#local-6989586621679388830"><span class="hs-identifier hs-var">func</span></a></span><span class="hs-special">]</span><span class="hs-special">]</span><span>
+</span><a href="#local-6989586621679388844"><span class="hs-identifier hs-var">name</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Dec
+</span><a href="#local-6989586621679388827"><span class="hs-identifier hs-var">func</span></a></span><span class="hs-special">]</span><span class="hs-special">]</span><span>
 </span><span id="line-89"></span><span>      </span><span class="annot"><span class="annottext">Dec
 </span><span class="hs-identifier">_</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">String -&gt; DecsQ
 forall a. HasCallStack =&gt; String -&gt; a
@@ -188,40 +188,40 @@ forall a. HasCallStack =&gt; String -&gt; a
 </span><span id="line-100"></span><span>
 </span><span id="line-101"></span><span class="annot"><a href="Web.Pixiv.TH.html#modifyFieldName"><span class="hs-identifier hs-type">modifyFieldName</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
 </span><span id="line-102"></span><span id="modifyFieldName"><span class="annot"><span class="annottext">modifyFieldName :: String -&gt; String -&gt; String
-</span><a href="Web.Pixiv.TH.html#modifyFieldName"><span class="hs-identifier hs-var hs-var">modifyFieldName</span></a></span></span><span> </span><span id="local-6989586621679388825"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388825"><span class="hs-identifier hs-var">prefix</span></a></span></span><span> </span><span id="local-6989586621679388824"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388824"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String
+</span><a href="Web.Pixiv.TH.html#modifyFieldName"><span class="hs-identifier hs-var hs-var">modifyFieldName</span></a></span></span><span> </span><span id="local-6989586621679388822"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679388822"><span class="hs-identifier hs-var">prefix</span></a></span></span><span> </span><span id="local-6989586621679388821"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679388821"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String
 </span><a href="Web.Pixiv.TH.html#camel2Snake"><span class="hs-identifier hs-var">camel2Snake</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; String -&gt; String
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; Maybe String
 forall a. Eq a =&gt; [a] -&gt; [a] -&gt; Maybe [a]
 </span><span class="hs-identifier hs-var">stripPrefix</span></span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388825"><span class="hs-identifier hs-var">prefix</span></a></span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388823"><span class="hs-identifier hs-var">s'</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679388822"><span class="hs-identifier hs-var">prefix</span></a></span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679388820"><span class="hs-identifier hs-var">s'</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-103"></span><span>  </span><span class="annot"><span class="annottext">Maybe String
 </span><span class="hs-identifier hs-var">Nothing</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388823"><span class="hs-identifier hs-var">s'</span></a></span><span>
+</span><a href="#local-6989586621679388820"><span class="hs-identifier hs-var">s'</span></a></span><span>
 </span><span id="line-104"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Just</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;&quot;</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388823"><span class="hs-identifier hs-var">s'</span></a></span><span>
-</span><span id="line-105"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Just</span></span><span> </span><span id="local-6989586621679388822"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388822"><span class="hs-identifier hs-var">x</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388822"><span class="hs-identifier hs-var">x</span></a></span><span>
+</span><a href="#local-6989586621679388820"><span class="hs-identifier hs-var">s'</span></a></span><span>
+</span><span id="line-105"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">Just</span></span><span> </span><span id="local-6989586621679388819"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679388819"><span class="hs-identifier hs-var">x</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679388819"><span class="hs-identifier hs-var">x</span></a></span><span>
 </span><span id="line-106"></span><span>  </span><span class="hs-keyword">where</span><span>
-</span><span id="line-107"></span><span>    </span><span id="local-6989586621679388823"><span class="annot"><span class="annottext">s' :: String
-</span><a href="#local-6989586621679388823"><span class="hs-identifier hs-var hs-var">s'</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; Maybe String -&gt; String
+</span><span id="line-107"></span><span>    </span><span id="local-6989586621679388820"><span class="annot"><span class="annottext">s' :: String
+</span><a href="#local-6989586621679388820"><span class="hs-identifier hs-var hs-var">s'</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; Maybe String -&gt; String
 forall a. a -&gt; Maybe a -&gt; a
 </span><span class="hs-identifier hs-var">fromMaybe</span></span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388824"><span class="hs-identifier hs-var">s</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String -&gt; String -&gt; Maybe String
+</span><a href="#local-6989586621679388821"><span class="hs-identifier hs-var">s</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String -&gt; String -&gt; Maybe String
 forall a. Eq a =&gt; [a] -&gt; [a] -&gt; Maybe [a]
 </span><span class="hs-identifier hs-var">stripPrefix</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;_&quot;</span></span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388824"><span class="hs-identifier hs-var">s</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679388821"><span class="hs-identifier hs-var">s</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-108"></span><span>
 </span><span id="line-109"></span><span class="annot"><a href="Web.Pixiv.TH.html#modifyConsturctorName"><span class="hs-identifier hs-type">modifyConsturctorName</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">String</span></span><span>
 </span><span id="line-110"></span><span id="modifyConsturctorName"><span class="annot"><span class="annottext">modifyConsturctorName :: String -&gt; String -&gt; String
-</span><a href="Web.Pixiv.TH.html#modifyConsturctorName"><span class="hs-identifier hs-var hs-var">modifyConsturctorName</span></a></span></span><span> </span><span id="local-6989586621679388821"><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388821"><span class="hs-identifier hs-var">prefix</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String
+</span><a href="Web.Pixiv.TH.html#modifyConsturctorName"><span class="hs-identifier hs-var hs-var">modifyConsturctorName</span></a></span></span><span> </span><span id="local-6989586621679388818"><span class="annot"><span class="annottext">String
+</span><a href="#local-6989586621679388818"><span class="hs-identifier hs-var">prefix</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; String
 </span><a href="Web.Pixiv.TH.html#camel2Snake"><span class="hs-identifier hs-var">camel2Snake</span></a></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; (String -&gt; String) -&gt; String -&gt; String
 forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">String -&gt; Maybe String -&gt; String
@@ -234,5 +234,5 @@ f (a -&gt; b) -&gt; f a -&gt; f b
 </span><span class="hs-operator hs-var">&lt;*&gt;</span></span><span> </span><span class="annot"><span class="annottext">String -&gt; String -&gt; Maybe String
 forall a. Eq a =&gt; [a] -&gt; [a] -&gt; Maybe [a]
 </span><span class="hs-identifier hs-var">stripPrefix</span></span><span> </span><span class="annot"><span class="annottext">String
-</span><a href="#local-6989586621679388821"><span class="hs-identifier hs-var">prefix</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679388818"><span class="hs-identifier hs-var">prefix</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-111"></span></pre></body></html>
