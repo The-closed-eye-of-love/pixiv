@@ -12,7 +12,7 @@ Haskell implementation of Pixiv API, based on [servant-client](https://hackage.h
 
 In most cases, it is enough to import only `Web.Pixiv`. If you want to use lenses to access and operate data types,
 you should import `Web.Pixiv.Types.Lens` as well. Pixiv API requires authentication before being accessed, thus the `PixivT` monad transformer provides an user-friendly and thread-safe interface
-to manage, and renew access token on demand, where you just need to give the username and password of your pixiv account.
+to manage, and renew access token on demand, where you just need to give the ~~username and password~~ refresh token (See https://github.com/upbit/pixivpy/issues/158) of your pixiv account.
 
 ### Example
 
@@ -26,7 +26,7 @@ import Web.Pixiv.Types.Lens
 
 main :: IO ()
 main = do
-  let credential = Password "username" "password"
+  let credential = RefreshToken "token"
   result <- runPixivT' credential action
   case result of
     Left err -> print err

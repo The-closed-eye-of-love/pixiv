@@ -21,12 +21,12 @@ Token :: Text -> Token
 
 -- | Authentication credentials for pixiv API.
 --   
---   Normally, users are supposed to create value of this data type using
---   <a>Password</a> constructor, then pass it to <a>runPixivT</a>.
-data Credential
-Password :: ByteString -> ByteString -> Credential
-[username] :: Credential -> ByteString
-[password] :: Credential -> ByteString
+--   Password authentication is no longer supported by pixiv. You may
+--   consult <a>https://github.com/upbit/pixivpy/issues/158</a> to get the
+--   information of how to acquire refresh token. Normally, users are
+--   supposed to create value of this data type and then pass it to
+--   <a>runPixivT</a>.
+newtype Credential
 RefreshToken :: Token -> Credential
 [cr_refreshToken] :: Credential -> Token
 
@@ -1092,7 +1092,7 @@ getSpotlightArticles :: MonadPixiv m => Maybe Text -> Int -> m [SpotlightArticle
 --   
 --   main :: IO ()
 --   main = do
---     let credential = Password "username" "password"
+--     let credential = RefreshToken "token"
 --     illust &lt;- runPixivT' credential $ getIllustDetail 70479649
 --     print illust
 --   </pre>
@@ -1105,10 +1105,14 @@ module Web.Pixiv
 
 -- | Authentication credentials for pixiv API.
 --   
---   Normally, users are supposed to create value of this data type using
---   <a>Password</a> constructor, then pass it to <a>runPixivT</a>.
-data Credential
-Password :: ByteString -> ByteString -> Credential
+--   Password authentication is no longer supported by pixiv. You may
+--   consult <a>https://github.com/upbit/pixivpy/issues/158</a> to get the
+--   information of how to acquire refresh token. Normally, users are
+--   supposed to create value of this data type and then pass it to
+--   <a>runPixivT</a>.
+newtype Credential
+RefreshToken :: Token -> Credential
+[cr_refreshToken] :: Credential -> Token
 
 
 -- | Miscellaneous utilities.

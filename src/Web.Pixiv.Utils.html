@@ -31,13 +31,13 @@
 </span><span id="line-31"></span><span class="hs-comment">-- | Judges if an illustration has only one image.</span><span>
 </span><span id="line-32"></span><span class="annot"><a href="Web.Pixiv.Utils.html#isSinglePageIllust"><span class="hs-identifier hs-type">isSinglePageIllust</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Bool</span></span><span>
 </span><span id="line-33"></span><span id="isSinglePageIllust"><span class="annot"><span class="annottext">isSinglePageIllust :: Illust -&gt; Bool
-</span><a href="Web.Pixiv.Utils.html#isSinglePageIllust"><span class="hs-identifier hs-var hs-var">isSinglePageIllust</span></a></span></span><span> </span><span id="local-6989586621679392652"><span class="annot"><span class="annottext">Illust
-</span><a href="#local-6989586621679392652"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[MetaPage] -&gt; Bool
+</span><a href="Web.Pixiv.Utils.html#isSinglePageIllust"><span class="hs-identifier hs-var hs-var">isSinglePageIllust</span></a></span></span><span> </span><span id="local-6989586621679391113"><span class="annot"><span class="annottext">Illust
+</span><a href="#local-6989586621679391113"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[MetaPage] -&gt; Bool
 forall (t :: Type -&gt; Type) a. Foldable t =&gt; t a -&gt; Bool
 </span><span class="hs-identifier hs-var">null</span></span><span> </span><span class="annot"><span class="annottext">([MetaPage] -&gt; Bool) -&gt; [MetaPage] -&gt; Bool
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Illust
-</span><a href="#local-6989586621679392652"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="annot"><span class="annottext">Illust -&gt; Getting [MetaPage] Illust [MetaPage] -&gt; [MetaPage]
+</span><a href="#local-6989586621679391113"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="annot"><span class="annottext">Illust -&gt; Getting [MetaPage] Illust [MetaPage] -&gt; [MetaPage]
 forall s a. s -&gt; Getting a s a -&gt; a
 </span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting [MetaPage] Illust [MetaPage]
 forall s a. HasMetaPages s a =&gt; Lens' s a
@@ -46,10 +46,10 @@ forall s a. HasMetaPages s a =&gt; Lens' s a
 </span><span id="line-35"></span><span class="hs-comment">-- | Extracts the url of the highest quality image.</span><span>
 </span><span id="line-36"></span><span class="annot"><a href="Web.Pixiv.Utils.html#extractHighestQualityImageUrl"><span class="hs-identifier hs-type">extractHighestQualityImageUrl</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#ImageUrls"><span class="hs-identifier hs-type">ImageUrls</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
 </span><span id="line-37"></span><span id="extractHighestQualityImageUrl"><span class="annot"><span class="annottext">extractHighestQualityImageUrl :: ImageUrls -&gt; Maybe Text
-</span><a href="Web.Pixiv.Utils.html#extractHighestQualityImageUrl"><span class="hs-identifier hs-var hs-var">extractHighestQualityImageUrl</span></a></span></span><span> </span><span id="local-6989586621679392648"><span class="annot"><span class="annottext">ImageUrls
-</span><a href="#local-6989586621679392648"><span class="hs-identifier hs-var">x</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="Web.Pixiv.Utils.html#extractHighestQualityImageUrl"><span class="hs-identifier hs-var hs-var">extractHighestQualityImageUrl</span></a></span></span><span> </span><span id="local-6989586621679391109"><span class="annot"><span class="annottext">ImageUrls
+</span><a href="#local-6989586621679391109"><span class="hs-identifier hs-var">x</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-38"></span><span>  </span><span class="annot"><span class="annottext">ImageUrls
-</span><a href="#local-6989586621679392648"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">ImageUrls
+</span><a href="#local-6989586621679391109"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">ImageUrls
 -&gt; Getting (Maybe Text) ImageUrls (Maybe Text) -&gt; Maybe Text
 forall s a. s -&gt; Getting a s a -&gt; a
 </span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting (Maybe Text) ImageUrls (Maybe Text)
@@ -58,7 +58,7 @@ forall s a. HasOriginal s a =&gt; Lens' s a
 </span><span id="line-39"></span><span>    </span><span class="annot"><span class="annottext">Maybe Text -&gt; Maybe Text -&gt; Maybe Text
 forall (f :: Type -&gt; Type) a. Alternative f =&gt; f a -&gt; f a -&gt; f a
 </span><span class="hs-operator hs-var">&lt;|&gt;</span></span><span> </span><span class="annot"><span class="annottext">ImageUrls
-</span><a href="#local-6989586621679392648"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">ImageUrls
+</span><a href="#local-6989586621679391109"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">ImageUrls
 -&gt; Getting (Maybe Text) ImageUrls (Maybe Text) -&gt; Maybe Text
 forall s a. s -&gt; Getting a s a -&gt; a
 </span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting (Maybe Text) ImageUrls (Maybe Text)
@@ -67,7 +67,7 @@ forall s a. HasLarge s a =&gt; Lens' s a
 </span><span id="line-40"></span><span>    </span><span class="annot"><span class="annottext">Maybe Text -&gt; Maybe Text -&gt; Maybe Text
 forall (f :: Type -&gt; Type) a. Alternative f =&gt; f a -&gt; f a -&gt; f a
 </span><span class="hs-operator hs-var">&lt;|&gt;</span></span><span> </span><span class="annot"><span class="annottext">ImageUrls
-</span><a href="#local-6989586621679392648"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">ImageUrls
+</span><a href="#local-6989586621679391109"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">ImageUrls
 -&gt; Getting (Maybe Text) ImageUrls (Maybe Text) -&gt; Maybe Text
 forall s a. s -&gt; Getting a s a -&gt; a
 </span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting (Maybe Text) ImageUrls (Maybe Text)
@@ -76,7 +76,7 @@ forall s a. HasMedium s a =&gt; Lens' s a
 </span><span id="line-41"></span><span>    </span><span class="annot"><span class="annottext">Maybe Text -&gt; Maybe Text -&gt; Maybe Text
 forall (f :: Type -&gt; Type) a. Alternative f =&gt; f a -&gt; f a -&gt; f a
 </span><span class="hs-operator hs-var">&lt;|&gt;</span></span><span> </span><span class="annot"><span class="annottext">ImageUrls
-</span><a href="#local-6989586621679392648"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">ImageUrls
+</span><a href="#local-6989586621679391109"><span class="hs-identifier hs-var">x</span></a></span><span> </span><span class="annot"><span class="annottext">ImageUrls
 -&gt; Getting (Maybe Text) ImageUrls (Maybe Text) -&gt; Maybe Text
 forall s a. s -&gt; Getting a s a -&gt; a
 </span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting (Maybe Text) ImageUrls (Maybe Text)
@@ -86,15 +86,15 @@ forall s a. HasSquareMedium s a =&gt; Lens' s a
 </span><span id="line-43"></span><span class="hs-comment">-- | Extracts all urls from an illustration, using 'extractHighestQualityImageUrl'.</span><span>
 </span><span id="line-44"></span><span class="annot"><a href="Web.Pixiv.Utils.html#extractImageUrlsFromIllust"><span class="hs-identifier hs-type">extractImageUrlsFromIllust</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#Illust"><span class="hs-identifier hs-type">Illust</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">]</span><span>
 </span><span id="line-45"></span><span id="extractImageUrlsFromIllust"><span class="annot"><span class="annottext">extractImageUrlsFromIllust :: Illust -&gt; [Text]
-</span><a href="Web.Pixiv.Utils.html#extractImageUrlsFromIllust"><span class="hs-identifier hs-var hs-var">extractImageUrlsFromIllust</span></a></span></span><span> </span><span id="local-6989586621679392643"><span class="annot"><span class="annottext">Illust
-</span><a href="#local-6989586621679392643"><span class="hs-identifier hs-var">i</span></a></span></span><span>
+</span><a href="Web.Pixiv.Utils.html#extractImageUrlsFromIllust"><span class="hs-identifier hs-var hs-var">extractImageUrlsFromIllust</span></a></span></span><span> </span><span id="local-6989586621679391104"><span class="annot"><span class="annottext">Illust
+</span><a href="#local-6989586621679391104"><span class="hs-identifier hs-var">i</span></a></span></span><span>
 </span><span id="line-46"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Illust -&gt; Bool
 </span><a href="Web.Pixiv.Utils.html#isSinglePageIllust"><span class="hs-identifier hs-var">isSinglePageIllust</span></a></span><span> </span><span class="annot"><span class="annottext">Illust
-</span><a href="#local-6989586621679392643"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Maybe Text
-</span><a href="#local-6989586621679392642"><span class="hs-identifier hs-var">single</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Text -&gt; Maybe Text -&gt; Maybe Text
+</span><a href="#local-6989586621679391104"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Maybe Text
+</span><a href="#local-6989586621679391103"><span class="hs-identifier hs-var">single</span></a></span><span> </span><span class="annot"><span class="annottext">Maybe Text -&gt; Maybe Text -&gt; Maybe Text
 forall (f :: Type -&gt; Type) a. Alternative f =&gt; f a -&gt; f a -&gt; f a
 </span><span class="hs-operator hs-var">&lt;|&gt;</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">[Text]
-</span><a href="#local-6989586621679392641"><span class="hs-identifier hs-var">multi</span></a></span><span> </span><span class="annot"><span class="annottext">[Text] -&gt; Getting (First Text) [Text] Text -&gt; Maybe Text
+</span><a href="#local-6989586621679391102"><span class="hs-identifier hs-var">multi</span></a></span><span> </span><span class="annot"><span class="annottext">[Text] -&gt; Getting (First Text) [Text] Text -&gt; Maybe Text
 forall s a. s -&gt; Getting (First a) s a -&gt; Maybe a
 </span><span class="hs-operator hs-var">^?</span></span><span> </span><span class="annot"><span class="annottext">Getting (First Text) [Text] Text
 forall s a. Cons s s a a =&gt; Traversal' s a
@@ -105,16 +105,16 @@ forall s t a b. Each s t a b =&gt; Traversal s t a b
 </span><span class="hs-identifier hs-var">each</span></span><span>
 </span><span id="line-47"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool
 </span><span class="hs-identifier hs-var">otherwise</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[Text]
-</span><a href="#local-6989586621679392641"><span class="hs-identifier hs-var">multi</span></a></span><span>
+</span><a href="#local-6989586621679391102"><span class="hs-identifier hs-var">multi</span></a></span><span>
 </span><span id="line-48"></span><span>  </span><span class="hs-keyword">where</span><span>
-</span><span id="line-49"></span><span>    </span><span id="local-6989586621679392642"><span class="annot"><span class="annottext">single :: Maybe Text
-</span><a href="#local-6989586621679392642"><span class="hs-identifier hs-var hs-var">single</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Maybe (Maybe Text) -&gt; Maybe Text
+</span><span id="line-49"></span><span>    </span><span id="local-6989586621679391103"><span class="annot"><span class="annottext">single :: Maybe Text
+</span><a href="#local-6989586621679391103"><span class="hs-identifier hs-var hs-var">single</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Maybe (Maybe Text) -&gt; Maybe Text
 forall (m :: Type -&gt; Type) a. Monad m =&gt; m (m a) -&gt; m a
 </span><span class="hs-identifier hs-var">join</span></span><span> </span><span class="annot"><span class="annottext">(Maybe (Maybe Text) -&gt; Maybe Text)
 -&gt; Maybe (Maybe Text) -&gt; Maybe Text
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Illust
-</span><a href="#local-6989586621679392643"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="annot"><span class="annottext">Illust
+</span><a href="#local-6989586621679391104"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="annot"><span class="annottext">Illust
 -&gt; Getting (Maybe OriginalImageUrl) Illust (Maybe OriginalImageUrl)
 -&gt; Maybe OriginalImageUrl
 forall s a. s -&gt; Getting a s a -&gt; a
@@ -139,9 +139,9 @@ forall s a. s -&gt; Getting a s a -&gt; a
 </span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting (Maybe Text) OriginalImageUrl (Maybe Text)
 forall s a. HasOriginalImageUrl s a =&gt; Lens' s a
 </span><a href="Web.Pixiv.Types.Lens.html#originalImageUrl"><span class="hs-identifier hs-var">originalImageUrl</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-50"></span><span>    </span><span id="local-6989586621679392641"><span class="annot"><span class="annottext">multi :: [Text]
-</span><a href="#local-6989586621679392641"><span class="hs-identifier hs-var hs-var">multi</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Illust
-</span><a href="#local-6989586621679392643"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="annot"><span class="annottext">Illust -&gt; Getting [MetaPage] Illust [MetaPage] -&gt; [MetaPage]
+</span><span id="line-50"></span><span>    </span><span id="local-6989586621679391102"><span class="annot"><span class="annottext">multi :: [Text]
+</span><a href="#local-6989586621679391102"><span class="hs-identifier hs-var hs-var">multi</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Illust
+</span><a href="#local-6989586621679391104"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="annot"><span class="annottext">Illust -&gt; Getting [MetaPage] Illust [MetaPage] -&gt; [MetaPage]
 forall s a. s -&gt; Getting a s a -&gt; a
 </span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting [MetaPage] Illust [MetaPage]
 forall s a. HasMetaPages s a =&gt; Lens' s a
@@ -187,27 +187,27 @@ forall a b. Prism (Maybe a) (Maybe b) a b
 </span><span id="line-59"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">LBS.ByteString</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-60"></span><span>  </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
 </span><span id="line-61"></span><span id="unzipArchive"><span class="annot"><span class="annottext">unzipArchive :: FilePath -&gt; ByteString -&gt; IO ()
-</span><a href="Web.Pixiv.Utils.html#unzipArchive"><span class="hs-identifier hs-var hs-var">unzipArchive</span></a></span></span><span> </span><span id="local-6989586621679392628"><span class="annot"><span class="annottext">FilePath
-</span><a href="#local-6989586621679392628"><span class="hs-identifier hs-var">dir</span></a></span></span><span> </span><span id="local-6989586621679392627"><span class="annot"><span class="annottext">ByteString
-</span><a href="#local-6989586621679392627"><span class="hs-identifier hs-var">bs</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-62"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679392626"><span class="annot"><span class="annottext">archive :: Archive
-</span><a href="#local-6989586621679392626"><span class="hs-identifier hs-var hs-var">archive</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ByteString -&gt; Archive
+</span><a href="Web.Pixiv.Utils.html#unzipArchive"><span class="hs-identifier hs-var hs-var">unzipArchive</span></a></span></span><span> </span><span id="local-6989586621679391089"><span class="annot"><span class="annottext">FilePath
+</span><a href="#local-6989586621679391089"><span class="hs-identifier hs-var">dir</span></a></span></span><span> </span><span id="local-6989586621679391088"><span class="annot"><span class="annottext">ByteString
+</span><a href="#local-6989586621679391088"><span class="hs-identifier hs-var">bs</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-62"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679391087"><span class="annot"><span class="annottext">archive :: Archive
+</span><a href="#local-6989586621679391087"><span class="hs-identifier hs-var hs-var">archive</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ByteString -&gt; Archive
 </span><span class="hs-identifier hs-var">Zip.toArchive</span></span><span> </span><span class="annot"><span class="annottext">ByteString
-</span><a href="#local-6989586621679392627"><span class="hs-identifier hs-var">bs</span></a></span><span>
-</span><span id="line-63"></span><span>      </span><span id="local-6989586621679392624"><span class="annot"><span class="annottext">option :: [ZipOption]
-</span><a href="#local-6989586621679392624"><span class="hs-identifier hs-var hs-var">option</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">FilePath -&gt; ZipOption
+</span><a href="#local-6989586621679391088"><span class="hs-identifier hs-var">bs</span></a></span><span>
+</span><span id="line-63"></span><span>      </span><span id="local-6989586621679391085"><span class="annot"><span class="annottext">option :: [ZipOption]
+</span><a href="#local-6989586621679391085"><span class="hs-identifier hs-var hs-var">option</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">FilePath -&gt; ZipOption
 </span><span class="hs-identifier hs-var">Zip.OptDestination</span></span><span> </span><span class="annot"><span class="annottext">FilePath
-</span><a href="#local-6989586621679392628"><span class="hs-identifier hs-var">dir</span></a></span><span class="hs-special">]</span><span>
+</span><a href="#local-6989586621679391089"><span class="hs-identifier hs-var">dir</span></a></span><span class="hs-special">]</span><span>
 </span><span id="line-64"></span><span>  </span><span class="annot"><span class="annottext">[ZipOption] -&gt; Archive -&gt; IO ()
 </span><span class="hs-identifier hs-var">Zip.extractFilesFromArchive</span></span><span> </span><span class="annot"><span class="annottext">[ZipOption]
-</span><a href="#local-6989586621679392624"><span class="hs-identifier hs-var">option</span></a></span><span> </span><span class="annot"><span class="annottext">Archive
-</span><a href="#local-6989586621679392626"><span class="hs-identifier hs-var">archive</span></a></span><span>
+</span><a href="#local-6989586621679391085"><span class="hs-identifier hs-var">option</span></a></span><span> </span><span class="annot"><span class="annottext">Archive
+</span><a href="#local-6989586621679391087"><span class="hs-identifier hs-var">archive</span></a></span><span>
 </span><span id="line-65"></span><span>
 </span><span id="line-66"></span><span class="hs-comment">-- | Generates ffconcat meta file of an ugoira.</span><span>
 </span><span id="line-67"></span><span class="annot"><a href="Web.Pixiv.Utils.html#ugoiraMetadataToFFConcat"><span class="hs-identifier hs-type">ugoiraMetadataToFFConcat</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Web.Pixiv.Types.html#UgoiraMetadata"><span class="hs-identifier hs-type">UgoiraMetadata</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">BS.ByteString</span></span><span>
 </span><span id="line-68"></span><span id="ugoiraMetadataToFFConcat"><span class="annot"><span class="annottext">ugoiraMetadataToFFConcat :: UgoiraMetadata -&gt; ByteString
-</span><a href="Web.Pixiv.Utils.html#ugoiraMetadataToFFConcat"><span class="hs-identifier hs-var hs-var">ugoiraMetadataToFFConcat</span></a></span></span><span> </span><span id="local-6989586621679392621"><span class="annot"><span class="annottext">UgoiraMetadata
-</span><a href="#local-6989586621679392621"><span class="hs-identifier hs-var">meta</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="Web.Pixiv.Utils.html#ugoiraMetadataToFFConcat"><span class="hs-identifier hs-var hs-var">ugoiraMetadataToFFConcat</span></a></span></span><span> </span><span id="local-6989586621679391082"><span class="annot"><span class="annottext">UgoiraMetadata
+</span><a href="#local-6989586621679391082"><span class="hs-identifier hs-var">meta</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-69"></span><span>  </span><span class="annot"><span class="annottext">Text -&gt; ByteString
 </span><span class="hs-identifier hs-var">encodeUtf8</span></span><span> </span><span class="annot"><span class="annottext">(Text -&gt; ByteString) -&gt; ([Text] -&gt; Text) -&gt; [Text] -&gt; ByteString
 forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
@@ -225,7 +225,7 @@ forall a. a -&gt; [a] -&gt; [a]
 </span><span class="hs-string">&quot;file &quot;</span></span><span> </span><span class="annot"><span class="annottext">Text -&gt; Text -&gt; Text
 forall a. Semigroup a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">&lt;&gt;</span></span><span> </span><span class="annot"><span class="annottext">UgoiraFrame
-</span><a href="#local-6989586621679392619"><span class="hs-identifier hs-var">frame</span></a></span><span> </span><span class="annot"><span class="annottext">UgoiraFrame -&gt; Getting Text UgoiraFrame Text -&gt; Text
+</span><a href="#local-6989586621679391080"><span class="hs-identifier hs-var">frame</span></a></span><span> </span><span class="annot"><span class="annottext">UgoiraFrame -&gt; Getting Text UgoiraFrame Text -&gt; Text
 forall s a. s -&gt; Getting a s a -&gt; a
 </span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting Text UgoiraFrame Text
 forall s a. HasUgoiraFile s a =&gt; Lens' s a
@@ -237,7 +237,7 @@ forall a. Semigroup a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">&lt;&gt;</span></span><span> </span><span class="annot"><span class="annottext">FilePath -&gt; Text
 </span><span class="hs-identifier hs-var">T.pack</span></span><span>
 </span><span id="line-75"></span><span>                </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="annottext">UgoiraFrame
-</span><a href="#local-6989586621679392619"><span class="hs-identifier hs-var">frame</span></a></span><span> </span><span class="annot"><span class="annottext">UgoiraFrame -&gt; Getting Int UgoiraFrame Int -&gt; Int
+</span><a href="#local-6989586621679391080"><span class="hs-identifier hs-var">frame</span></a></span><span> </span><span class="annot"><span class="annottext">UgoiraFrame -&gt; Getting Int UgoiraFrame Int -&gt; Int
 forall s a. s -&gt; Getting a s a -&gt; a
 </span><span class="hs-operator hs-var">^.</span></span><span> </span><span class="annot"><span class="annottext">Getting Int UgoiraFrame Int
 forall s a. HasUgoiraDelay s a =&gt; Lens' s a
@@ -265,9 +265,9 @@ forall a. Maybe a
 </span><span class="hs-string">&quot;&quot;</span></span><span>
 </span><span id="line-79"></span><span>                </span><span class="hs-special">)</span><span>
 </span><span id="line-80"></span><span>          </span><span class="hs-special">]</span><span>
-</span><span id="line-81"></span><span>        </span><span class="hs-glyph">|</span><span> </span><span id="local-6989586621679392619"><span class="annot"><span class="annottext">UgoiraFrame
-</span><a href="#local-6989586621679392619"><span class="hs-identifier hs-var">frame</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">UgoiraMetadata
-</span><a href="#local-6989586621679392621"><span class="hs-identifier hs-var">meta</span></a></span><span> </span><span class="annot"><span class="annottext">UgoiraMetadata
+</span><span id="line-81"></span><span>        </span><span class="hs-glyph">|</span><span> </span><span id="local-6989586621679391080"><span class="annot"><span class="annottext">UgoiraFrame
+</span><a href="#local-6989586621679391080"><span class="hs-identifier hs-var">frame</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">UgoiraMetadata
+</span><a href="#local-6989586621679391082"><span class="hs-identifier hs-var">meta</span></a></span><span> </span><span class="annot"><span class="annottext">UgoiraMetadata
 -&gt; Getting [UgoiraFrame] UgoiraMetadata [UgoiraFrame]
 -&gt; [UgoiraFrame]
 forall s a. s -&gt; Getting a s a -&gt; a
