@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TemplateHaskellQuotes #-}
 
 -- | Copyright: (c) 2021 The closed eye of love
 -- SPDX-License-Identifier: BSD-3-Clause

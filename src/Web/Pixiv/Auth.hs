@@ -80,7 +80,7 @@ data OAuth2Token = OAuth2Token
 
 derivePixivJSON "oa_" ''OAuth2Token
 
--- | Authentication failure reasions.
+-- | Authentication failure reasons.
 data Errors
   = InvalidRequest
   | InvalidClient
