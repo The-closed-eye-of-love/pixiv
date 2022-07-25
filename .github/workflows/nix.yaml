@@ -5,20 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     name: Nix build
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.4.0
+      - uses: cachix/install-nix-action@v15
         with:
-            # Nix Flakes doesn't work on shallow clones
-            fetch-depth: 0
-      
-      - uses: cachix/install-nix-action@v12
-        with:
-          install_url: https://github.com/numtide/nix-flakes-installer/releases/download/nix-2.4pre20201221_9fab14a/install
           extra_nix_config: |
-            experimental-features = nix-command flakes
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and generate haddock
         run: nix build
-      
+
       - name: Deploy generated haddock to github pages
         uses: peaceiris/actions-gh-pages@v3
         with:
