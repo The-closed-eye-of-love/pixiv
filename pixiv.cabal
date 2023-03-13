@@ -1,7 +1,6 @@
 cabal-version:   3.0
 name:            pixiv
 version:         0.1.1
-x-revision:      1
 synopsis:        Pixiv API binding based on servant-client
 description:
   Pixiv API binding based on servant-client.
