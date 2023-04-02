@@ -65,6 +65,7 @@ where
 
 import qualified Data.Aeson as A
 import Data.Text (Text)
+import qualified Data.Text as T
 import Data.Time (UTCTime)
 import Web.Pixiv.TH
 
@@ -556,9 +557,13 @@ data RankMode
   | WeekOriginal
   | WeekRookie
   | DayManga
+  | DayAI
+  | DayR18AI
   deriving stock (Show, Eq, Ord, Enum, Read)
 
-deriveEnumToHttpApiData' ''RankMode
+instance ToHttpApiData RankMode where
+  toQueryParam DayR18AI = "day_r18_ai"
+  toQueryParam x = T.pack . A.camelTo2 '_' $ show x
 
 -----------------------------------------------------------------------------
 
